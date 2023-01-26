@@ -15,310 +15,164 @@
         <a href="../../index.html">Inicio</a>
         <a href="../3/index.html">Siguiente</a>
     </div>
-    <div class="contenido" id="arriba">
+    <div class="contenido_p" id="arriba">
         <p>Desarrollo Django</p>
         
     </div>
 
-    <h1>2 - Introducción a Django (Clase 09)</h1>
-    <ol>
+    <h1 class="contenido_p">2 - Introducción a Django (Clase 09)</h1>
+    <ol class="contenido_p">
         <li>
-            <a href="#1">1. </a>
+            <a href="#1">1. ¿Qué es Django?</a>
         </li>
         <li>
-            <a href="#2">2. </a>
+            <a href="#2">2. Patrón MVT</a>
         </li>
         <li>
-            <a href="#3">3. </a>
+            <a href="#3">3. Estructura de directorios Django</a>
         </li>
         <li>
-            <a href="#4">4. </a>
+            <a href="#4">4. Instalación y configuración</a>
         </li>
         <li>
-            <a href="#5">5. </a>
+            <a href="#5">5. Url dispatcher</a>
         </li>
-        <li>
-            <a href="#6">6. </a>
-        </li>
-        <li>
-            <a href="#7">7. </a>
-        </li>
-        <li>
-            <a href="#8">8. </a>
-        </li>
-        <li>
-            <a href="#9">9. </a>
-        </li>
-        <li>
-            <a href="#10">10. </a>
-        </li>
-        <li>
-            <a href="#11">11. </a>
-        </li>
-        <li>
-            <a href="#12">12. </a>
-        </li>
-        <li>
-            <a href="#13">13. </a>
-        </li>
-        <li>
-            <a href="#14">14. </a>
-        </li>
-        <li>
-            <a href="#15">15. </a>
-        </li>
-        <li>
-            <a href="#16">16. </a>
-        </li>
-        <li>
-            <a href="#17">17. </a>
-        </li>
-        <li>
-            <a href="#18">18. </a>
-        </li>
-        <li>
-            <a href="#19">19. </a>
-        </li>
-        <li>
-            <a href="#20">20. </a>
-        </li>
-        <li>
-            <a href="#21">21. </a>
-        </li>
-        <li>
-            <a href="#22">22. </a>
-        </li>
-        <li>
-            <a href="#23">23. </a>
-        </li>
-        <li>
-            <a href="#24">24. </a>
-        </li>
-        <li>
-            <a href="#25">25. </a>
-        </li>
+        
     </ol>
 
-    <p id="1">1. </p>
+    <p class="contenido_p" id="1">1. ¿Qué es Django?</p>
     <pre>
-        
+        Django -> Framework de alto nivel, permite crear sitios web seguros y mantenibles.
+        Para inspiración.. https://djangosites.com/
+
+        Relación de 1 a muchos..    1               -> N
+                                    Un categoría    -> Muchos productos
     </pre>
     <div class="context">
         <a href="#arriba">Arriba</a>
     </div>
 
-    <p id="2">2. </p>
+    <p class="contenido_p" id="2">2. Patrón MVT</p>
     <pre>
+        Patrón MVT  -> Model View Template 
 
+            * El controlador pasa a ser la Vista * 
+
+        Modelo: La capa de Acceso a la base de Datos (ORM)
+        Vista: La capa de lógica de negocios.               -> Es al revés del mvc, la vista es el controlador del Mvc
+            - 
+        Template: Plantilla, la capa de presentación.       -> La vista del mvc, acá es el template.
+
+
+
+        - El ORM, cada framework tiene el propio.
+            C#      - Entity Framework
+            Java    - Hibernate
     </pre>
     <div class="context">
         <a href="#arriba">Arriba</a>
     </div>
     
-    <p id="3">3. </p>
+    <p class="contenido_p" id="3">3. Estructura de directorios Django</p>
     <pre>
-        
-    </pre>
-    <div class="context">
-        <a href="#arriba">Arriba</a>
-    </div>
-    <p id="4">4. </p>
-    <pre>
-        
-    </pre>
-    <div class="context">
-        <a href="#arriba">Arriba</a>
-    </div>
+        - Django_proyect (Directorio Princiapl)
+        - Django_proyect (Directorio)
+            __init__.py             (Archivos)
+            settings.py             -> Contiene algunos ajustes de configuración importantes.
+                * Ajustes/Configuración para este proyecto Django
+            urls.py                 - Es posible que deseemos cambiar algunos ajustes predeterminados de vez en cuando.
+                * Las declaraciones Url para este proyecto Django 
+                Cada url a cada vista va, a que función de Python va.
+            wsgi.py                 - Contiene instrucciones sobre a dónde se debe dirigir a los usuarios después de navegar a una determinada URL.
+                * Un punto de entrada para que los servidores web compatibles con WSGI puedan servir su proyecot.
+            asgi.py
+                * Un punto de entrada para que los servidores web compatibles con ASGI puedan servir su proyecot.
+                
 
-    <p id="5">5. </p>
-    <pre>
-        
+                                    
+                                    (Archivos)
+                                    * El más "polenta".. El más importante. Tiene todos los scripts.
+        - manage.py                 - Lo usamos para ejecutar comandos en nuestra terminal.
+                                    - No tendremos que editarlo, pero lo usaremos con frecuencia.
+                                    * Una utilidad de la linea de comandos que le permite interactuar con este proyecto Django de diferentes maneras.
+                                
+
+        - Apps (Directorio)                 -> Agrupación de modulos
+            app_1   (SubDirectorio)
+                Migrations (SubDirectorio)
+                    - admin.py
+                    - apps.py
+                    - __init__.py           -> Un archivo vacío que le indica a Python que este directorio debería ser considerado como un paquete Python.
+                    - models.py 
+                    - tests.py
+                    - views.py
+
+            app_2   (SubDirectorio)
+            app_n   (SubDirectorio)
+
+        - Templates (Directorio)
+        - Static (Directorio)
+        - Media (Directorio)
     </pre>
     <div class="context">
         <a href="#arriba">Arriba</a>
     </div>
-
-    <p id="6">6. </p>
+    <p class="contenido_p" id="4">4. Instalación y configuración</p>
     <pre>
-        
-    </pre>
-    <div class="context">
-        <a href="#arriba">Arriba</a>
-    </div>  
+        Ahora vamos a instalar los paquetes dentro del entorno virtual.. django_2023
 
-    <p id="7">7. </p>
-    <pre>
-        
-    </pre>
-    <div class="context">
-        <a href="#arriba">Arriba</a>
-    </div>
+        - pip freeze                            -> Para listar los paquetes
+
+        - django-admin startproject wmy_ebsite  -> Creamos el proyecto que deseemos.
+
+        - cd my_website                         -> Entramos a proyecto
+
+    * Nos crea la estructura del proyecto.
+
+        - python manage.py runserver
+            * Levantamos el proyecto
+
+
+        - pip freeze > requirements.txt         -> Para registrar nuestras librerías a un txt
+        - pip install -r requirements.txt       -> Para instalar las librerías desde el txt
+
+
+    * Ahora nos toca crear la aplicación.
+        - python manage.py startapp "my_app"    -> Creamos entonces la app con el nombre que deseemos.
+
+        * Ahora dentro de nuestro settings.py en el proyecto general, DEBEMOS REGISTRAR nuestra app
     
-    <p id="8">8. </p>
-    <pre>
-        
-    </pre>
-    <div class="context">
-        <a href="#arriba">Arriba</a>
-    </div>
+        - settings.py 
     
-    <p id="9">9. </p>
-    <pre>
-        
-    </pre>
-    <div class="context">
-        <a href="#arriba">Arriba</a>
-    </div>
-
-    <p id="10">10. </p>
-    <pre>
-        
-    </pre>
-    <div class="context">
-        <a href="#arriba">Arriba</a>
-    </div>
+        INSTALLED_APPS = [
+            'django.contrib.admin',
+            'django.contrib.auth',
+            'django.contrib.contenttypes',
+            'django.contrib.sessions',
+            'django.contrib.messages',
+            'django.contrib.staticfiles',
+            'my_app',                               -> Registramos nuestra App
+        ]
     
-    <p id="11">11. </p>
-    <pre>
-        
-    </pre>
-    <div class="context">
-        <a href="#arriba">Arriba</a>
-    </div>
-    <br>
-    <br>
     
-    <p id="12">12. </p>
-    <pre>
-        
+        * Ahora lass urls que creemos dentro de nuestra App, las registraremos dentro de nuestra App general.
     </pre>
     <div class="context">
         <a href="#arriba">Arriba</a>
     </div>
-    <br>
-    <br>
 
-    <p id="13">13. </p>
+    <p class="contenido_p" id="5">5. Url dispatcher</p>
     <pre>
-        
+        Un esquema de URL limpio y elegante es un detalle importante en una aplicación web 
+        de alta calidad. Django te permite diseñar URL como quieras, sin limitaciones.
+
+        Usando el path dentro de las urlspatterns = []
     </pre>
     <div class="context">
         <a href="#arriba">Arriba</a>
     </div>
-    <br>
-    <br>
 
-    <p id="14">14. </p>
-    <pre>
-        
-    </pre>
-    <div class="context">
-        <a href="#arriba">Arriba</a>
-    </div>
-    <br>
-    <br>
-
-    <p id="15">15. </p>
-    <pre>
-        
-    </pre>
-    <div class="context">
-        <a href="#arriba">Arriba</a>
-    </div>
-    <br>
-    <br>
-
-    <p id="16">16. </p>
-    <pre>
-        
-    </pre>
-    <div class="context">
-        <a href="#arriba">Arriba</a>
-    </div>
-    <br>
-    <br>
-
-    <p id="17">17. </p>
-    <pre>
-        
-    </pre>
-    <div class="context">
-        <a href="#arriba">Arriba</a>
-    </div>
-    <br>
-    <br>
-
-    <p id="18">18. </p>
-    <pre>
-        
-    </pre>
-    <div class="context">
-        <a href="#arriba">Arriba</a>
-    </div>
-    <br>
-    <br>
-
-    <p id="19">19. </p>
-    <pre>
-        
-    </pre>
-    <div class="context">
-        <a href="#arriba">Arriba</a>
-    </div>
-    <br>
-    <br>
-
-    <p id="20">20. </p>
-    <pre>
-        
-    </pre>
-    <div class="context">
-        <a href="#arriba">Arriba</a>
-    </div>
-    <br>
-    <br>
-
-    <p id="21">21. </p>
-    <pre>
-        
-    </pre>
-    <div class="context">
-        <a href="#arriba">Arriba</a>
-    </div>
-    <br>
-    <br>
-
-    <p id="22">22. </p>
-    <pre>
-        
-    </pre>
-    <div class="context">
-        <a href="#arriba">Arriba</a>
-    </div>
-    <br>
-    <br>
-
-    <p id="23">23. </p>
-    <pre>
-        
-    </pre>
-    <div class="context">
-        <a href="#arriba">Arriba</a>
-    </div>
-    <br>
-    <br>
-
-    <p id="24">24. </p>
-    <pre>
-        
-    </pre>
-    <div class="context">
-        <a href="#arriba">Arriba</a>
-    </div>
-    <br>
-    <br>
-
-    
+   
     <br> 
     <br> 
     <div class="context">
