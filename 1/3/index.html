@@ -15,320 +15,305 @@
         <a href="../../index.html">Inicio</a>
         <a href="../4/index.html">Siguiente</a>
     </div>
-    <div class="contenido" id="arriba">
-        <p>Desarrollo Django</p>
+    <div class="contenido_p" id="arriba">
+        <p >Desarrollo Django</p>
     </div>
 
-    <h1>3 - Urls y Vistas en Django (Clase 10)</h1>
-    <ol>
+    <h1 class="contenido_p">3 - Urls y Vistas en Django (Clase 10)</h1>
+    <ul class="contenido_p">
         <li>
-            <a href="#1">1. </a>
+            <a href="#1">1. Vistas</a>
         </li>
         <li>
-            <a href="#2">2. </a>
+            <a href="#2">2. Vistas Simples</a>
         </li>
         <li>
-            <a href="#3">3. </a>
+            <a href="#3">3. Nuestra primer vista</a>
         </li>
         <li>
-            <a href="#4">4. </a>
+            <a href="#4">4. URLs por aplicación</a>
         </li>
         <li>
-            <a href="#5">5. </a>
+            <a href="#5">5. Múltiples Vistas</a>
         </li>
         <li>
-            <a href="#6">6. </a>
+            <a href="#6">6. URLs parametrizadas</a>
         </li>
-        <li>
-            <a href="#7">7. </a>
-        </li>
-        <li>
-            <a href="#8">8. </a>
-        </li>
-        <li>
-            <a href="#9">9. </a>
-        </li>
-        <li>
-            <a href="#10">10. </a>
-        </li>
-        <li>
-            <a href="#11">11. </a>
-        </li>
-        <li>
-            <a href="#12">12. </a>
-        </li>
-        <li>
-            <a href="#13">13. </a>
-        </li>
-        <li>
-            <a href="#14">14. </a>
-        </li>
-        <li>
-            <a href="#15">15. </a>
-        </li>
-        <li>
-            <a href="#16">16. </a>
-        </li>
-        <li>
-            <a href="#17">17. </a>
-        </li>
-        <li>
-            <a href="#18">18. </a>
-        </li>
-        <li>
-            <a href="#19">19. </a>
-        </li>
-        <li>
-            <a href="#20">20. </a>
-        </li>
-        <li>
-            <a href="#21">21. </a>
-        </li>
-        <li>
-            <a href="#22">22. </a>
-        </li>
-        <li>
-            <a href="#23">23. </a>
-        </li>
-        <li>
-            <a href="#24">24. </a>
-        </li>
-        <li>
-            <a href="#25">25. </a>
-        </li>
-    </ol>
+    </ul>
 
-    <p id="1">1. </p>
+    <p class="contenido_p" id="1">1. Vistas</p>
     <pre>
-        <img src="../../img/img_ref/img1.png" alt="">
-        <img src="../../img/img_ref/img2.png" alt="">
-        <img src="../../img/img_ref/img3.png" alt="">
-        <img src="../../img/img_ref/img4.png" alt="">
-        <img src="../../img/img_ref/img5.png" alt="">
-        <img src="../../img/img_ref/img6.png" alt="">
-        <img src="../../img/img_ref/img7.png" alt="">
-        <img src="../../img/img_ref/img8.png" alt="">
-        <img src="../../img/img_ref/img9.png" alt="">
-        <img src="../../img/img_ref/img10.png" alt="">
-        <img src="../../img/img_ref/img11.png" alt="">
-        <img src="../../img/img_ref/img12.png" alt="">
+        Vistas.. View.. Views.py
+        -> Función en Python recibe y hace una solicitud Web y devuelve una respuesta Web.
+        - Un página, un error 404, una imagen, etc.
     </pre>
     <div class="context">
         <a href="#arriba">Arriba</a>
     </div>
 
-    <p id="2">2. </p>
+    <p class="contenido_p" id="2">2. Vistas Simples</p>
     <pre>
+        Vistas Simples:
 
+                ->  WebServer ->            -> HttRequest
+        Browser                 : Django :             View Function
+                <-            <-            <- HttpResponse
     </pre>
     <div class="context">
         <a href="#arriba">Arriba</a>
     </div>
     
-    <p id="3">3. </p>
+    <p class="contenido_p" id="3">3. Nuestra primer vista</p>
     <pre>
-        
+        Ahora crearemos una primer vista.. Hola mundo
+
+            - python manage.py startapp "hola_mundo"
+
+        Con nuestra applicación que es un módulo.. 
+        Lo agregamos dentro del setting del proyecto general.
+
+        <code>
+            INSTALLED_APPS = [
+                'django.contrib.admin',
+                'django.contrib.auth',
+                'django.contrib.contenttypes',
+                'django.contrib.sessions',
+                'django.contrib.messages',
+                'django.contrib.staticfiles',
+                'my_app',
+                'hola_mundo',                           -> Agregamos la app.
+            ]
+        </code>
+
+        Ahora dentro de nuestra app.. Trabajamos la views.py
+        <code>
+        from django.shortcuts import render
+        from django.http import HttpResponse
+
+        # Create your views here.
+        def index(request):                             -> En el index, retornamos un hola mundo
+            # Un montó de código
+            return HttpResponse("Hola Mundo!")          -> Esto devuelve un Html
+        </code>
+
+
+        Ahora la urls.py de nuestro proyecto general.. Agregamos el path para nuestro función que retorna el Hola Mundo.
+        <code>
+        from django.contrib import admin
+        from django.urls import path
+        from hola_mundo import views
+
+
+        urlpatterns = [
+            path('admin/', admin.site.urls),
+            path('', views.index),                          -> Apuntamos a esa función.
+        ]
+        </code>
+
+        Ahora comprobamos desde el localhost al levantar el servidor.. http://127.0.0.1:8000/
+
+            - python manage.py runserver            
+
+
+        Al momento de devolver la vista.. Podemos devolver un status code específico.. Por ejemplo.
+        * Con un error interno, podemos manejar los errores y devolver algo personalizado.
+        <code>
+        from django.shortcuts import render
+        from django.http import HttpResponse
+
+        # Create your views here.
+        def index(request):
+            # Un montó de código
+            return HttpResponse("< h1>Hola Mundo!< /h1>", status=500)             -> Devolvemos un status code 500, y un html diseñado para tal fin
+        </code>
     </pre>
     <div class="context">
         <a href="#arriba">Arriba</a>
     </div>
-    <p id="4">4. </p>
+    <p class="contenido_p" id="4">4. URLs por aplicación</p>
     <pre>
-        
+        Ahora agregamos más funciones de vistas.. Desde views.py
+        * Dichas views, manejarán diferentes idiomas, inglés, portugues.
+        <code>
+        from django.shortcuts import render
+        from django.http import HttpResponse
+
+        # Create your views here.
+        def index(request):
+            # Un montó de código
+            return HttpResponse("< h1>Hola Mundo!< /h1>")
+
+        def english(request):
+            return HttpResponse("< h1>Hello World!< /h1>")
+
+        def portugues(request):
+            return HttpResponse("< h1>Olá mundo!< /h1>")
+
+        def url_invalida(request):
+            return HttpResponse("URL invalida", status=404)
+        </code>
+
+        Y desde urls.py agregamos todas las urls necesarias..
+        <code>
+        from django.contrib import admin
+        from django.urls import path
+        from hola_mundo import views                -> Nos traemos las vistas de la aplicación, hola_mundo
+
+
+        urlpatterns = [
+            path('admin/', admin.site.urls),
+            path('', views.url_invalida),                       -> '' vacio tendremos el erro
+            path('hola_mundo', views.index),                    -> Con las demas especificamos las rutas
+            path('hola_mundo/english/', views.english),
+            path('hola_mundo/portugues/', views.portugues),
+        ]
+        </code>
+
     </pre>
     <div class="context">
         <a href="#arriba">Arriba</a>
     </div>
 
-    <p id="5">5. </p>
+    <p  class="contenido_p" id="5">5. Múltiples Vistas</p>
     <pre>
-        
+        Ahora en nuestra app "hola_mundo", necesitamos de una url.. Agregamos el archivo correspondiente, urls.py
+        <code>
+        from django.urls import path
+        from . import views                             -> Nos traemos el módulo de las vistas
+
+        urlpatterns = [
+            path('', views.index),
+            path('english/', views.english),            -> Configuramos las vistas
+            path('portugues/', views.portugues),
+        ]
+
+        </code>
+        Y dentro del archivo views.py de nuestra pp "hola_mundo", creamos el archivo views.py
+        * De esta manera, este archivo funciona como módulo de nuestra app, con todas sus variantes relativas exclusaivemente a esta app, "hola_mundo"
+        <code>
+        from django.shortcuts import render
+        from django.http import HttpResponse
+
+        # Create your views here.
+        def index(request):
+            # Un montó de código
+            return HttpResponse("< h1>Hola Mundo!< /h1>")
+
+        def english(request):
+            return HttpResponse("< h1>Hello World!< /h1>")
+
+        def portugues(request):
+            return HttpResponse("< h1>Olá mundo!< /h1>")
+        </code>
+
+
+        Mientras tanto nuestra aplicación general.. my_website tendra el manejo de errores.
+        * De esta manera, nos quedará mucho más ordenado.
+        <code>
+        from django.http import HttpResponse
+
+        def url_invalida(request):
+            return HttpResponse("URL invalida", status=404)
+        </code>
+
+        Por ultimo nuestro urls.py de nuestro proyecto general.. my_website tendrá sus respectivas rutas.
+        <code>
+        from django.contrib import admin
+        from django.urls import path, include
+        from . import views
+
+
+        urlpatterns = [
+            path('admin/', admin.site.urls),
+            path('', views.url_invalida),                           -> Para el manejo de errores
+            path('hola_mundo/', include('hola_mundo.urls'))         -> Para manejar nuestra app
+        ] 
+        </code>
     </pre>
     <div class="context">
         <a href="#arriba">Arriba</a>
     </div>
 
-    <p id="6">6. </p>
+    <p  class="contenido_p" id="6">6. URLs parametrizadas</p>
     <pre>
-        
+        Ahora para enviar parámetros desde la url hacemos lo siguiente..
+        Especificamos nuestra funcion en la vista de nuestra aplicación..
+        <code>
+        from django.shortcuts import render
+        from django.http import HttpResponse
+
+        # Create your views here.
+        def index(request):
+            # Un montó de código
+            return HttpResponse("< h1>Hola Mundo!< /h1>")
+
+        def english(request):
+            return HttpResponse("< h1>Hello World!< /h1>")
+
+        def portugues(request):
+            return HttpResponse("< h1>Olá mundo!< /h1>")
+
+        def saludar(request, nombre):                           -> Esta será la función que saludará
+            return HttpResponse(f"Hola {nombre.upper()}")               
+        </code>
+
+
+        Y en nuestra urls.py, especificamos el path y además el parámetro que será el nombre.
+        <code>
+        from django.urls import path
+        from . import views
+
+        urlpatterns = [
+            path('', views.index),
+            path('english/', views.english),
+            path('portugues/', views.portugues),
+            path('saludar/< str:nombre>', views.saludar),                -> Función con su path y el parámetro nombre.
+        ]
+        </code>
+        * El parámetro  que recibe la función debe ser igual al del path *
+
+        ----------------------- Para la situación de manejar una condicional.
+        En el archivo views.py..
+        <code>
+        from django.shortcuts import render
+        from django.http import HttpResponse
+
+        # Create your views here.
+        def index(request):
+            # Un montó de código
+            return HttpResponse("< h1>Hola Mundo!< /h1>")
+
+        def english(request):
+            return HttpResponse("< h1>Hello World!< /h1>")
+
+        def portugues(request):
+            return HttpResponse("< h1>Olá mundo!< /h1>")
+
+        def saludar(request, edad):                         -> Manejamos la edad
+            if edad >= 40:
+                saludo = "Pues como anda?"
+            else:
+                saludo = "Q ace"
+            return HttpResponse(f"{saludo}")
+        </code>
+
+        Ahora dentro de nuestra urls.py especificamos el tipo de dato.. Dentro del path.
+        <code>
+        from django.urls import path
+        from . import views
+
+        urlpatterns = [
+            path('', views.index),
+            path('english/', views.english),
+            path('portugues/', views.portugues),
+            path('saludar/< int:edad>', views.saludar),                  -> Tipo entero.
+        ]
+        </code>
     </pre>
     <div class="context">
         <a href="#arriba">Arriba</a>
     </div>  
 
-    <p id="7">7. </p>
-    <pre>
-        
-    </pre>
-    <div class="context">
-        <a href="#arriba">Arriba</a>
-    </div>
-    
-    <p id="8">8. </p>
-    <pre>
-        
-    </pre>
-    <div class="context">
-        <a href="#arriba">Arriba</a>
-    </div>
-    
-    <p id="9">9. </p>
-    <pre>
-        
-    </pre>
-    <div class="context">
-        <a href="#arriba">Arriba</a>
-    </div>
-
-    <p id="10">10. </p>
-    <pre>
-        
-    </pre>
-    <div class="context">
-        <a href="#arriba">Arriba</a>
-    </div>
-    
-    <p id="11">11. </p>
-    <pre>
-        
-    </pre>
-    <div class="context">
-        <a href="#arriba">Arriba</a>
-    </div>
-    <br>
-    <br>
-    
-    <p id="12">12. </p>
-    <pre>
-        
-    </pre>
-    <div class="context">
-        <a href="#arriba">Arriba</a>
-    </div>
-    <br>
-    <br>
-
-    <p id="13">13. </p>
-    <pre>
-        
-    </pre>
-    <div class="context">
-        <a href="#arriba">Arriba</a>
-    </div>
-    <br>
-    <br>
-
-    <p id="14">14. </p>
-    <pre>
-        
-    </pre>
-    <div class="context">
-        <a href="#arriba">Arriba</a>
-    </div>
-    <br>
-    <br>
-
-    <p id="15">15. </p>
-    <pre>
-        
-    </pre>
-    <div class="context">
-        <a href="#arriba">Arriba</a>
-    </div>
-    <br>
-    <br>
-
-    <p id="16">16. </p>
-    <pre>
-        
-    </pre>
-    <div class="context">
-        <a href="#arriba">Arriba</a>
-    </div>
-    <br>
-    <br>
-
-    <p id="17">17. </p>
-    <pre>
-        
-    </pre>
-    <div class="context">
-        <a href="#arriba">Arriba</a>
-    </div>
-    <br>
-    <br>
-
-    <p id="18">18. </p>
-    <pre>
-        
-    </pre>
-    <div class="context">
-        <a href="#arriba">Arriba</a>
-    </div>
-    <br>
-    <br>
-
-    <p id="19">19. </p>
-    <pre>
-        
-    </pre>
-    <div class="context">
-        <a href="#arriba">Arriba</a>
-    </div>
-    <br>
-    <br>
-
-    <p id="20">20. </p>
-    <pre>
-        
-    </pre>
-    <div class="context">
-        <a href="#arriba">Arriba</a>
-    </div>
-    <br>
-    <br>
-
-    <p id="21">21. </p>
-    <pre>
-        
-    </pre>
-    <div class="context">
-        <a href="#arriba">Arriba</a>
-    </div>
-    <br>
-    <br>
-
-    <p id="22">22. </p>
-    <pre>
-        
-    </pre>
-    <div class="context">
-        <a href="#arriba">Arriba</a>
-    </div>
-    <br>
-    <br>
-
-    <p id="23">23. </p>
-    <pre>
-        
-    </pre>
-    <div class="context">
-        <a href="#arriba">Arriba</a>
-    </div>
-    <br>
-    <br>
-
-    <p id="24">24. </p>
-    <pre>
-        
-    </pre>
-    <div class="context">
-        <a href="#arriba">Arriba</a>
-    </div>
-    <br>
-    <br>
-
-    
     <br> 
     <br> 
     <div class="context">

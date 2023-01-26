@@ -30,6 +30,9 @@
         <li>
             <a href="#3">3. Estructura de un paquete</a>
         </li>
+        <li>
+            <a href="#4">4. Breve Repaso a POO</a>
+        </li>
 
     </ul>
 
@@ -92,18 +95,20 @@
     
     <p class="contenido_p"  id="3">3. Estructura de un paquete</p>
     <pre>
+        
+        <img src="../../img/img_ref/img10.png" alt="">
         El paquete propio con el nombre propio..
         - __init__.py
             
-            -> Si hay un subpaquete.. Tambien lleva un init
-                - __init__.py       -> Puede ir vacío, es necesario para CONFORMAR el paquete.
+        -> Si hay un subpaquete.. Tambien lleva un init
+        - __init__.py       -> Puede ir vacío, es necesario para CONFORMAR el paquete.
 
         * Para importar de manera directa.. import empleado.. Se puede hacer si está en la misma carpeta o si es parte de la libería estandard
-
-
+        
+        
         Para armar un paquete, debemos hacer que el paquete se haga "DISTRIBUIBLE"..
-            - A la altura del paquete que deseo armar.
-                - Creamos un archivo setup.py dentro de la raíz de nuestro proyecto y dentro..
+        - A la altura del paquete que deseo armar.
+        - Creamos un archivo setup.py dentro de la raíz de nuestro proyecto y dentro..
 
                 from setuptools import setup
                 setup(
@@ -115,13 +120,13 @@
                     url="https://www.buenosaires.gob.ar/educacion/codo-codo",
                     packages=['recursos_humanos', 'recursos_humanos.personal'],             -> Indicamos el paquete y subcarpeta
                     scripts=[]
-                )
+                    )
 
 
         Con esto.. Lo levanteremos con un ambiente virtual.
 
-            python -m venv 
-                
+        python -m venv 
+        
 
         Para installar el paquete espepecifico.. Apuntamos al archivo setup.py del paquete que deseamos armar.
             - python setup.py sdist
@@ -133,33 +138,33 @@
         - Ahora desde nuestro entorno virtual podremos instalar el Paquete
         * De esta manera con ese paquete podemos reutilizar la información*
 
-
+        
             - 1ª busca en las librerías por defecto de python.
             - 2ª busca en nuestro entorno virtual 
 
             
             - pip install recursos_humanos-0.2.tar.gz
-                * Si instalamos la versión 2, la actualiza..
-                * Desde las librerías de pipinstall, si la tuvieramos instaladas sería más sencillo para uppgradera.
+            * Si instalamos la versión 2, la actualiza..
+            * Desde las librerías de pipinstall, si la tuvieramos instaladas sería más sencillo para uppgradera.
 
-
+            
         Ahora preparamos el ambiente.. Entramos a la carpeta deseada.
-            * Lo recomendable es crear una carpetas con todos los entornos.. Pero también si no especificamos la ruta, lo creamos en el propio repositorio
-
-            - python -m venv C:\Envs\django_2023           -> Con la ruta especifica carpeta
-            - python -m venv django_2023                   -> En la propia carpeta
+        * Lo recomendable es crear una carpetas con todos los entornos.. Pero también si no especificamos la ruta, lo creamos en el propio repositorio
+        
+        - python -m venv C:\Envs\django_2023           -> Con la ruta especifica carpeta
+        - python -m venv django_2023                   -> En la propia carpeta
 
         Ahora activamos el entorno virtual..
 
-            - .\django_2023\Scripts\activate
+        - .\django_2023\Scripts\activate
 
         Dentro dle entorno virtual, instalamos la versión de Django 3.2
 
             - pip install Django==3.2
 
             - djgango-admin             -> Para comeng
-
-
+            
+            
         * Otra manera es armar un archivo .bat.. Con el cual activamos el entorno virtual directamente.
             
             @echo off
@@ -169,8 +174,34 @@
         <a href="#arriba">Arriba</a>
     </div>
     
+    <p class="contenido_p"  id="4">4. Breve Repaso a Poo</p>
+    <pre>
+        Breve Repaso a Poo
+        ¿Qué es POO?
+        El Paradigma orientado a objetos, define los programas en término de 
+        comunidades de objetos. Los objetos con características comunes se 
+        agrupan en clases.
+        ES UNA FORMA DE VER EL MUNDO
+        • Reduce la brecha entre el mundo de los problemas y el mundo de 
+        los modelos.
+        • Conceptos comunes a lo largo de todo el ciclo de vida
+        • Uso de patrones
+        • Aumento complejidad de los sistemas
+        • Aumento de necesidad de reutilización
 
+        <img src="../../img/img_ref/img1.png" alt="">
+        <img src="../../img/img_ref/img2.png" alt="">
+        <img src="../../img/img_ref/img3.png" alt="">
+        <img src="../../img/img_ref/img4.png" alt="">
+        <img src="../../img/img_ref/img5.png" alt="">
+        <img src="../../img/img_ref/img6.png" alt="">
+        <img src="../../img/img_ref/img7.png" alt="">
+        <img src="../../img/img_ref/img8.png" alt="">
+    </pre>
     
+    <div class="context">
+        <a href="#arriba">Arriba</a>
+    </div>
     <br> 
     <br> 
     <div class="context">

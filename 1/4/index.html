@@ -15,311 +15,205 @@
         <a href="../../index.html">Inicio</a>
         <a href="../5/index.html">Siguiente</a>
     </div>
-    <div class="contenido" id="arriba">
+    <div class="contenido_p" id="arriba">
         <p>Desarrollo Django</p>
     </div>
 
-    <h1>4 - Django Views - 2 (Clase 11)</h1>
-    <ol>
+    <h1 class="contenido_p">4 - Django Views - 2 (Clase 11)</h1>
+    <ul class="contenido_p">
         <li>
-            <a href="#1">1. </a>
+            <a href="#1">1. Vistas Parametrizadas</a>
         </li>
         <li>
-            <a href="#2">2. </a>
+            <a href="#2">2. path()</a>
         </li>
         <li>
-            <a href="#3">3. </a>
+            <a href="#3">3. re_path()</a>
         </li>
         <li>
-            <a href="#4">4. </a>
+            <a href="#4">4. Opciones adicionales</a>
         </li>
         <li>
-            <a href="#5">5. </a>
+            <a href="#5">5. Nombrando patrones de URL</a>
         </li>
         <li>
-            <a href="#6">6. </a>
+            <a href="#6">6. Analizando el HttpRequest</a>
         </li>
         <li>
-            <a href="#7">7. </a>
+            <a href="#7">7. Códigos de Respuesta HTTP</a>
         </li>
         <li>
-            <a href="#8">8. </a>
+            <a href="#8">8. Respuesta con HTML</a>
         </li>
-        <li>
-            <a href="#9">9. </a>
-        </li>
-        <li>
-            <a href="#10">10. </a>
-        </li>
-        <li>
-            <a href="#11">11. </a>
-        </li>
-        <li>
-            <a href="#12">12. </a>
-        </li>
-        <li>
-            <a href="#13">13. </a>
-        </li>
-        <li>
-            <a href="#14">14. </a>
-        </li>
-        <li>
-            <a href="#15">15. </a>
-        </li>
-        <li>
-            <a href="#16">16. </a>
-        </li>
-        <li>
-            <a href="#17">17. </a>
-        </li>
-        <li>
-            <a href="#18">18. </a>
-        </li>
-        <li>
-            <a href="#19">19. </a>
-        </li>
-        <li>
-            <a href="#20">20. </a>
-        </li>
-        <li>
-            <a href="#21">21. </a>
-        </li>
-        <li>
-            <a href="#22">22. </a>
-        </li>
-        <li>
-            <a href="#23">23. </a>
-        </li>
-        <li>
-            <a href="#24">24. </a>
-        </li>
-        <li>
-            <a href="#25">25. </a>
-        </li>
-    </ol>
+    </ul>
 
-    <p id="1">1. </p>
+    <p class="contenido_p" id="1">1. Vistas Parametrizadas</p>
     <pre>
-        <img src="../../img/img_ref/img13.png" alt="">
-        <img src="../../img/img_ref/img14.png" alt="">
-        <img src="../../img/img_ref/img15.png" alt="">
-
+        <img src="../../img/img_ref/img12.png" alt="">
     </pre>
     <div class="context">
         <a href="#arriba">Arriba</a>
     </div>
 
-    <p id="2">2. </p>
+    <p  class="contenido_p" id="2">2. path()</p>
     <pre>
+        Ahora vamos a retomar las urls.. django.urls:
 
+        path()
+            - path(ruta, vista, kwargs= Ninguno, nombre = Ninguno )
+            El argumento ruta debe ser una cadena de texto que contenga un patrón de URL.
+            * Disponibles por defecto:
+                - path 
+                -str
+                -int
+                -slug   -> Palabras seguidas de guiones "building-a-django-site", es un identificador de palabras 
+                -uuid
+
+        <img src="../../img/img_ref/img13.png" alt="">
+
+        * Es importante el registro de las urls.. Lo más importante*
     </pre>
     <div class="context">
         <a href="#arriba">Arriba</a>
     </div>
     
-    <p id="3">3. </p>
+    <p class="contenido_p" id="3">3. re_path()</p>
     <pre>
+        re_path()
+            - re_path(ruta, vista, kwargs= Ninguno, nombre = Ninguno)
+            El argumento ruta debe ser una cadena de texto que contenga una EXPRESIÓN REGULAR compatible con el móduglo RE de python.
+    
+        <img src="../../img/img_ref/img14.png" alt="">
+        <img src="../../img/img_ref/img15.png" alt="">
+
         
+        include()
+        - include(modulgo, espacio de nombres = Ninguno) [fuente]
+        include(lista_patrones)
+        include((lista_patrones, espacio_de_nombres de la aplicacion), espacio de nombres = Ninguno)    
+
+        ----------------------- Ejemplo:
+        Diferenciar el request.method .. GET Y POST
+
+        Para esta ruta..
+        <code>
+        path('proyectos/< int:anio>/< int:mes>', views.ver_proyecto, name="ver_proyectos"),                  -> El parámetro es un anio y mes
+        </code>
+            localhos:800/proyectos/2009/09                          -> Al acceder a esa ruta..
+
+        Armamos la vista de esa ruta.. La función ver_proyectos
+        <code>
+        def ver_proyectos(request, anio, mes):
+        return HttpResponse (f""" 
+            < h1> Proyectos del - {mes}/{anio}< /h1>                 -> Armamos la vista
+            < p>Listado de Proyectos< /p>
+        """)
+        </code>
     </pre>
     <div class="context">
         <a href="#arriba">Arriba</a>
     </div>
-    <p id="4">4. </p>
+    <p class="contenido_p" id="4">4. Opciones adicionales</p>
     <pre>
-        
+        <img src="../../img/extras/5-1.PNG" alt="">
+        ----------------------- Ahora con Regular expressions
+        <code>         
+                                parametro
+                                    nombre del parametro
+                                        \w expresion regular, una palabra de varios caracteres
+                        cursos/ñlñásd                                
+            re_path(r'^cursos/(?P< nombre>\w+)/$', views.cursos, name='cursos'),
+                    con la r y la ' comenzamos la expresion regular..
+                                            finaliza con '
+
+                localhos:800/cursos/django/                          -> Al acceder a esa ruta..
+
+        Ahora desde la views.py.. Armamos la función cursos
+        def cursos(request, nombre):
+            return HttpResponse(f'{nombre}') 
+        </code>
+
+        ----------------------- Ahora con slug
+        <code>                                                 cursos  -> detalles                    
+                /armamos de acuerdo al modelo o a la clase a laburar.. 1    -> n
+    
+            path('cursos/detalle/<slug:nombre_curso>',                              -> Con el slug hacemos las uris más amigables..
+                views.curso_detalle, name="curso_detalle"),                            - EL slug son simples palabras seguidas de guiones.
+
+                localhos:800/cursos/detalle/cac-django-2022-2c                          -> Al acceder a esa ruta..
+
+
+        def curso_detalle(request, nombre_curso):               
+            return HttpResponse(f'{nombre_curso}')
+        </code>
+
+
+        ----------------------- Ahora para redireccionar..
+        <code>
+            path('proyectos/2022/09/', views.proyectos_2022_09, name='proyectos-2022-09'),
+
+
+        En el views armamos la función proyectos_2022_09
+
+        from django.urls import reverse         -> Importamos el reverse
+
+        def proyectos_2022_09(request):                         
+            return redirect(reverse('saludar_por_defecto'))         -> Usamos el redirect.. Para la ir la función de saludar_por_defecto
+                                        -> Esta es el name que se encuentra dentro de la path('', views, name='ESTE NAME')
+
+                                        - Es decir con el reverse buscamos el name, asociado al path    
+        </code>
+
+        -----------------------
+        Antes solo usaba url().. Ahora se divide path o en re_path
+        -----------------------
+        <code>
+        from django.shortcuts import render, redirect
+
+        def index(request):
+            if (request.method == 'GET'):
+                titulo = 'Titulo cuando accedo por get'
+            else:
+                titulo = f'Titulo cuando accedo por otro metodo'
+            parameters_get = request.GET.get('algo')
+            return render(request, 'index.html', {'titulo': titulo, 'parametro': parameters_get})               -> Uso del template a trvés del render y el contexto con el uso de variables.
+        </code>
     </pre>
     <div class="context">
         <a href="#arriba">Arriba</a>
     </div>
 
-    <p id="5">5. </p>
+    <p class="contenido_p" id="5">5. Nombrando patrones de URL</p>
     <pre>
-        
+        <img src="../../img/extras/5-2.PNG" alt="">
     </pre>
     <div class="context">
         <a href="#arriba">Arriba</a>
     </div>
-
-    <p id="6">6. </p>
+    
+    <p class="contenido_p" class="contenido_p" id="6">6. Analizando el HttpRequest</p>
     <pre>
-        
+        <img src="../../img/extras/5-3.PNG" alt="">
     </pre>
     <div class="context">
         <a href="#arriba">Arriba</a>
     </div>  
 
-    <p id="7">7. </p>
+    <p  class="contenido_p" id="7">7. Códigos de Respuesta HTTP</p>
     <pre>
-        
+        <img src="../../img/extras/5-4.PNG" alt="">
     </pre>
     <div class="context">
         <a href="#arriba">Arriba</a>
     </div>
     
-    <p id="8">8. </p>
+    <p class="contenido_p" id="8">8. Respuesta con HTML</p>
     <pre>
-        
+        <img src="../../img/extras/5-5.PNG" alt="">
     </pre>
     <div class="context">
         <a href="#arriba">Arriba</a>
     </div>
-    
-    <p id="9">9. </p>
-    <pre>
-        
-    </pre>
-    <div class="context">
-        <a href="#arriba">Arriba</a>
-    </div>
-
-    <p id="10">10. </p>
-    <pre>
-        
-    </pre>
-    <div class="context">
-        <a href="#arriba">Arriba</a>
-    </div>
-    
-    <p id="11">11. </p>
-    <pre>
-        
-    </pre>
-    <div class="context">
-        <a href="#arriba">Arriba</a>
-    </div>
-    <br>
-    <br>
-    
-    <p id="12">12. </p>
-    <pre>
-        
-    </pre>
-    <div class="context">
-        <a href="#arriba">Arriba</a>
-    </div>
-    <br>
-    <br>
-
-    <p id="13">13. </p>
-    <pre>
-        
-    </pre>
-    <div class="context">
-        <a href="#arriba">Arriba</a>
-    </div>
-    <br>
-    <br>
-
-    <p id="14">14. </p>
-    <pre>
-        
-    </pre>
-    <div class="context">
-        <a href="#arriba">Arriba</a>
-    </div>
-    <br>
-    <br>
-
-    <p id="15">15. </p>
-    <pre>
-        
-    </pre>
-    <div class="context">
-        <a href="#arriba">Arriba</a>
-    </div>
-    <br>
-    <br>
-
-    <p id="16">16. </p>
-    <pre>
-        
-    </pre>
-    <div class="context">
-        <a href="#arriba">Arriba</a>
-    </div>
-    <br>
-    <br>
-
-    <p id="17">17. </p>
-    <pre>
-        
-    </pre>
-    <div class="context">
-        <a href="#arriba">Arriba</a>
-    </div>
-    <br>
-    <br>
-
-    <p id="18">18. </p>
-    <pre>
-        
-    </pre>
-    <div class="context">
-        <a href="#arriba">Arriba</a>
-    </div>
-    <br>
-    <br>
-
-    <p id="19">19. </p>
-    <pre>
-        
-    </pre>
-    <div class="context">
-        <a href="#arriba">Arriba</a>
-    </div>
-    <br>
-    <br>
-
-    <p id="20">20. </p>
-    <pre>
-        
-    </pre>
-    <div class="context">
-        <a href="#arriba">Arriba</a>
-    </div>
-    <br>
-    <br>
-
-    <p id="21">21. </p>
-    <pre>
-        
-    </pre>
-    <div class="context">
-        <a href="#arriba">Arriba</a>
-    </div>
-    <br>
-    <br>
-
-    <p id="22">22. </p>
-    <pre>
-        
-    </pre>
-    <div class="context">
-        <a href="#arriba">Arriba</a>
-    </div>
-    <br>
-    <br>
-
-    <p id="23">23. </p>
-    <pre>
-        
-    </pre>
-    <div class="context">
-        <a href="#arriba">Arriba</a>
-    </div>
-    <br>
-    <br>
-
-    <p id="24">24. </p>
-    <pre>
-        
-    </pre>
-    <div class="context">
-        <a href="#arriba">Arriba</a>
-    </div>
-    <br>
-    <br>
-
     
     <br> 
     <br> 
