@@ -59,7 +59,7 @@
     <p class="contenido_p" id="1">1. Recordemos</p>
     <pre>
         
-        <img src="../../img/img_ref/img35.png" alt="">
+        <img src="../../img/img_ref/img35.jpg" alt="">
 
     </pre>
     <div class="context">
@@ -82,7 +82,7 @@
     
     <p class="contenido_p" id="3">3. Relaciones de muchos a uno</p>
     <pre>
-        <img src="../../img/img_ref/img36.png" alt="">
+        <img src="../../img/img_ref/img36.jpg" alt="">
 
         Una categoría puede tener muchos cursos
         Por ende la clave foránea va en Curso.. El curso está relacionado con una Categoría.
@@ -139,7 +139,7 @@
     <p class="contenido_p" id="4">4. Relaciones de muchos a muchos</p>
     <pre>
         Un curso tiene muchos estudiantes y un estudiante puede estar en varios cursos
-        <img src="../../img/img_ref/img37.png" alt="">
+        <img src="../../img/img_ref/img37.jpg" alt="">
 
         Creamos una tabla intermedio..
         <code>
@@ -196,7 +196,7 @@
 
         Un estudiante es una persona
         
-        <img src="../../img/img_ref/img38.png" alt="">
+        <img src="../../img/img_ref/img38.jpg" alt="">
         
             -OneToOneField.. El Estudiante con la Persona.
         
@@ -222,10 +222,10 @@
 
     <p class="contenido_p" id="5">5. Relaciones de uno a uno</p>
     <pre>
-        <img src="../../img/img_ref/img39.png" alt="">
+        <img src="../../img/img_ref/img39.jpg" alt="">
         ----------------------- Relaciones de uno a uno
         Un estudiante es una persona
-        <img src="../../img/img_ref/img40.png" alt="">
+        <img src="../../img/img_ref/img40.jpg" alt="">
 
     </pre>
     <div class="context">
@@ -234,7 +234,7 @@
 
     <p class="contenido_p" id="6">6. Relaciones de uno a uno (herencia)</p>
     <pre>
-        <img src="../../img/img_ref/img41.png" alt="">
+        <img src="../../img/img_ref/img41.jpg" alt="">
         
         La Herencia la usamos desde Django, son maneras específicas.. Que usa Django.        
     </pre>
@@ -244,7 +244,7 @@
 
     <p  class="contenido_p" id="7">7. Clase base abstracta</p>
     <pre>
-        <img src="../../img/img_ref/img42.png" alt="">
+        <img src="../../img/img_ref/img42.jpg" alt="">
         En este ejemplo, no existirá una Tabla Persona..
         Tendremos Estudiante que usa a  Persona.
         Tendremos Docente que usa a  Persona.        
@@ -255,7 +255,7 @@
     
     <p  class="contenido_p" id="8">8. Herencia de múltiples tablas</p>
     <pre>
-        <img src="../../img/img_ref/img43.png" alt="">
+        <img src="../../img/img_ref/img43.jpg" alt="">
         No muy recomendad, ya que al traer datos, se hace más pesado.
         La que acostumbramos a ver pero menos perfomante.
         
@@ -268,7 +268,7 @@
     
     <p class="contenido_p" id="9">9. Modelos proxy</p>
     <pre>
-        <img src="../../img/img_ref/img44.png" alt="">
+        <img src="../../img/img_ref/img44.jpg" alt="">
         El proxy le agrega responsabilidad a la clase pero no es persistida..
         - Puede ser usada..
         Digamos que le agrega más detalles a la clase base.
@@ -298,8 +298,8 @@
     <p  class="contenido_p" id="11">11. CRUD objetos</p>
     <pre>
         Crear Actualizar Eliminar.. A través del ORM
-        <img src="../../img/img_ref/img45.png" alt="">
-        <img src="../../img/img_ref/img46.png" alt="">
+        <img src="../../img/img_ref/img45.jpg" alt="">
+        <img src="../../img/img_ref/img46.jpg" alt="">
         Obtener
         Persona.objects.all()       //  Con el .objects manager asociado al modelo, que pone el ORM encargado de interactuar con la Base de Datos.
         Persona.objects.filter()        Son todos métodos del ORM para manejar 
