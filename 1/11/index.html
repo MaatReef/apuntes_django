@@ -15,315 +15,152 @@
         <a href="../../index.html">Inicio</a>
         <a href="../12/index.html">Siguiente</a>
     </div>
-    <div class="contenido" id="arriba">
+    <div class="contenido_p" id="arriba">
         <p>Desarrollo Django</p>
     </div>
 
-    <h1>11 - Base de Datos - 2 (Clase 19)</h1>
-    <ol>
+    <h1 class="contenido_p">11 - Base de Datos - 2 (Clase 19)</h1>
+    <ul class="contenido_p">
         <li>
-            <a href="#1">1. </a>
+            <a href="#1">1. Recordemos</a>
         </li>
         <li>
-            <a href="#2">2. </a>
+            <a href="#2">2. ORM</a>
         </li>
         <li>
-            <a href="#3">3. </a>
+            <a href="#3">3. Django - Models first</a>
         </li>
         <li>
-            <a href="#4">4. </a>
+            <a href="#4">4. ¿Qué son las Migraciones?</a>
         </li>
         <li>
-            <a href="#5">5. </a>
+            <a href="#5">5. Migración inicial</a>
         </li>
-        <li>
-            <a href="#6">6. </a>
-        </li>
-        <li>
-            <a href="#7">7. </a>
-        </li>
-        <li>
-            <a href="#8">8. </a>
-        </li>
-        <li>
-            <a href="#9">9. </a>
-        </li>
-        <li>
-            <a href="#10">10. </a>
-        </li>
-        <li>
-            <a href="#11">11. </a>
-        </li>
-        <li>
-            <a href="#12">12. </a>
-        </li>
-        <li>
-            <a href="#13">13. </a>
-        </li>
-        <li>
-            <a href="#14">14. </a>
-        </li>
-        <li>
-            <a href="#15">15. </a>
-        </li>
-        <li>
-            <a href="#16">16. </a>
-        </li>
-        <li>
-            <a href="#17">17. </a>
-        </li>
-        <li>
-            <a href="#18">18. </a>
-        </li>
-        <li>
-            <a href="#19">19. </a>
-        </li>
-        <li>
-            <a href="#20">20. </a>
-        </li>
-        <li>
-            <a href="#21">21. </a>
-        </li>
-        <li>
-            <a href="#22">22. </a>
-        </li>
-        <li>
-            <a href="#23">23. </a>
-        </li>
-        <li>
-            <a href="#24">24. </a>
-        </li>
-        <li>
-            <a href="#25">25. </a>
-        </li>
-    </ol>
+        
+    </ul>
 
-    <p id="1">1. </p>
+    <p class="contenido_p" id="1">1. Recordemos</p>
     <pre>
-        
-        <img src="../../img/img_ref/img9.png" alt="">
-        
-        <img src="../../img/img_ref/img25.png" alt="">
         <img src="../../img/img_ref/img27.png" alt="">
         <img src="../../img/img_ref/img28.png" alt="">
+
+        ORM desacopla la base de datos del proyecto pudiendo 
+        cambiar de postgresql a mysql u otras de las soportadas siendo
+        “transparente” para el proyecto        
+
         <img src="../../img/img_ref/img29.png" alt="">
+
+        Configuramos desde el archivo settings.py
+ 
+        Necesitamos esa librería, con la cual django se comunica con la base de datos.
+            -> La librería resulta ser el "conector"
+        La instalamos dentro del entorno virtual.. 
+            - pip install psycopg2
+    </pre>
+    <div class="context">
+        <a href="#arriba">Arriba</a>
+    </div>
+
+    <p class="contenido_p" id="2">2. ORM</p>
+    <pre>
+        <img src="../../img/extras/11-2.PNG" alt="">
+        El Orm, mapping o Orm, hace una traducción entre el modelo de clase y las tablas.   
+    </pre>
+    <div class="context">
+        <a href="#arriba">Arriba</a>
+    </div>
+    
+    <p class="contenido_p" id="3">3. Django - Models first</p>
+    <pre>
         <img src="../../img/img_ref/img26.png" alt="">
-    </pre>
-    <div class="context">
-        <a href="#arriba">Arriba</a>
-    </div>
-
-    <p id="2">2. </p>
-    <pre>
-
-    </pre>
-    <div class="context">
-        <a href="#arriba">Arriba</a>
-    </div>
+        Es decir, a través de los modelos que especifiquemos, modelaremos la base de datos.
+        Esta forma es para Django.. C# Tiene opciones.
     
-    <p id="3">3. </p>
-    <pre>
+        * No es TAN importante el motor de base de datos..
+        - Lo importante es el armado de modelo, luego cambiamos el conector, de acuerdo a la librería para cambiar de base de datos.
         
+        Cada app dentro de nuestro proyecto, tendrá su propio models.py.. De acuerdo a las necesidades de nuestro proyecto.
+        
+        Desde el modelo, va todo hacia las tablas.. 
+        
+        Lo unico que creamos en el servidor, es la base de datos..
+            - Vacia, con el nombre deseado.
+        
+        
+        Django, pensado para Sql..
+        Mongo        
     </pre>
     <div class="context">
         <a href="#arriba">Arriba</a>
     </div>
-    <p id="4">4. </p>
+    <p class="contenido_p" id="4">4. ¿Qué son las Migraciones?</p>
     <pre>
-        
+        Las migraciones son la forma en que Django propaga los cambios que
+        realiza en sus modelos (agregar un campo, eliminar un modelo, etc) en 
+        el esquema de su base de datos. Están diseñadas para ser en su 
+        mayoría automáticas, pero es necesario saber cuando realizar 
+        migraciones, ejecutarlas y que problemas se pueden enconrtar.        
     </pre>
     <div class="context">
         <a href="#arriba">Arriba</a>
     </div>
 
-    <p id="5">5. </p>
+    <p class="contenido_p" id="5">5. Migración inicial</p>
     <pre>
-        
-    </pre>
-    <div class="context">
-        <a href="#arriba">Arriba</a>
-    </div>
+        <img src="../../img/extras/11-5.PNG" alt="">
 
-    <p id="6">6. </p>
-    <pre>
-        
-    </pre>
-    <div class="context">
-        <a href="#arriba">Arriba</a>
-    </div>  
-
-    <p id="7">7. </p>
-    <pre>
-        
-    </pre>
-    <div class="context">
-        <a href="#arriba">Arriba</a>
-    </div>
+        Migraciones, son archivos de python.. 
+        Que registran todo.. Algo así como transacciones DDL
     
-    <p id="8">8. </p>
-    <pre>
+        python manage.py migrate        -> 
         
-    </pre>
-    <div class="context">
-        <a href="#arriba">Arriba</a>
-    </div>
-    
-    <p id="9">9. </p>
-    <pre>
         
+        Debemos iniciar el servicio de la base de datos.
+        
+        Corrobar si la librería se encuentra... postgresql_psycopg2
+        
+        ----------------------- Desde settings de nuestro proyecto..
+        <code>
+        DATABASES = {
+            'default': {
+                'ENGINE': 'django.db.backends.postgresql_psycopg2',
+                'NAME': 'pig_22820_2',
+                'USER': 'postgres',
+                'PASSWORD': 'Fortin94',
+                # localhost en caso de tenerlo en local y la URL de la base de datos en caso de tenerlo en algún servicio en la nube
+                'HOST': 'localhost',
+                'PORT': '5432'  # Si usas el puerto default no pongas esta línea y si lo has cambiado especifícaselo aquí
+            }
+        }
+        </code>
+        
+            - python manage.py migrate     -> Debemos correr.
+        
+        
+        * La información settings.py -> Se puede obviar en el gitignore.
+        
+        Una configuración para ambiente local, remoto.. Good School for Django (Buenas Prácticas)
+        
+        Podemos levantar el server con un setting en específico..
+        De esta manera podemos elegir el settings, en cuestión.
+        
+            - python .\manage.py runserver --settings=nombreDelProyecto.settings
+        
+        -----------------------
+        
+        Las migraciones es una manera de traducir un modelo a una tabla en python.
+        
+            - python manage.py makemigrations   -> Crea todas las migraciones con las modificaiones realizadas. 
+            - python manage.py migrate          -> Aplicamos todas las migraciones en la tabla. 
+            
+        -----------------------        
     </pre>
     <div class="context">
         <a href="#arriba">Arriba</a>
     </div>
 
-    <p id="10">10. </p>
-    <pre>
-        
-    </pre>
-    <div class="context">
-        <a href="#arriba">Arriba</a>
-    </div>
-    
-    <p id="11">11. </p>
-    <pre>
-        
-    </pre>
-    <div class="context">
-        <a href="#arriba">Arriba</a>
-    </div>
-    <br>
-    <br>
-    
-    <p id="12">12. </p>
-    <pre>
-        
-    </pre>
-    <div class="context">
-        <a href="#arriba">Arriba</a>
-    </div>
-    <br>
-    <br>
 
-    <p id="13">13. </p>
-    <pre>
-        
-    </pre>
-    <div class="context">
-        <a href="#arriba">Arriba</a>
-    </div>
-    <br>
-    <br>
-
-    <p id="14">14. </p>
-    <pre>
-        
-    </pre>
-    <div class="context">
-        <a href="#arriba">Arriba</a>
-    </div>
-    <br>
-    <br>
-
-    <p id="15">15. </p>
-    <pre>
-        
-    </pre>
-    <div class="context">
-        <a href="#arriba">Arriba</a>
-    </div>
-    <br>
-    <br>
-
-    <p id="16">16. </p>
-    <pre>
-        
-    </pre>
-    <div class="context">
-        <a href="#arriba">Arriba</a>
-    </div>
-    <br>
-    <br>
-
-    <p id="17">17. </p>
-    <pre>
-        
-    </pre>
-    <div class="context">
-        <a href="#arriba">Arriba</a>
-    </div>
-    <br>
-    <br>
-
-    <p id="18">18. </p>
-    <pre>
-        
-    </pre>
-    <div class="context">
-        <a href="#arriba">Arriba</a>
-    </div>
-    <br>
-    <br>
-
-    <p id="19">19. </p>
-    <pre>
-        
-    </pre>
-    <div class="context">
-        <a href="#arriba">Arriba</a>
-    </div>
-    <br>
-    <br>
-
-    <p id="20">20. </p>
-    <pre>
-        
-    </pre>
-    <div class="context">
-        <a href="#arriba">Arriba</a>
-    </div>
-    <br>
-    <br>
-
-    <p id="21">21. </p>
-    <pre>
-        
-    </pre>
-    <div class="context">
-        <a href="#arriba">Arriba</a>
-    </div>
-    <br>
-    <br>
-
-    <p id="22">22. </p>
-    <pre>
-        
-    </pre>
-    <div class="context">
-        <a href="#arriba">Arriba</a>
-    </div>
-    <br>
-    <br>
-
-    <p id="23">23. </p>
-    <pre>
-        
-    </pre>
-    <div class="context">
-        <a href="#arriba">Arriba</a>
-    </div>
-    <br>
-    <br>
-
-    <p id="24">24. </p>
-    <pre>
-        
-    </pre>
-    <div class="context">
-        <a href="#arriba">Arriba</a>
-    </div>
-    <br>
-    <br>
-
+  
     
     <div class="context">
         <a href="../10/index.html">Volver</a>

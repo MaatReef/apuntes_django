@@ -16,312 +16,117 @@
         <a href="../13/index.html">Siguiente</a>
     </div>
     
-    <div class="contenido" id="arriba">
+    <div class="contenido_p" id="arriba">
         <p>Desarrollo Django</p>
     </div>
 
-    <h1>12 - Models - 1 (Clase 21)</h1>
-    <ol>
+    <h1 class="contenido_p">12 - Models - 1 (Clase 21)</h1>
+    <ul class="contenido_p">
         <li>
-            <a href="#1">1. </a>
+            <a href="#1">1. ¿Qué es un Modelo?</a>
         </li>
         <li>
-            <a href="#2">2. </a>
+            <a href="#2">2. Recordemos</a>
         </li>
         <li>
-            <a href="#3">3. </a>
+            <a href="#3">3. Creación de un Modelo</a>
         </li>
         <li>
-            <a href="#4">4. </a>
+            <a href="#4">4. Migración</a>
         </li>
         <li>
-            <a href="#5">5. </a>
+            <a href="#5">5. Creación de un Modelo</a>
         </li>
         <li>
-            <a href="#6">6. </a>
+            <a href="#6">6. postgresql_psycopg2</a>
         </li>
         <li>
-            <a href="#7">7. </a>
+            <a href="#7">7. Django Shell (spoiler QuerySet)</a>
         </li>
-        <li>
-            <a href="#8">8. </a>
-        </li>
-        <li>
-            <a href="#9">9. </a>
-        </li>
-        <li>
-            <a href="#10">10. </a>
-        </li>
-        <li>
-            <a href="#11">11. </a>
-        </li>
-        <li>
-            <a href="#12">12. </a>
-        </li>
-        <li>
-            <a href="#13">13. </a>
-        </li>
-        <li>
-            <a href="#14">14. </a>
-        </li>
-        <li>
-            <a href="#15">15. </a>
-        </li>
-        <li>
-            <a href="#16">16. </a>
-        </li>
-        <li>
-            <a href="#17">17. </a>
-        </li>
-        <li>
-            <a href="#18">18. </a>
-        </li>
-        <li>
-            <a href="#19">19. </a>
-        </li>
-        <li>
-            <a href="#20">20. </a>
-        </li>
-        <li>
-            <a href="#21">21. </a>
-        </li>
-        <li>
-            <a href="#22">22. </a>
-        </li>
-        <li>
-            <a href="#23">23. </a>
-        </li>
-        <li>
-            <a href="#24">24. </a>
-        </li>
-        <li>
-            <a href="#25">25. </a>
-        </li>
-    </ol>
+    </ul>
 
-    <p id="1">1. </p>
+    <p class="contenido_p" id="1">1. ¿Qué es un Modelo?</p>
     <pre>
-        <img src="../../img/img_ref/img31.png" alt="">
-        <img src="../../img/img_ref/img32.png" alt="">
-        <img src="../../img/img_ref/img33.png" alt="">
-        <img src="../../img/img_ref/img34.png" alt="">
-
+        Un modelo es la fuente única y definitiva de información sobre los 
+        datos en Django. Contiene los campos y comportamientos esenciales 
+        de los datos que se están almacenando. Generalmente, cada modelo se 
+        asigna a una tabla de base de datos.
+        
+        Las migraciones son necesarias para replicarla luego en otro lugar la misma base de datos.
     </pre>
     <div class="context">
         <a href="#arriba">Arriba</a>
     </div>
 
-    <p id="2">2. </p>
+    <p class="contenido_p" id="2">2. Recordemos</p>
     <pre>
+        <img src="../../img/img_ref/img32.png" alt="">
 
-        
+        El Orm trabaja en el circulo azul, en el modelo en conexión con la base de datos.
+        El django.models se encarga de todo y devuelve un queryset.
+
+        *Todo se puede sobreescribir en Django, algunas cosas más sencillas otras mas complejas.
     </pre>
     <div class="context">
         <a href="#arriba">Arriba</a>
     </div>
     
-    <p id="3">3. </p>
+    <p class="contenido_p" id="3">3. Creación de un Modelo</p>
     <pre>
+        <img src="../../img/img_ref/img33.png" alt=""> 
+        La aplicación, la debemos instalar (INSTALLED_APPS)...
+        Y generamos nuestro archivo models.py
         
-    </pre>
-    <div class="context">
-        <a href="#arriba">Arriba</a>
-    </div>
-    <p id="4">4. </p>
-    <pre>
-        
+        <img src="../../img/extras/12-3.PNG" alt="">       
+
+        Heredamos de la clase models.. Y esto queda persistido.
+
+        Si cambiamos de postgresql a mysql.. Los campos, CharField serán los mismos.
     </pre>
     <div class="context">
         <a href="#arriba">Arriba</a>
     </div>
 
-    <p id="5">5. </p>
+    <p class="contenido_p" id="4">4. Migración</p>
     <pre>
-        
+        <img src="../../img/img_ref/img34.png" alt="">
+        hacer makemigrations    -> Actualizamos los cambios
+        hacer migrate           -> Persistimos
     </pre>
     <div class="context">
         <a href="#arriba">Arriba</a>
     </div>
 
-    <p id="6">6. </p>
+    <p class="contenido_p" id="5">5. Creación de un Modelo</p>
     <pre>
-        
+        Si no especificamos el id, dentro de la clase Estudiante, django lo crea automáticamente..
+    
+        * No utilizar identificadores únicos que correspondan al negocio.. Porque, porque el negocio cambia.    
+        <img src="../../img/extras/12-6.PNG" alt="">
+        <img src="../../img/extras/12-7.PNG" alt="">
+    </pre>
+    <div class="context">
+        <a href="#arriba">Arriba</a>
+    </div>
+
+    <p class="contenido_p" id="6">6. postgresql_psycopg2</p>
+    <pre>
+        Podemos ver en el conector psycopg2.. Que representa con PostgreSQL..
+        <img src="../../img/extras/12-8.PNG" alt="">
+
     </pre>
     <div class="context">
         <a href="#arriba">Arriba</a>
     </div>  
 
-    <p id="7">7. </p>
+    <p class="contenido_p" id="7">7. Django Shell (spoiler QuerySet)</p>
     <pre>
-        
+        <img src="../../img/img_ref/img31.png" alt="">
     </pre>
     <div class="context">
         <a href="#arriba">Arriba</a>
     </div>
     
-    <p id="8">8. </p>
-    <pre>
-        
-    </pre>
-    <div class="context">
-        <a href="#arriba">Arriba</a>
-    </div>
-    
-    <p id="9">9. </p>
-    <pre>
-        
-    </pre>
-    <div class="context">
-        <a href="#arriba">Arriba</a>
-    </div>
-
-    <p id="10">10. </p>
-    <pre>
-        
-    </pre>
-    <div class="context">
-        <a href="#arriba">Arriba</a>
-    </div>
-    
-    <p id="11">11. </p>
-    <pre>
-        
-    </pre>
-    <div class="context">
-        <a href="#arriba">Arriba</a>
-    </div>
-    <br>
-    <br>
-    
-    <p id="12">12. </p>
-    <pre>
-        
-    </pre>
-    <div class="context">
-        <a href="#arriba">Arriba</a>
-    </div>
-    <br>
-    <br>
-
-    <p id="13">13. </p>
-    <pre>
-        
-    </pre>
-    <div class="context">
-        <a href="#arriba">Arriba</a>
-    </div>
-    <br>
-    <br>
-
-    <p id="14">14. </p>
-    <pre>
-        
-    </pre>
-    <div class="context">
-        <a href="#arriba">Arriba</a>
-    </div>
-    <br>
-    <br>
-
-    <p id="15">15. </p>
-    <pre>
-        
-    </pre>
-    <div class="context">
-        <a href="#arriba">Arriba</a>
-    </div>
-    <br>
-    <br>
-
-    <p id="16">16. </p>
-    <pre>
-        
-    </pre>
-    <div class="context">
-        <a href="#arriba">Arriba</a>
-    </div>
-    <br>
-    <br>
-
-    <p id="17">17. </p>
-    <pre>
-        
-    </pre>
-    <div class="context">
-        <a href="#arriba">Arriba</a>
-    </div>
-    <br>
-    <br>
-
-    <p id="18">18. </p>
-    <pre>
-        
-    </pre>
-    <div class="context">
-        <a href="#arriba">Arriba</a>
-    </div>
-    <br>
-    <br>
-
-    <p id="19">19. </p>
-    <pre>
-        
-    </pre>
-    <div class="context">
-        <a href="#arriba">Arriba</a>
-    </div>
-    <br>
-    <br>
-
-    <p id="20">20. </p>
-    <pre>
-        
-    </pre>
-    <div class="context">
-        <a href="#arriba">Arriba</a>
-    </div>
-    <br>
-    <br>
-
-    <p id="21">21. </p>
-    <pre>
-        
-    </pre>
-    <div class="context">
-        <a href="#arriba">Arriba</a>
-    </div>
-    <br>
-    <br>
-
-    <p id="22">22. </p>
-    <pre>
-        
-    </pre>
-    <div class="context">
-        <a href="#arriba">Arriba</a>
-    </div>
-    <br>
-    <br>
-
-    <p id="23">23. </p>
-    <pre>
-        
-    </pre>
-    <div class="context">
-        <a href="#arriba">Arriba</a>
-    </div>
-    <br>
-    <br>
-
-    <p id="24">24. </p>
-    <pre>
-        
-    </pre>
-    <div class="context">
-        <a href="#arriba">Arriba</a>
-    </div>
-    <br>
-    <br>
 
     
     <div class="context">

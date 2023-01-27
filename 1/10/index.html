@@ -15,314 +15,162 @@
         <a href="../../index.html">Inicio</a>
         <a href="../11/index.html">Siguiente</a>
     </div>
-    <div class="contenido" id="arriba">
+    <div class="contenido_p" id="arriba">
         <p>Desarrollo Django</p>
     </div>
 
-    <h1>10 - Base de Datos - 1 (Clase 18)</h1>
-    <ol>
+    <h1 class="contenido_p">10 - Base de Datos - 1 (Clase 18)</h1>
+    <ul class="contenido_p">
         <li>
-            <a href="#1">1. </a>
+            <a href="#1">1. ¿Qué es un Base de Datos?</a>
         </li>
         <li>
-            <a href="#2">2. </a>
+            <a href="#2">2. Recordemos</a>
         </li>
         <li>
-            <a href="#3">3. </a>
+            <a href="#3">3. Capas</a>
         </li>
         <li>
-            <a href="#4">4. </a>
+            <a href="#4">4. SQl vs NoSQL</a>
         </li>
         <li>
-            <a href="#5">5. </a>
+            <a href="#5">5. Django</a>
         </li>
         <li>
-            <a href="#6">6. </a>
+            <a href="#6">6. MODELO DE CLASESVS.MODELO DE DATOS</a>
         </li>
         <li>
-            <a href="#7">7. </a>
+            <a href="#7">7. ¿Cómo hago las transformaciones?</a>
         </li>
         <li>
-            <a href="#8">8. </a>
+            <a href="#8">8. Herramientas que usaremos</a>
         </li>
         <li>
-            <a href="#9">9. </a>
+            <a href="#9">9. SQL</a>
         </li>
         <li>
-            <a href="#10">10. </a>
+            <a href="#10">10. Claves primarias y foráneas</a>
         </li>
-        <li>
-            <a href="#11">11. </a>
-        </li>
-        <li>
-            <a href="#12">12. </a>
-        </li>
-        <li>
-            <a href="#13">13. </a>
-        </li>
-        <li>
-            <a href="#14">14. </a>
-        </li>
-        <li>
-            <a href="#15">15. </a>
-        </li>
-        <li>
-            <a href="#16">16. </a>
-        </li>
-        <li>
-            <a href="#17">17. </a>
-        </li>
-        <li>
-            <a href="#18">18. </a>
-        </li>
-        <li>
-            <a href="#19">19. </a>
-        </li>
-        <li>
-            <a href="#20">20. </a>
-        </li>
-        <li>
-            <a href="#21">21. </a>
-        </li>
-        <li>
-            <a href="#22">22. </a>
-        </li>
-        <li>
-            <a href="#23">23. </a>
-        </li>
-        <li>
-            <a href="#24">24. </a>
-        </li>
-        <li>
-            <a href="#25">25. </a>
-        </li>
-    </ol>
+    </ul>
 
-    <p id="1">1. </p>
+    <p class="contenido_p" id="1">1. ¿Qué es un Base de Datos?</p>
     <pre>
-        
-        <img src="../../img/img_ref/img19.png" alt="">
-        <img src="../../img/img_ref/img20.png" alt="">
-        <img src="../../img/img_ref/img21.png" alt="">
-        <img src="../../img/img_ref/img22.png" alt="">
-        <img src="../../img/img_ref/img23.png" alt="">
-        <img src="../../img/img_ref/img24.png" alt="">
-        <img src="../../img/img_ref/img25.png" alt="">
+        Es un conjunto de datos pertenecientes a un mismo contexto y 
+        almacenados sistemáticamente para su posterior uso. Es un forma de 
+        almacenar datos de manera eficiente para obtener la información 
+        necesaria en el momento que se desee.    
     </pre>
     <div class="context">
         <a href="#arriba">Arriba</a>
     </div>
 
-    <p id="2">2. </p>
+    <p class="contenido_p" id="2">2. Recordemos</p>
     <pre>
-
+                                            -> API -> App
+        Database        ->  DBMS            -> API -> User
+                                            -> API -> App
+        
+        DBMS    Database manager system
+        SGBD    Sistema de gestion de base de datos.
     </pre>
     <div class="context">
         <a href="#arriba">Arriba</a>
     </div>
     
-    <p id="3">3. </p>
+    <p class="contenido_p" id="3">3. Capas</p>
     <pre>
-        
+        <img src="../../img/img_ref/img19.png" alt="">
+
     </pre>
     <div class="context">
         <a href="#arriba">Arriba</a>
     </div>
-    <p id="4">4. </p>
+    <p class="contenido_p" id="4">4. SQl vs NoSQL</p>
     <pre>
-        
+        <img src="../../img/img_ref/img20.png" alt="">
     </pre>
     <div class="context">
         <a href="#arriba">Arriba</a>
     </div>
 
-    <p id="5">5. </p>
+    <p class="contenido_p" id="5">5. Django</p>
     <pre>
-        
+        <img src="../../img/img_ref/img21.png" alt="">
+
     </pre>
     <div class="context">
         <a href="#arriba">Arriba</a>
     </div>
 
-    <p id="6">6. </p>
+    <p class="contenido_p" id="6">6. MODELO DE CLASESVS.MODELO DE DATOS</p>
     <pre>
+        <img src="../../img/img_ref/img22.png" alt="">
+        ¿Cómo mantengo la persistencia de los objetos...?
+
+        ...Mediante una base de datos
+        
+        ¿Cómo se puede hacer corresponder un modelo de  objetos con un modelo de datos
+        
         
     </pre>
     <div class="context">
         <a href="#arriba">Arriba</a>
     </div>  
 
-    <p id="7">7. </p>
+    <p class="contenido_p" id="7">7. ¿Cómo hago las transformaciones?</p>
     <pre>
+        <img src="../../img/img_ref/img23.png" alt="">
+        <img src="../../img/img_ref/img24.png" alt="">
+    
+        ¿Todas las clases se transformarán en entidades (tablas)?
+            Algunas clases si se persisten y otras no.. Dependerá del modelo que deseemos, de acuerdo a las funcionalidad.
         
+        
+        ¿Qué pasará con las asociaciones?
+            - Se convierten en relaciones, cuando tengamos asociaciones que persistan a través del tiempo.
+            - 
+        
+        ¿Qué pasará conlas generalizaciones?
+            - Cuando tenemos menos relaciones y mas consulta de datos, podemos generalizar.                 - 
+
+        
+        ¿y con los atributos de las clases?
+            - Pasan a ser atributos de las entidades
+        
+        ¿y con las operaciones?
+            - No se persisten en la tabla de base de datos relacional..        
     </pre>
     <div class="context">
         <a href="#arriba">Arriba</a>
     </div>
     
-    <p id="8">8. </p>
+    <p class="contenido_p" id="8">8. Herramientas que usaremos</p>
     <pre>
-        
+        Django mas PostgreSQL
+
+        pgAdmin4                -> Interfaz gráfica para crear base de datos.        
     </pre>
     <div class="context">
         <a href="#arriba">Arriba</a>
     </div>
     
-    <p id="9">9. </p>
+    <p class="contenido_p" id="9">9. SQL</p>
     <pre>
-        
+        <img src="../../img/img_ref/img25.png" alt="">
+        -> Lo de Db, se ve poco al usar el ORM de Django.
     </pre>
     <div class="context">
         <a href="#arriba">Arriba</a>
     </div>
 
-    <p id="10">10. </p>
+    <p class="contenido_p" id="10">10. Claves primarias y foráneas</p>
     <pre>
-        
+        <img src="../../img/extras/10-10.PNG" alt="">
     </pre>
     <div class="context">
         <a href="#arriba">Arriba</a>
     </div>
     
-    <p id="11">11. </p>
-    <pre>
-        
-    </pre>
-    <div class="context">
-        <a href="#arriba">Arriba</a>
-    </div>
-    <br>
-    <br>
-    
-    <p id="12">12. </p>
-    <pre>
-        
-    </pre>
-    <div class="context">
-        <a href="#arriba">Arriba</a>
-    </div>
-    <br>
-    <br>
-
-    <p id="13">13. </p>
-    <pre>
-        
-    </pre>
-    <div class="context">
-        <a href="#arriba">Arriba</a>
-    </div>
-    <br>
-    <br>
-
-    <p id="14">14. </p>
-    <pre>
-        
-    </pre>
-    <div class="context">
-        <a href="#arriba">Arriba</a>
-    </div>
-    <br>
-    <br>
-
-    <p id="15">15. </p>
-    <pre>
-        
-    </pre>
-    <div class="context">
-        <a href="#arriba">Arriba</a>
-    </div>
-    <br>
-    <br>
-
-    <p id="16">16. </p>
-    <pre>
-        
-    </pre>
-    <div class="context">
-        <a href="#arriba">Arriba</a>
-    </div>
-    <br>
-    <br>
-
-    <p id="17">17. </p>
-    <pre>
-        
-    </pre>
-    <div class="context">
-        <a href="#arriba">Arriba</a>
-    </div>
-    <br>
-    <br>
-
-    <p id="18">18. </p>
-    <pre>
-        
-    </pre>
-    <div class="context">
-        <a href="#arriba">Arriba</a>
-    </div>
-    <br>
-    <br>
-
-    <p id="19">19. </p>
-    <pre>
-        
-    </pre>
-    <div class="context">
-        <a href="#arriba">Arriba</a>
-    </div>
-    <br>
-    <br>
-
-    <p id="20">20. </p>
-    <pre>
-        
-    </pre>
-    <div class="context">
-        <a href="#arriba">Arriba</a>
-    </div>
-    <br>
-    <br>
-
-    <p id="21">21. </p>
-    <pre>
-        
-    </pre>
-    <div class="context">
-        <a href="#arriba">Arriba</a>
-    </div>
-    <br>
-    <br>
-
-    <p id="22">22. </p>
-    <pre>
-        
-    </pre>
-    <div class="context">
-        <a href="#arriba">Arriba</a>
-    </div>
-    <br>
-    <br>
-
-    <p id="23">23. </p>
-    <pre>
-        
-    </pre>
-    <div class="context">
-        <a href="#arriba">Arriba</a>
-    </div>
-    <br>
-    <br>
-
-    <p id="24">24. </p>
-    <pre>
-        
-    </pre>
-    <div class="context">
-        <a href="#arriba">Arriba</a>
-    </div>
-    <br>
-    <br>
 
     
     <div class="context">
