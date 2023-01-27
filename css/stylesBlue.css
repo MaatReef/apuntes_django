@@ -1,7 +1,7 @@
 html{
-    background: #4b6cb7;  /* fallback for old browsers */
-    background: -webkit-linear-gradient(to right, #182848, #4b6cb7);  /* Chrome 10-25, Safari 5.1-6 */
-    background: linear-gradient(to right, #182848, #4b6cb7); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+    background: #b75d4b;  /* fallback for old browsers */
+    background: -webkit-linear-gradient(to right, #481b18, #b75d4b);  /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to right, #481b18, #b75d4b); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
 }
 
 body {
@@ -25,7 +25,7 @@ pre{
     margin: 1rem auto 1rem 5rem;
     line-height: 1.25rem;
     color: white;
-    background-color: #4b6cb7;
+    background-color: #b75d4b;
     padding: 1rem 2rem 2rem 1rem;
     border-radius: 1.5rem;
 }

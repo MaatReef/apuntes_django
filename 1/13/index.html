@@ -15,313 +15,294 @@
         <a href="../../index.html">Inicio</a>
         <a href="../14/index.html">Siguiente</a>
     </div>
-    <div class="contenido" id="arriba">
+    <div class="contenido_p" id="arriba">
         <p>Desarrollo Django</p>
     </div>
 
-    <h1>13 - Models - 2 (Clase 22)</h1>
-    <ol>
+    <h1 class="contenido_p">13 - Models - 2 (Clase 22)</h1>
+    <ul class="contenido_p">
         <li>
-            <a href="#1">1. </a>
+            <a href="#1">1. Recordemos</a>
         </li>
         <li>
-            <a href="#2">2. </a>
+            <a href="#2">2. ¿Qué tipo de relaciones hay?</a>
         </li>
         <li>
-            <a href="#3">3. </a>
+            <a href="#3">3. Relaciones de muchos a uno</a>
         </li>
         <li>
-            <a href="#4">4. </a>
+            <a href="#4">4. Relaciones de muchos a muchos</a>
         </li>
         <li>
-            <a href="#5">5. </a>
+            <a href="#5">5. Relaciones de uno a uno</a>
         </li>
         <li>
-            <a href="#6">6. </a>
+            <a href="#6">6. Relaciones de uno a uno (herencia)</a>
         </li>
         <li>
-            <a href="#7">7. </a>
+            <a href="#7">7. Clase base abstracta</a>
         </li>
         <li>
-            <a href="#8">8. </a>
+            <a href="#8">8. Herencia de múltiples tablas</a>
         </li>
         <li>
-            <a href="#9">9. </a>
+            <a href="#9">9. Modelos proxy</a>
         </li>
         <li>
-            <a href="#10">10. </a>
+            <a href="#10">10. ¿Cómo interactúo con la BD?</a>
         </li>
         <li>
-            <a href="#11">11. </a>
+            <a href="#11">11. CRUD objetos</a>
         </li>
-        <li>
-            <a href="#12">12. </a>
-        </li>
-        <li>
-            <a href="#13">13. </a>
-        </li>
-        <li>
-            <a href="#14">14. </a>
-        </li>
-        <li>
-            <a href="#15">15. </a>
-        </li>
-        <li>
-            <a href="#16">16. </a>
-        </li>
-        <li>
-            <a href="#17">17. </a>
-        </li>
-        <li>
-            <a href="#18">18. </a>
-        </li>
-        <li>
-            <a href="#19">19. </a>
-        </li>
-        <li>
-            <a href="#20">20. </a>
-        </li>
-        <li>
-            <a href="#21">21. </a>
-        </li>
-        <li>
-            <a href="#22">22. </a>
-        </li>
-        <li>
-            <a href="#23">23. </a>
-        </li>
-        <li>
-            <a href="#24">24. </a>
-        </li>
-        <li>
-            <a href="#25">25. </a>
-        </li>
-    </ol>
+    </ul>
 
-    <p id="1">1. </p>
+    <p class="contenido_p" id="1">1. Recordemos</p>
     <pre>
         
         <img src="../../img/img_ref/img35.png" alt="">
-        <img src="../../img/img_ref/img36.png" alt="">
-        <img src="../../img/img_ref/img37.png" alt="">
-        <img src="../../img/img_ref/img38.png" alt="">
-        <img src="../../img/img_ref/img39.png" alt="">
-        <img src="../../img/img_ref/img40.png" alt="">
-        <img src="../../img/img_ref/img41.png" alt="">
-        <img src="../../img/img_ref/img42.png" alt="">
-        <img src="../../img/img_ref/img43.png" alt="">
-        <img src="../../img/img_ref/img44.png" alt="">
-        <img src="../../img/img_ref/img45.png" alt="">
-        <img src="../../img/img_ref/img46.png" alt="">
+
     </pre>
     <div class="context">
         <a href="#arriba">Arriba</a>
     </div>
 
-    <p id="2">2. </p>
+    <p class="contenido_p" id="2">2. ¿Qué tipo de relaciones hay?</p>
     <pre>
-
+        Django ofrece formas de definir los tres tipos más comunes de 
+        relaciones de base de datos: muchos a uno, muchos a muchos y uno a 
+        uno. En lo que respecta a las relaciones de uno a uno, no solo 
+        podremos definirlas como una relación, sino también utilizando la 
+        técnica de herencia
+        
+        El Orm transforma las clases a tablas en la abase de datos.        
     </pre>
     <div class="context">
         <a href="#arriba">Arriba</a>
     </div>
     
-    <p id="3">3. </p>
+    <p class="contenido_p" id="3">3. Relaciones de muchos a uno</p>
     <pre>
-        
+        <img src="../../img/img_ref/img36.png" alt="">
+
+        Una categoría puede tener muchos cursos
+        Por ende la clave foránea va en Curso.. El curso está relacionado con una Categoría.
+        <code>
+        on_delete.. Cuando se borra la categoría.. Con..
+            models.CASCADE  -> Cuando se borra la categoría arrasta borrando todo los asociados de la base de Datos, usando DJango.
+            models.SET_NULL -> No la borra, solo deja en nula categoría.        
+ 
+        # class Curso(models.Model):
+        #     nombre = models.CharField(max_length=100, verbose_name='Nombre')
+        #     # descripcion = models.TextField(null=True, verbose_name='Descripcion')                       * Los campos escritos de manera en singular.
+        #     # fecha_inicio = models.DateField(verbose_name='Fecha de inicio')
+        #     # portada = models.ImageField(upload_to='imagenes/', null=True, verbose_name='Portada')
+        #     # categoria = models.ForeignKey(Categoria, on_delete=models.CASCADE)                          -> CASCADE
+        #     # estudiantes = models.ManyToManyField(Estudiante)
+
+        #     def __str__(self):
+        #         return self.nombre
+
+
+        # class Estudiante(models.Model):
+        #     nombre = models.CharField(max_length=100, verbose_name='Nombre')
+        #     # apellido = models.CharField(max_length=150, verbose_name='Apellido')
+        #     cursos = models.ManyToManyField(Curso)
+
+        #     def __str__(self):
+        #         return self.nombre
+        </code>
+
+        --------------------------------- Extra
+        * Que es el borrado logico?
+            - No es eliminado de la base de datos.. Pero le dejamos un flag, por ejemplo si ese elemnto necesita ser auditadto
+            * De esta manera cuando nos traemos los elementos, lo nos traremos los restore, ya que tienen el self.baja en False
+        <code>
+            def soft_delete(self):              
+                self.baja = True                -> No se elimina, más bien se "da de baja"
+                self.save()
+
+            def restore(self):
+                self.baja = False
+                self.save()
+        </code>
+
+        ----------------------- Ejemplos
+        Con el siguiente comando vemos el comando sql que hará..
+
+            - python manage.py sqlmigrate cac 0001_initial              -> Vemos que sql se ejecutará
+
+            - python manage.py migrate                                  -> Creamos la migración                
     </pre>
     <div class="context">
         <a href="#arriba">Arriba</a>
     </div>
-    <p id="4">4. </p>
+    <p class="contenido_p" id="4">4. Relaciones de muchos a muchos</p>
     <pre>
+        Un curso tiene muchos estudiantes y un estudiante puede estar en varios cursos
+        <img src="../../img/img_ref/img37.png" alt="">
+
+        Creamos una tabla intermedio..
+        <code>
+        class Curso(models.model):
+            estudiantes = models.ManyToManyField(Estudiante)            -> Solo debe ir en 1 de las 2 clases que estamos relacionando.. Resuelve lo de la tabla intermedia.
+        </code>
+
+        * Con Django Siempre escribimos clases..
+        <code>
+        class Curso(models.Model):
+            nombre = models.CharField(max_length=100, verbose_name='Nombre')
+            descripcion = models.TextField(null=True, verbose_name='Descripcion')
+            fecha_inicio = models.DateField(verbose_name='Fecha de inicio')
+            portada = models.ImageField(upload_to='imagenes/', null=True, verbose_name='Portada')
+            categoria = models.ForeignKey(Categoria, on_delete=models.CASCADE)
+            # estudiantes = models.ManyToManyField(Estudiante)                          -> O bien si tengo un curso, y vamos asociar a los estudiantes, lo hacemos desde acá..
+                                                                                        - Dependerá de la manera en la cual armamos el sistema.
         
+        class Estudiante(models.Model):
+            nombre = models.CharField(max_length=100, verbose_name='Nombre')
+            apellido = models.CharField(max_length=150, verbose_name='Apellido')
+            cursos = models.ManyToManyField(Curso)                                      -> De esta manera el estudiante, está asociado a muchos cursos
+                                                                                        * Creamos una relación bidireccional de muchos a muchos con la clase definida..
+                                                                                        Muchos estudiantes con muchos cursos y muchos cursos con muchos estudiantes.
+        </code>
+        
+        De esta manera Django genera la tabla intermedia que sirve de puente entre curso y estudiante..
+            - python manage.py makemigrations               -> 
+        
+            - python manage.py migrate                      -> Al hacer el migrate crearemos una tabla extra, que estará relacionada.
+        
+        ----------------------- Ejemplo Práctico para agregar datos
+        Entramos a la shell..
+        
+            python manage.py shell_plus
+        
+        
+            curso_3 = Curso(nombre="Otro")
+            curso_3.save()
+            estudiante = Estudiante(nombre="Maat")
+            estudiante.save()
+        
+            estudiante.cursos.add(curso_3)          -> Creamos otra asociación.
+
+        -----------------------
+        Un curso tiene muchos estudiantes y un estudiante puede estar en varios cursos y
+        se desea registrar información sobre esa relación (la inscripción)
+        
+        
+        Generamos una clase intermedia, para guardar información extra..
+            - through='Inscripcion'       -> Relacionamos para obtener la fecha de la Inscripcion
+                                            - fecha = models.DateField()        
+        * De esta manera agregamos información extra a la relación..
+
+        Un estudiante es una persona
+        
+        <img src="../../img/img_ref/img38.png" alt="">
+        
+            -OneToOneField.. El Estudiante con la Persona.
+        
+        ----------------------- Ejemplo
+        <code>
+        class Persona(models.Model):
+            nombre = models.CharField(max_length=100, verbose_name='Nombre')
+            apellido = models.CharField(max_length=150, verbose_name='Apellido')
+        
+        
+        class Estudiante(models.Model):
+            persona = models.OneToOneField(Persona, primary_key=True, on_delete=models.CASCADE)         -> Uno a Uno
+            legajo = models.CharField(max_length=100, verbose_name='Legajo')
+        </code>
+        -----------------------
+        Entramos a la shell..
+        
+            python manage.py shell_plus
     </pre>
     <div class="context">
         <a href="#arriba">Arriba</a>
     </div>
 
-    <p id="5">5. </p>
+    <p class="contenido_p" id="5">5. Relaciones de uno a uno</p>
     <pre>
-        
+        <img src="../../img/img_ref/img39.png" alt="">
+        ----------------------- Relaciones de uno a uno
+        Un estudiante es una persona
+        <img src="../../img/img_ref/img40.png" alt="">
+
     </pre>
     <div class="context">
         <a href="#arriba">Arriba</a>
     </div>
 
-    <p id="6">6. </p>
+    <p class="contenido_p" id="6">6. Relaciones de uno a uno (herencia)</p>
     <pre>
+        <img src="../../img/img_ref/img41.png" alt="">
         
+        La Herencia la usamos desde Django, son maneras específicas.. Que usa Django.        
     </pre>
     <div class="context">
         <a href="#arriba">Arriba</a>
     </div>  
 
-    <p id="7">7. </p>
+    <p  class="contenido_p" id="7">7. Clase base abstracta</p>
     <pre>
-        
+        <img src="../../img/img_ref/img42.png" alt="">
+        En este ejemplo, no existirá una Tabla Persona..
+        Tendremos Estudiante que usa a  Persona.
+        Tendremos Docente que usa a  Persona.        
     </pre>
     <div class="context">
         <a href="#arriba">Arriba</a>
     </div>
     
-    <p id="8">8. </p>
+    <p  class="contenido_p" id="8">8. Herencia de múltiples tablas</p>
     <pre>
+        <img src="../../img/img_ref/img43.png" alt="">
+        No muy recomendad, ya que al traer datos, se hace más pesado.
+        La que acostumbramos a ver pero menos perfomante.
         
+        
+        * Más registros, más lento..        
     </pre>
     <div class="context">
         <a href="#arriba">Arriba</a>
     </div>
     
-    <p id="9">9. </p>
+    <p class="contenido_p" id="9">9. Modelos proxy</p>
     <pre>
+        <img src="../../img/img_ref/img44.png" alt="">
+        El proxy le agrega responsabilidad a la clase pero no es persistida..
+        - Puede ser usada..
+        Digamos que le agrega más detalles a la clase base.
         
+        * Usar herencia solo cuando sea necesario..
+        Generalmente se usa la Clase Abstracta, para tener poca herencia.
+        Dependerá del proyecto.
     </pre>
     <div class="context">
         <a href="#arriba">Arriba</a>
     </div>
 
-    <p id="10">10. </p>
+    <p class="contenido_p" id="10">10. ¿Cómo interactúo con la BD?</p>
     <pre>
-        
+        Django brinda automáticamente una API de abstracción de base de 
+        datos que permite crear, recuperar, actualizar y eliminar objetos. Para 
+        la recuperación de objetos de la base de datos, se utiliza un QuerySet
+        vía un Manager de la clase de Modelo. Un QuerySet representa una 
+        colección de objetos de la base de datos.
+
+        Todos los modelos, tienen un manager.. El Orm maneja la data de la base de datos.
     </pre>
     <div class="context">
         <a href="#arriba">Arriba</a>
     </div>
     
-    <p id="11">11. </p>
+    <p  class="contenido_p" id="11">11. CRUD objetos</p>
     <pre>
-        
-    </pre>
-    <div class="context">
-        <a href="#arriba">Arriba</a>
-    </div>
-    <br>
-    <br>
-    
-    <p id="12">12. </p>
-    <pre>
-        
-    </pre>
-    <div class="context">
-        <a href="#arriba">Arriba</a>
-    </div>
-    <br>
-    <br>
-
-    <p id="13">13. </p>
-    <pre>
-        
-    </pre>
-    <div class="context">
-        <a href="#arriba">Arriba</a>
-    </div>
-    <br>
-    <br>
-
-    <p id="14">14. </p>
-    <pre>
-        
-    </pre>
-    <div class="context">
-        <a href="#arriba">Arriba</a>
-    </div>
-    <br>
-    <br>
-
-    <p id="15">15. </p>
-    <pre>
-        
-    </pre>
-    <div class="context">
-        <a href="#arriba">Arriba</a>
-    </div>
-    <br>
-    <br>
-
-    <p id="16">16. </p>
-    <pre>
-        
-    </pre>
-    <div class="context">
-        <a href="#arriba">Arriba</a>
-    </div>
-    <br>
-    <br>
-
-    <p id="17">17. </p>
-    <pre>
-        
-    </pre>
-    <div class="context">
-        <a href="#arriba">Arriba</a>
-    </div>
-    <br>
-    <br>
-
-    <p id="18">18. </p>
-    <pre>
-        
-    </pre>
-    <div class="context">
-        <a href="#arriba">Arriba</a>
-    </div>
-    <br>
-    <br>
-
-    <p id="19">19. </p>
-    <pre>
-        
-    </pre>
-    <div class="context">
-        <a href="#arriba">Arriba</a>
-    </div>
-    <br>
-    <br>
-
-    <p id="20">20. </p>
-    <pre>
-        
-    </pre>
-    <div class="context">
-        <a href="#arriba">Arriba</a>
-    </div>
-    <br>
-    <br>
-
-    <p id="21">21. </p>
-    <pre>
-        
-    </pre>
-    <div class="context">
-        <a href="#arriba">Arriba</a>
-    </div>
-    <br>
-    <br>
-
-    <p id="22">22. </p>
-    <pre>
-        
-    </pre>
-    <div class="context">
-        <a href="#arriba">Arriba</a>
-    </div>
-    <br>
-    <br>
-
-    <p id="23">23. </p>
-    <pre>
-        
-    </pre>
-    <div class="context">
-        <a href="#arriba">Arriba</a>
-    </div>
-    <br>
-    <br>
-
-    <p id="24">24. </p>
-    <pre>
-        
+        Crear Actualizar Eliminar.. A través del ORM
+        <img src="../../img/img_ref/img45.png" alt="">
+        <img src="../../img/img_ref/img46.png" alt="">
+        Obtener
+        Persona.objects.all()       //  Con el .objects manager asociado al modelo, que pone el ORM encargado de interactuar con la Base de Datos.
+        Persona.objects.filter()        Son todos métodos del ORM para manejar 
     </pre>
     <div class="context">
         <a href="#arriba">Arriba</a>

@@ -16,313 +16,219 @@
         <a href="../16/index.html">Siguiente</a>
     </div>
     
-    <div class="contenido" id="arriba">
+    <div class="contenido_p" id="arriba">
         <p>Desarrollo Django</p>
     </div>
 
-    <h1>15 - Models - 4 (Clase 24)</h1>
-    <ol>
+    <h1 class="contenido_p">15 - Models - 4 (Clase 24)</h1>
+    <ul class="contenido_p">
         <li>
-            <a href="#1">1. </a>
+            <a href="#1">1. Recordemos</a>
         </li>
         <li>
-            <a href="#2">2. </a>
+            <a href="#2">2. ModelForm</a>
         </li>
         <li>
-            <a href="#3">3. </a>
+            <a href="#3">3. Herencia de Formularios</a>
         </li>
         <li>
-            <a href="#4">4. </a>
+            <a href="#4">4. Sobreescribiendo formularios</a>
         </li>
-        <li>
-            <a href="#5">5. </a>
-        </li>
-        <li>
-            <a href="#6">6. </a>
-        </li>
-        <li>
-            <a href="#7">7. </a>
-        </li>
-        <li>
-            <a href="#8">8. </a>
-        </li>
-        <li>
-            <a href="#9">9. </a>
-        </li>
-        <li>
-            <a href="#10">10. </a>
-        </li>
-        <li>
-            <a href="#11">11. </a>
-        </li>
-        <li>
-            <a href="#12">12. </a>
-        </li>
-        <li>
-            <a href="#13">13. </a>
-        </li>
-        <li>
-            <a href="#14">14. </a>
-        </li>
-        <li>
-            <a href="#15">15. </a>
-        </li>
-        <li>
-            <a href="#16">16. </a>
-        </li>
-        <li>
-            <a href="#17">17. </a>
-        </li>
-        <li>
-            <a href="#18">18. </a>
-        </li>
-        <li>
-            <a href="#19">19. </a>
-        </li>
-        <li>
-            <a href="#20">20. </a>
-        </li>
-        <li>
-            <a href="#21">21. </a>
-        </li>
-        <li>
-            <a href="#22">22. </a>
-        </li>
-        <li>
-            <a href="#23">23. </a>
-        </li>
-        <li>
-            <a href="#24">24. </a>
-        </li>
-        <li>
-            <a href="#25">25. </a>
-        </li>
-    </ol>
+    </ul>
 
-    <p id="1">1. </p>
+    <p class="contenido_p" id="1">1. Recordemos</p>
     <pre>
+        <img src="../../img/img_ref/img54.png" alt="">  
         
     </pre>
     <div class="context">
         <a href="#arriba">Arriba</a>
     </div>
 
-    <p id="2">2. </p>
+    <p class="contenido_p" id="2">2. ModelForm</p>
     <pre>
+        Creamos un formulario que hereda de ModelForm.. Clase que procee de Django
+
+        Debemos especificar el model al cual el formulario está asociado..
+        Y que campos queremos que aparezcan
         
-        <img src="../../img/img_ref/img54.png" alt="">  
+        * Debemos corroborar lo que tenemos en el modelo con lo que especificamos en el Formulario.
+        <code>        
+        from django import forms        -> Debemos importar el forms
+        
+        # class EstudianteForm(forms.ModelForm):
+        #     class Meta:
+        #         model = Estudiante                     
+        #         fields = '__all__'                    -> All, salvo la primary key.. 
+                                                        *  No es correcto usar el __all__
+                                                        ('apellido', 'nombre', 'email', 'dni')  -> Mejor especificar cada uno de los campos
+                                                *Mejor especificar los campos.
+        
+                    exclude = ('email')                 -> Otra manera es excluir el email.
+        </code>
+            
         <img src="../../img/img_ref/img55.png" alt="">  
         <img src="../../img/img_ref/img56.png" alt="">  
-        <img src="../../img/img_ref/img57.png" alt="">  
+        <img src="../../img/img_ref/img57.png" alt="">
+        Validaciones del formulario, asociada al modelo.
+        De esta manera podemos laburar en cada input de manera separada y específica.         
+    </pre>
+    <div class="context">
+        <a href="#arriba">Arriba</a>
+    </div>
+    
+    <p class="contenido_p" id="3">3. Herencia de Formularios</p>
+    <pre>
         <img src="../../img/img_ref/img58.png" alt="">  
-        <img src="../../img/img_ref/img59.png" alt="">  
+        El formulario EstudianteFormValidado hereda de EstudianteForm, todos los campos..
+        Y además agregamos la validación.
+        
+        --- Ejemplo: En el forms.py
+        <code>
+        class EstudianteForm(forms.ModelForm):
+            nombre = forms.CharField(error_messages={'required': 'PONE EL VALOOR'})
+            
+            class Meta:
+                model = Estudiante
+                fields = '__all__'    
+                widgets = {
+                    'apellido': forms.Textarea(attrs={'cols': 20, 'rows': 20}),
+                }
+                error_messages = {
+                    'email': {
+                        'required': 'Y EL VALOR QUE ONDA?',
+                    },
+                }
+        
+        
+        class EstudianteFormValidado(EstudianteForm):
+            def clean_apellido(self):
+                apellido = self.cleaned_data['apellido']
+                if apellido.upper() == "MESSI":
+                    raise ValidationError("Messi no es estudiante")
+        
+                return apellido
+        </code>
+        
+        Ahora en al views.py le especificamos que usaremos el EstudianteFormValidado.. Lo demás queda igual
+        La validación la ejecutará antes de ir a grabar al modelo..
+        <code>
+        class EstudiantesView(View):
+            form_class = EstudianteFormValidado                                 -> Acá mismo
+            template_name = 'cac/administracion/estudiantes/nuevo.html'
+        
+            def get(self, request, *args, **kwargs):
+                form = self.form_class()
+                return render(request, self.template_name, {'formulario': form})
+        
+            def post(self, request, *args, **kwargs):
+                form = self.form_class(request.POST)
+                if form.is_valid():
+                    form.save()
+                    return redirect('estudiantes_index')
+        
+                return render(request, self.template_name, {'formulario': form})
+        </code>
+        
+        * La validaciones las podemos hacer desde el formulario, en esta situación usando la herencia..
+        O bien desde el propio modelo..
+        
+        
+        Es decir en el models.py
+        <code>
+        class Estudiante(models.Model):
+            nombre = models.CharField(max_length=100, verbose_name='Nombre:')
+            apellido = models.CharField(max_length=150, verbose_name='Apellido:')
+            email = models.EmailField(max_length=150, verbose_name='Email:', null=True, default=None)
+            dni = models.BigIntegerField(verbose_name='DNI:')
+        
+            def __str__(self):
+                return f"DNI: {self.dni} - {self.apellido}, {self.nombre}"
+        
+            def save(self, *args, **kwargs):
+                if self.apellido.upper() == 'MESSI':                                                -> Hacemos la validación en el propio modelo.
+                    raise ValueError("Messi es un maestro, no puede ser estudiante")
+                else:
+                    super().save(*args, **kwargs)
+        
+            def delete(self, *args, **kwargs):
+                if self.apellido.upper() == 'ALMADA':
+                    raise ValueError("No se puede eliminar, tiene mucho que aprender")
+                return super().delete(*args, **kwargs)
+        </code>
+        
+        Además podemos mejorar aún más la forma de escribir el forms...
+        De esta manera tenemos más personalizados.. 
+        <code>
+        class EstudianteForm(forms.ModelForm):
+            nombre = forms.CharField(error_messages={'required': 'PONE EL VALOOR'})             -> Personalizar ese campo con el required
+            
+            class Meta:
+                model = Estudiante                      * Esto esta todo mezclado, mejor elegir si definimos el campo como arriba o usamos la etiqueta meta    
+                fields = '__all__'    
+                widgets = {
+                    'apellido': forms.Textarea(attrs={'cols': 20, 'rows': 20}),     -> O el text area a través del widgets
+                }
+                error_messages = {
+                    'email': {
+                        'required': 'Y EL VALOR QUE ONDA?',                         -> Otra manera es a través del Meta, podemos manejar el error
+                    },
+                }
+                
+            
+        class EstudianteFormValidado(EstudianteForm):
+            def clean_apellido(self):
+                apellido = self.cleaned_data['apellido']
+                if apellido.upper() == "MESSI":
+                    raise ValidationError("Messi no es estudiante")
+        
+                return apellido
+        </code>
+        
+        En el settings.py... Para manejar el idioma en español.
+        <code>
+            LANGUAGE_CODE = 'es-ar'        
+        </code>
     </pre>
     <div class="context">
         <a href="#arriba">Arriba</a>
     </div>
-    
-    <p id="3">3. </p>
+    <p class="contenido_p" id="4">4. Sobreescribiendo formularios</p>
     <pre>
+        <img src="../../img/img_ref/img59.png" alt=""> 
+        También desde form_campos.html... Dependerá como presentamos la data.
+        <code>
+        {% for campo in formulario %}
+            < div class="form-group">
+                < label for="">{{campo.label}}< /label>
+              
+                {% comment %} {{campo}} {% endcomment %}
+                < input 
+                    type="{{campo.field.widget.input_type}}" 
+                    name="{{campo.name}}" 
+                    id="{{campo.name}}"
+                    class="form-control"
+                    placeholder="Ingrese {{campo.name}}"
+                    value="{{ campo.value | default:'' }}"
+                >
+            < /div>
+            < div>{{campo.errors}}< /div>
+        {% endfor %}
+        < div class="row mt-3">
+            < div class="col-12">
+                < input type="submit" value="Guardar" class="btn btn-success">
+                < a href="javascript:history.back();" class="btn btn-secondary">Cancelar< /a>        
+            < /div>
+        < /div>
+        </code>
         
-    </pre>
-    <div class="context">
-        <a href="#arriba">Arriba</a>
-    </div>
-    <p id="4">4. </p>
-    <pre>
-        
+        * La entidad del modelo debe venir en Singular
+        * Considerar los Plugins de Django, "las mayorías" de cosas están hechas.   
     </pre>
     <div class="context">
         <a href="#arriba">Arriba</a>
     </div>
 
-    <p id="5">5. </p>
-    <pre>
-        
-    </pre>
-    <div class="context">
-        <a href="#arriba">Arriba</a>
-    </div>
-
-    <p id="6">6. </p>
-    <pre>
-        
-    </pre>
-    <div class="context">
-        <a href="#arriba">Arriba</a>
-    </div>  
-
-    <p id="7">7. </p>
-    <pre>
-        
-    </pre>
-    <div class="context">
-        <a href="#arriba">Arriba</a>
-    </div>
-    
-    <p id="8">8. </p>
-    <pre>
-        
-    </pre>
-    <div class="context">
-        <a href="#arriba">Arriba</a>
-    </div>
-    
-    <p id="9">9. </p>
-    <pre>
-        
-    </pre>
-    <div class="context">
-        <a href="#arriba">Arriba</a>
-    </div>
-
-    <p id="10">10. </p>
-    <pre>
-        
-    </pre>
-    <div class="context">
-        <a href="#arriba">Arriba</a>
-    </div>
-    
-    <p id="11">11. </p>
-    <pre>
-        
-    </pre>
-    <div class="context">
-        <a href="#arriba">Arriba</a>
-    </div>
-    <br>
-    <br>
-    
-    <p id="12">12. </p>
-    <pre>
-        
-    </pre>
-    <div class="context">
-        <a href="#arriba">Arriba</a>
-    </div>
-    <br>
-    <br>
-
-    <p id="13">13. </p>
-    <pre>
-        
-    </pre>
-    <div class="context">
-        <a href="#arriba">Arriba</a>
-    </div>
-    <br>
-    <br>
-
-    <p id="14">14. </p>
-    <pre>
-        
-    </pre>
-    <div class="context">
-        <a href="#arriba">Arriba</a>
-    </div>
-    <br>
-    <br>
-
-    <p id="15">15. </p>
-    <pre>
-        
-    </pre>
-    <div class="context">
-        <a href="#arriba">Arriba</a>
-    </div>
-    <br>
-    <br>
-
-    <p id="16">16. </p>
-    <pre>
-        
-    </pre>
-    <div class="context">
-        <a href="#arriba">Arriba</a>
-    </div>
-    <br>
-    <br>
-
-    <p id="17">17. </p>
-    <pre>
-        
-    </pre>
-    <div class="context">
-        <a href="#arriba">Arriba</a>
-    </div>
-    <br>
-    <br>
-
-    <p id="18">18. </p>
-    <pre>
-        
-    </pre>
-    <div class="context">
-        <a href="#arriba">Arriba</a>
-    </div>
-    <br>
-    <br>
-
-    <p id="19">19. </p>
-    <pre>
-        
-    </pre>
-    <div class="context">
-        <a href="#arriba">Arriba</a>
-    </div>
-    <br>
-    <br>
-
-    <p id="20">20. </p>
-    <pre>
-        
-    </pre>
-    <div class="context">
-        <a href="#arriba">Arriba</a>
-    </div>
-    <br>
-    <br>
-
-    <p id="21">21. </p>
-    <pre>
-        
-    </pre>
-    <div class="context">
-        <a href="#arriba">Arriba</a>
-    </div>
-    <br>
-    <br>
-
-    <p id="22">22. </p>
-    <pre>
-        
-    </pre>
-    <div class="context">
-        <a href="#arriba">Arriba</a>
-    </div>
-    <br>
-    <br>
-
-    <p id="23">23. </p>
-    <pre>
-        
-    </pre>
-    <div class="context">
-        <a href="#arriba">Arriba</a>
-    </div>
-    <br>
-    <br>
-
-    <p id="24">24. </p>
-    <pre>
-        
-    </pre>
-    <div class="context">
-        <a href="#arriba">Arriba</a>
-    </div>
-    <br>
-    <br>
     
     <div class="context">
         <a href="../14/index.html">Volver</a>
