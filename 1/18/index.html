@@ -6,7 +6,7 @@
     <title>Desarrollo Django</title>
     <link rel="shortcut icon" type=image/jpg href="../../img/logo/favicon.ico"/>
     <link href="https://fonts.googleapis.com/css2?family=Carrois+Gothic+SC&display=swap" rel="stylesheet"> 
-    <link rel="stylesheet" href="../../css/stylesBlue.css">
+    <link rel="stylesheet" href="../../css/stylesRed.css">
 
 </head>
 <body>
@@ -16,200 +16,182 @@
         <a href="../19/index.html">Siguiente</a>
     </div>
         
-    <div class="contenido" id="arriba">
+    <div class="contenido_p" id="arriba">
         <p>Desarrollo Django</p>
     </div>
 
-    <h1>18 - Django Authentication  Autenticación y autorización desde Django (Clase 28)</h1>
-    <ol>
+    <h1 class="contenido_p" >18 - Django Authentication  Autenticación y autorización desde Django (Clase 28)</h1>
+    <ul class="contenido_p">
         <li>
-            <a href="#1">1. </a>
+            <a href="#1">1. Autenticación y Autorización</a>
         </li>
         <li>
-            <a href="#2">2. </a>
+            <a href="#2">2. ¿Qué es Django Authentication?</a>
         </li>
         <li>
-            <a href="#3">3. </a>
+            <a href="#3">3. Configuración</a>
         </li>
         <li>
-            <a href="#4">4. </a>
+            <a href="#4">4. Objeto User</a>
         </li>
         <li>
-            <a href="#5">5. </a>
+            <a href="#5">5. Contraseñas</a>
         </li>
         <li>
-            <a href="#6">6. </a>
+            <a href="#6">6. Autenticando usuarios</a>
         </li>
         <li>
-            <a href="#7">7. </a>
+            <a href="#7">7. Permisos y Autorización</a>
         </li>
         <li>
-            <a href="#8">8. </a>
+            <a href="#8">8. Iniciar y cerrar sesión en un usuario</a>
         </li>
         <li>
-            <a href="#9">9. </a>
+            <a href="#9">9. Limitar acceso a usuarios registrados en vistas</a>
         </li>
         <li>
-            <a href="#10">10. </a>
+            <a href="#10">10. Limitar acceso a usuarios registrados en vistas basadas en clases</a>
         </li>
         <li>
-            <a href="#11">11. </a>
+            <a href="#11">11. Limitar acceso a vistas basadas según permisos</a>
         </li>
         <li>
-            <a href="#12">12. </a>
+            <a href="#12">12. Limitar acceso a usuarios registrados en templates</a>
         </li>
         <li>
-            <a href="#13">13. </a>
+            <a href="#13">13. Limitar acceso a permisos en templates</a>
         </li>
         <li>
-            <a href="#14">14. </a>
+            <a href="#14">14. Configurar urls de autenticación por defecto</a>
         </li>
         <li>
-            <a href="#15">15. </a>
+            <a href="#15">15. Urls y nombres generados por defecto</a>
         </li>
         <li>
-            <a href="#16">16. </a>
+            <a href="#16">15. Vistas de autenticación</a>
         </li>
         <li>
-            <a href="#17">17. </a>
+            <a href="#17">15. Extendiendo el Usuario</a>
         </li>
-        <li>
-            <a href="#18">18. </a>
-        </li>
-        <li>
-            <a href="#19">19. </a>
-        </li>
-        <li>
-            <a href="#20">20. </a>
-        </li>
-        <li>
-            <a href="#21">21. </a>
-        </li>
-        <li>
-            <a href="#22">22. </a>
-        </li>
-        <li>
-            <a href="#23">23. </a>
-        </li>
-        <li>
-            <a href="#24">24. </a>
-        </li>
-        <li>
-            <a href="#25">25. </a>
-        </li>
-    </ol>
+    </ul>
 
-    <p id="1">1. </p>
+    <p class="contenido_p" id="1">1. Autenticación y Autorización</p>
     <pre>
-        <img src="../../img/img_ref/img19.png" alt="">
-        <img src="../../img/img_ref/img20.png" alt="">
-        <img src="../../img/img_ref/img21.png" alt="">
-        <img src="../../img/img_ref/img22.png" alt="">
-        <img src="../../img/img_ref/img23.png" alt="">
-        <img src="../../img/img_ref/img24.png" alt="">
-        <img src="../../img/img_ref/img25.png" alt="">
-        <img src="../../img/img_ref/img26.png" alt="">
-        
-        ---
-
-        
         <img src="../../img/img_ref/img75.png" alt="">  
-        <img src="../../img/img_ref/img76.png" alt="">  
-        <img src="../../img/img_ref/img77.png" alt="">  
-        <img src="../../img/img_ref/img78.png" alt="">  
-        <img src="../../img/img_ref/img79.png" alt="">  
-        <img src="../../img/img_ref/img80.png" alt="">  
-        <img src="../../img/img_ref/img81.png" alt="">  
-        <img src="../../img/img_ref/img82.png" alt="">  
-        <img src="../../img/img_ref/img83.png" alt="">  
-        <img src="../../img/img_ref/img84.png" alt="">  
-        <img src="../../img/img_ref/img85.png" alt="">  
-        <img src="../../img/img_ref/img86.png" alt="">  
-        <img src="../../img/img_ref/img87.png" alt="">  
-        <img src="../../img/img_ref/img88.png" alt="">  
-        <img src="../../img/img_ref/img89.png" alt="">  
-        <img src="../../img/img_ref/img90.png" alt="">  
-        
 
+        Autenticación   -> Quien soy your
+            Se, tengo, soy  factores básic  os.
+    
+        Autorización    -> Que puedo hacer        
     </pre>
     <div class="context">
         <a href="#arriba">Arriba</a>
     </div>
 
-    <p id="2">2. </p>
+    <p  class="contenido_p" id="2">2. ¿Qué es Django Authentication?</p>
     <pre>
-
+        <img src="../../img/img_ref/img76.png" alt="">  
+        
+        Autentica y autoriza, django auth.
     </pre>
     <div class="context">
         <a href="#arriba">Arriba</a>
     </div>
     
-    <p id="3">3. </p>
+    <p class="contenido_p" id="3">3. Configuración</p>
     <pre>
         
+        <img src="../../img/img_ref/img77.png" alt="">  
     </pre>
     <div class="context">
         <a href="#arriba">Arriba</a>
     </div>
-    <p id="4">4. </p>
+    <p class="contenido_p" id="4">4. Objeto User</p>
     <pre>
+        <img src="../../img/img_ref/img78.png" alt="">  
         
+        Con sus respectivos atributos
+
+        <img src="../../img/img_ref/img79.png" alt="">  
+        Usamos el manager    -> .objects
+
+        is_staff   -> si está en un True, entrá al Django Admin        
     </pre>
     <div class="context">
         <a href="#arriba">Arriba</a>
     </div>
 
-    <p id="5">5. </p>
+    <p class="contenido_p" id="5">5. Contraseñas</p>
     <pre>
-        
+        <img src="../../img/img_ref/img80.png" alt="">  
+        Las constraseñas cuando se ingresan, se hashean..
+
+        El hash que se encuentra en la base de datos.. Es comparado con el hash creado al momento de iniciar sesión.
+        Si son iguales, está okey.. Todo esto es configurable
     </pre>
     <div class="context">
         <a href="#arriba">Arriba</a>
     </div>
 
-    <p id="6">6. </p>
+    <p class="contenido_p" id="6">6. Autenticando usuarios</p>
     <pre>
-        
+        <img src="../../img/img_ref/img81.png" alt="">  
+        Autenticar no quiere decir loguearse.. Autenticar es Validar si es correcto el usuario y contraseña.
+        Loguearse es guardar el usuario y la contraseña en la sesión, 
     </pre>
     <div class="context">
         <a href="#arriba">Arriba</a>
     </div>  
 
-    <p id="7">7. </p>
+    <p class="contenido_p" id="7">7. Permisos y Autorización</p>
     <pre>
+        <img src="../../img/img_ref/img82.png" alt="">  
+        <img src="../../img/img_ref/img83.png" alt="">  
+        <img src="../../img/img_ref/img84.png" alt="">  
+        <img src="../../img/img_ref/img85.png" alt="">  
+        <img src="../../img/img_ref/img86.png" alt="">  
         
+        El form para agregar usuario, se puede usar también en el Front.
     </pre>
     <div class="context">
         <a href="#arriba">Arriba</a>
     </div>
     
-    <p id="8">8. </p>
+    <p class="contenido_p" id="8">8. Iniciar y cerrar sesión en un usuario</p>
     <pre>
-        
+        <img src="../../img/img_ref/img87.png" alt=""> 
+
+        Acá vemos la diferencia entre autenticar y loguear.. Con el login, le pasamos el request y el user.
+
+        Con el logout(request)  deslogueamos al usuario.
     </pre>
     <div class="context">
         <a href="#arriba">Arriba</a>
     </div>
     
-    <p id="9">9. </p>
+    <p class="contenido_p" id="9">9. Limitar acceso a usuarios registrados en vistas</p>
     <pre>
-        
+        <img src="../../img/img_ref/img88.png" alt="">  
+
     </pre>
     <div class="context">
         <a href="#arriba">Arriba</a>
     </div>
 
-    <p id="10">10. </p>
+    <p class="contenido_p" id="10">10. Limitar acceso a usuarios registrados en vistas basadas en clases</p>
     <pre>
-        
+        <img src="../../img/img_ref/img89.png" alt="">  
+
     </pre>
     <div class="context">
         <a href="#arriba">Arriba</a>
     </div>
     
-    <p id="11">11. </p>
+    <p class="contenido_p" id="11">11. Limitar acceso a vistas basadas según permisos</p>
     <pre>
+        <img src="../../img/img_ref/img90.png" alt="">
         
+        También podemos hacerlo desde el template y desde la vista..
     </pre>
     <div class="context">
         <a href="#arriba">Arriba</a>
@@ -217,8 +199,9 @@
     <br>
     <br>
     
-    <p id="12">12. </p>
+    <p class="contenido_p" id="12">12. Limitar acceso a usuarios registrados en templates</p>
     <pre>
+        <img src="../../img/img_ref/img91.png" alt="">
         
     </pre>
     <div class="context">
@@ -227,126 +210,208 @@
     <br>
     <br>
 
-    <p id="13">13. </p>
+    <p class="contenido_p" id="13">13. Limitar acceso a permisos en templates</p>
     <pre>
+        <img src="../../img/img_ref/img92.png" alt="">
+        ----------------------- Ejemplo práctico
+        En el settings.py..
+
+        <code>
+        INSTALLED_APPS = [
+            #'django.contrib.admin',  # Utiliza el autodiscover para obtener el admin de todas las aplicaciones en "INSTALLED_APPS"
+            'django.contrib.admin.apps.SimpleAdminConfig',  # No utiliza el autodiscover se debe hacer todo a mano"
+            'django.contrib.auth',                          -> Corroboramos el auth
+            'django.contrib.contenttypes',
+            'django.contrib.sessions',
+            'django.contrib.messages',
+            'django.contrib.staticfiles',
+            'django_extensions',
+            'cac'                                           -> Nuestra app
+        ]
+        </code>
+        --- En el html, index.. Mostramos o no los usuarios.
+        <code>
+            {% if user.Is_authenticated %}          -> De esta manera debajo mostramos toda la data necesaria.  
+        </code>
         
-    </pre>
+        --- Ahora desde la views.py
+        <code>
+        from django.contrib.auth import authenticate, login, logout
+        
+        
+        def cac_login(request):
+            if request.method == 'POST':
+                # AuthenticationForm_can_also_be_used__
+                username = request.POST['username']
+                password = request.POST['password']
+                user = authenticate(request, username=username, password=password)              -> Con el authenticate
+                if user is not None:
+                    form = login(request, user)
+                    messages.success(request, f' Bienvenido/a {username} !!')
+                    return redirect('inicio')
+                else:
+                    messages.error(request, f'Cuenta o password incorrecto, realice el login correctamente')
+            
+            form = AuthenticationForm()
+            return render(request, 'cac/publica/login.html', {'form': form, 'title': 'Log in'})
+        </code>
+        
+        --- Ahora desde la urls.py configuramos el logout.. 
+        <code>
+            path('cuentas/logout/',
+                 auth_views.LogoutView.as_view(template_name='cac/publica/index.html'), name='logout'),
+        </code>
+        --- Ahora desde la urls.py configuramos el login y register.. Basado en vista en clase.
+        <code>
+            path('', views.index, name='inicio'),
+            # path('accounts/', include('django.contrib.auth.urls')),
+            path('cuentas/registrarse', views.cac_registrarse, name='registrarse'),
+            path('cuentas/login', views.cac_login, name='login'),        
+        </code>
+    </pre>    
     <div class="context">
         <a href="#arriba">Arriba</a>
     </div>
     <br>
     <br>
 
-    <p id="14">14. </p>
+    <p class="contenido_p" id="14">14. Configurar urls de autenticación por defecto</p>
     <pre>
-        
+        Usaremos vistas basadas en clase.. Es más sencillo para sobreescribir algo.
+
+        <img src="../../img/img_ref/img93.png" alt="">
+
+        Si registramos la url accounts/ nos provee todo de manera automática, menos el register..
+
+        accounts/login      -> De esta manera manejamos de manera automática y están relacionadas
+        accounts/logout
     </pre>
     <div class="context">
         <a href="#arriba">Arriba</a>
     </div>
     <br>
     <br>
-
-    <p id="15">15. </p>
+    
+    <p class="contenido_p" id="15">15. Urls y nombres generados por defecto</p>
     <pre>
         
+        <img src="../../img/img_ref/img94.png" alt="">
+        Estas son generedas de manera automáticas.. VBC -> Vistas basadas en clases.
+
+        * De esta manera, también podemos configurar el reseto de password..
+
+        Con tan poco se puede crear mucho.
     </pre>
     <div class="context">
         <a href="#arriba">Arriba</a>
     </div>
     <br>
     <br>
-
-    <p id="16">16. </p>
+    
+    <p class="contenido_p" id="16">16. Vistas de autenticación</p>
     <pre>
+        La de Login -> la loginView, tiene atributos y responsabilidades.
+
+        redirect_field_name -> Redireccion de la pagina
         
+        template_name -> indica en que lugar estará el login.html
+        
+        
+        --- Ejemplo práctico
+        <code>
+        En el urls.py... Vemos las urls de las accounts..
+        
+        urlpatterns = [
+            # accounts/login/ [name='login']
+            # accounts/logout/ [name='logout']
+            # accounts/password_change/ [name='password_change']                            -> Podemos elegir cual agregar y cual no
+            # accounts/password_change/done/ [name='password_change_done']
+            # accounts/password_reset/ [name='password_reset']
+            # accounts/password_reset/done/ [name='password_reset_done']
+            # accounts/reset/< uidb64>/< token>/ [name='password_reset_confirm']
+            # accounts/reset/done/ [name='password_reset_complete']
+            path('accounts/password_change/', auth_views.PasswordChangeView.as_view(success_url="/"), name='password_change'), 
+            path('accounts/registrarse', views.cac_registrarse, name='registrarse'),
+            # path('accounts/login', auth_views.LoginView.as_view(template_name="cac/publica/login.html"), name='login'), 
+            path('accounts/', include('django.contrib.auth.urls')),
+            # path('cuentas/login', views.cac_login, name='login'),
+        </code>
+        
+        --- Le indicamos en el settings.py
+        
+        <code>
+        # REGISTRATION
+        LOGIN_REDIRECT_URL = "inicio"           -> Donde redirigimos después del login y el logout
+        LOGOUT_REDIRECT_URL = "inicio"          -> Le indicamos el nombre del path de la url
+                                                Que es esta:
+                                                        path('', views.index, name='inicio')
+        </code>
+        
+        
+        --- Debemos agregar la carpeta dentro del templates llamado "registration" y el login.html
+        Si no existe, lo generamos.. Si existe lo sobrescribimos
+        
+        El template se hará de acuerdo a lo sugerido por Django
+        <code>
+            path('accounts/', include('django.contrib.auth.urls')),         -> Al incluir los templates por defecto, irá a buscar esa plantilla en específico
+        </code>
+        Al poner el login.html  que es el archivo base.
+                
+        <img src="../../img/img_ref/img95.png" alt="">
+        
+        <img src="../../img/img_ref/img96.png" alt="">
+        --- O bien podemos una especificamente, no de manera general como la anterior.
+
+        # path('accounts/login', auth_views.LoginView.as_view(template_name="cac/publica/login.html"), name='login'), 
+    
+        <img src="../../img/img_ref/img97.png" alt="">
+
+        Luego vemos el logout.. Va a una vista, saca de sesión al usuario.
+
+        * Podemos usar el cambio de contraseña por defecto, usando la plantilla por defecto Django..
+        Con pocas líneas tenemos toda la autenticación por defecto.        
     </pre>
     <div class="context">
         <a href="#arriba">Arriba</a>
     </div>
     <br>
     <br>
-
-    <p id="17">17. </p>
+    
+    <p class="contenido_p" id="17">17. Extendiendo el Usuario</p>
     <pre>
         
+        <img src="../../img/img_ref/img98.png" alt="">
+
+        2 maneras, generalmente se extiende el modelo existente..
+
+        El perfil de visualización, datos extras, es uno a uno con el usuario.. EL usuario maneja la autenticación.
+        
+        
+        Para abstraer el User, podemos agregarle nuevas propiedades o funcionalidades..
+        Usando el nuevo modelo.
+
+        -----------------------
+        De esta manera exigimos el login..
+        <code>
+        # @login_required
+        # def mi_vista(request):
+        #     ...
+        </code>
+
+        O bien extendemos del login en la vista base en clases..
+        <code>
+        # from django.contrib.auth.mixins import LoginRequiredMixin
+
+        # class MiVista(LoginRequiredMixin, View):
+        #     login_url = '/login/'
+        #     redirect_field_name = 'redirect_to'
+        </code>
     </pre>
     <div class="context">
         <a href="#arriba">Arriba</a>
     </div>
     <br>
     <br>
-
-    <p id="18">18. </p>
-    <pre>
-        
-    </pre>
-    <div class="context">
-        <a href="#arriba">Arriba</a>
-    </div>
-    <br>
-    <br>
-
-    <p id="19">19. </p>
-    <pre>
-        
-    </pre>
-    <div class="context">
-        <a href="#arriba">Arriba</a>
-    </div>
-    <br>
-    <br>
-
-    <p id="20">20. </p>
-    <pre>
-        
-    </pre>
-    <div class="context">
-        <a href="#arriba">Arriba</a>
-    </div>
-    <br>
-    <br>
-
-    <p id="21">21. </p>
-    <pre>
-        
-    </pre>
-    <div class="context">
-        <a href="#arriba">Arriba</a>
-    </div>
-    <br>
-    <br>
-
-    <p id="22">22. </p>
-    <pre>
-        
-    </pre>
-    <div class="context">
-        <a href="#arriba">Arriba</a>
-    </div>
-    <br>
-    <br>
-
-    <p id="23">23. </p>
-    <pre>
-        
-    </pre>
-    <div class="context">
-        <a href="#arriba">Arriba</a>
-    </div>
-    <br>
-    <br>
-
-    <p id="24">24. </p>
-    <pre>
-        
-    </pre>
-    <div class="context">
-        <a href="#arriba">Arriba</a>
-    </div>
-    <br>
-    <br>
-
     
     <div class="context">
         <a href="../17/index.html">Volver</a>

@@ -13,331 +13,415 @@
     <div class="context">
         <a href="../18/index.html">Volver</a>
         <a href="../../index.html">Inicio</a>
-        <a href="../20/index.html">Siguiente</a>
     </div>
         
-    <div class="contenido" id="arriba">
+    <div class="contenido_p" id="arriba">
         <p>Desarrollo Django</p>
     </div>
 
-    <h1>19 - Django: Rest Framework (Clase 31)</h1>
-    <ol>
+    <h1 class="contenido_p">19 - Django: Rest Framework (Clase 31)</h1>
+    <ul class="contenido_p">
         <li>
-            <a href="#1">1. </a>
+            <a href="#1">1. Recordemos</a>
         </li>
         <li>
-            <a href="#2">2. </a>
+            <a href="#2">2. REST API MODEL</a>
         </li>
         <li>
-            <a href="#3">3. </a>
+            <a href="#3">3. Modelos combinados</a>
         </li>
         <li>
-            <a href="#4">4. </a>
+            <a href="#4">4. Instalación</a>
         </li>
         <li>
-            <a href="#5">5. </a>
+            <a href="#5">5. Serialización</a>
         </li>
         <li>
-            <a href="#6">6. </a>
+            <a href="#6">6. Ejemplo práctico</a>
         </li>
         <li>
-            <a href="#7">7. </a>
+            <a href="#7">7. Serializers.py</a>
         </li>
         <li>
-            <a href="#8">8. </a>
+            <a href="#8">8. Views.py (ViewSets)</a>
         </li>
         <li>
-            <a href="#9">9. </a>
+            <a href="#9">9. Urls.py (Routers)</a>
         </li>
         <li>
-            <a href="#10">10. </a>
+            <a href="#10">10. Ejemplo práctico (interfaz automática)</a>
         </li>
         <li>
-            <a href="#11">11. </a>
+            <a href="#11">11. Despliegue</a>
         </li>
-        <li>
-            <a href="#12">12. </a>
-        </li>
-        <li>
-            <a href="#13">13. </a>
-        </li>
-        <li>
-            <a href="#14">14. </a>
-        </li>
-        <li>
-            <a href="#15">15. </a>
-        </li>
-        <li>
-            <a href="#16">16. </a>
-        </li>
-        <li>
-            <a href="#17">17. </a>
-        </li>
-        <li>
-            <a href="#18">18. </a>
-        </li>
-        <li>
-            <a href="#19">19. </a>
-        </li>
-        <li>
-            <a href="#20">20. </a>
-        </li>
-        <li>
-            <a href="#21">21. </a>
-        </li>
-        <li>
-            <a href="#22">22. </a>
-        </li>
-        <li>
-            <a href="#23">23. </a>
-        </li>
-        <li>
-            <a href="#24">24. </a>
-        </li>
-        <li>
-            <a href="#25">25. </a>
-        </li>
-    </ol>
+    </ul>
 
-    <p id="1">1. </p>
+    <p  class="contenido_p" id="1">1. Recordemos</p>
     <pre>
-        <img src="../../img/img_ref/img27.png" alt="">
-        <img src="../../img/img_ref/img28.png" alt="">
-        <img src="../../img/img_ref/img29.png" alt="">
-        <!-- <img src="../../img/img_ref/img30.png" alt=""> -->
+        <img src="../../img/img_ref/img99.png" alt="">   
 
-
-        _--
-
-        
-        <img src="../../img/img_ref/img93.png" alt="">  
-        <img src="../../img/img_ref/img94.png" alt="">  
-        <img src="../../img/img_ref/img95.png" alt="">  
-        <img src="../../img/img_ref/img96.png" alt="">  
-        <img src="../../img/img_ref/img97.png" alt="">  
-        <img src="../../img/img_ref/img98.png" alt="">  
-        <img src="../../img/img_ref/img99.png" alt="">  
     </pre>
     <div class="context">
         <a href="#arriba">Arriba</a>
     </div>
 
-    <p id="2">2. </p>
+    <p class="contenido_p" id="2">2. REST API MODEL</p>
     <pre>
+        <img src="../../img/img_ref/img100.png" alt=""> 
+        Para generar una Api dentro del sitio..
+        No orientado a microservicios.
 
+        Nuestra Api le brinda información a otro sistema.
+        Con una aplicación de Django, podemos proveer un servicio.
+
+        Con este tipo de modelo.. Tenemos un PUNTO DE ENTRADA.. El cual se comunicará con el servidor.
+        Es el endpoint, la api está dentro del server.
+
+        No es una arquitectura, es una manera de modelar una Api.
+        También están las SOAP, son "Metodologías"..
+
+
+        ¿Para que se piensa?
+        Es un punto donde se recibe un solocitud un request, y emitimos una respuesta, un response.
+        Lo que recibe el cliente:
+            - json  -> Más independiente de la tecnlogía.
+            - xml
+            - html
+
+        Es una manera de pensar una arquitectura, empleando Rest Api, para permitir servicios, antes eran Soap.
     </pre>
     <div class="context">
         <a href="#arriba">Arriba</a>
     </div>
     
-    <p id="3">3. </p>
+    <p class="contenido_p" id="3">3. Modelos combinados</p>
     <pre>
-        
+        <img src="../../img/img_ref/img101.png" alt=""> 
+
+        La página está creada en HTML y..
+        La api la proveemos para un sitio externo, que puede ser un celular, un banco, etc.. 
+            - De esta manera permitimos a través del framework para comunicar con otros servicios.
+            - Podría existir o no.
+
+
+        En la página, proveemos un endpoint para mostrar a los estudiantes.
+            - Por medio de la api se puede hacer un post, un get, etc.. Dependerá de la lógica de negocio.
     </pre>
     <div class="context">
         <a href="#arriba">Arriba</a>
     </div>
-    <p id="4">4. </p>
+    <p class="contenido_p" id="4">4. Instalación</p>
     <pre>
-        
+        <img src="../../img/img_ref/img102.png" alt="">
+
+        djangorestframework -> Con el pip en el entorno..
+
+        La debemos agregar en las app instaladas.
+    
+        Y debemos agregar las urls que deseemos manejar..
+            - Por defecto, crea una api para autenticar.. Responde con el user.
+            - Además crea la parte visual.
+    
+        * Autenticación con Token es lo más utilizado.. Lo anterior no tanto.    
     </pre>
     <div class="context">
         <a href="#arriba">Arriba</a>
     </div>
 
-    <p id="5">5. </p>
+    <p class="contenido_p" id="5">5. Serialización</p>
     <pre>
+        <img src="../../img/img_ref/img103.png" alt="">
+
+        Transformar un objeto, en un string (Texto), algo serializable..
+        Que puede ser transportado a través de HTTP..
         
+        Serializar: Agarramos el objeto lo pasamos a un string
+        Desserializamos: Agarramos el String y lo pasamos a un objeto.
+        
+        ¿Que objeto? Dependerá de la tecnlogía..
+        
+        Server, objetos de python, de django, modelos.. Todo esto lo transforma y lo envía al cliente.        
     </pre>
     <div class="context">
         <a href="#arriba">Arriba</a>
     </div>
 
-    <p id="6">6. </p>
+    <p class="contenido_p" id="6">6. Ejemplo práctico</p>
     <pre>
-        
+        <img src="../../img/img_ref/img104.png" alt=""> 
+
+        --- Ejemplo
+        No usaremos microservicios..
+        De esta manera no individualizamos sino más bien acoplamos la Api al website.
+
+
+        Generamos la app de django..
+            - django-admin startapp cac_api
+
+                - serializer    ->
+                - urls.py       -> Punto de entrada a nuestra Api.
+                - views.py      -> Funciones que reciben la llamada de la URL.
     </pre>
     <div class="context">
         <a href="#arriba">Arriba</a>
     </div>  
 
-    <p id="7">7. </p>
+    <p class="contenido_p" id="7">7. Serializers.py</p>
     <pre>
+        <img src="../../img/img_ref/img105.png" alt=""> 
+        - Que hace? Transforma el objeto a un string o al revés.
+        Ya viene todo armado.. De esta manera asociamos el modelo con el ModelSerializer
         
+        En este ejemplo vemos asociado el modelo con la api.. O sea, ese acoplamiento y no usando la estructura de microservicios.        
     </pre>
     <div class="context">
         <a href="#arriba">Arriba</a>
     </div>
     
-    <p id="8">8. </p>
+    <p class="contenido_p" id="8">8. Views.py (ViewSets)</p>
     <pre>
+        <img src="../../img/img_ref/img106.png" alt=""> 
+        Usamos las vistas que provee el framwork.. Vistas basadas en calse, VBC
+
+            EstudianteMViewSer -> Nombre elegido arbitrariamente con relación al modelo.
         
+            El queryset lo manejamos a través del manager.. objects.
+        
+            nos traemos el serializer.EstudianteMSerializer
+        
+            permission_classes ->   Si la vista tiene o no seguridad..
+                                    En el ejemplo exigimos la autenticación y que sea read only
+        
+        
+        * De esta manera generamos las vistas para obtener lo que sea necesario de acuerdo a los estudiantes..
+        Obtenerlos todos, algunos, uno solo y etc..
     </pre>
     <div class="context">
         <a href="#arriba">Arriba</a>
     </div>
     
-    <p id="9">9. </p>
+    <p class="contenido_p" id="9">9. Urls.py (Routers)</p>
     <pre>
+        Ahora con las vistas creadas.. Registradas a través de la vista basada en Clase ModelViewSet..
+        Procedemos armar las urls.. 
+        <img src="../../img/img_ref/img107.png" alt=""> 
+
+        con el router.. Genera todo de manera automática..
+        - Es decir vistas asociadas a urls.. de listar, grabar uno, actualizar uno, etc.
+            
+        --- Ejemplo Práctico
+        Generamos nuestra app_api..
         
+        
+        --- serializers.py
+        <code>
+        from rest_framework import serializers
+        from cac.models import EstudianteM          -> Importamos desde el modelo del cac
+        
+        class EstudianteMSerializer(serializers.ModelSerializer):                                   -> Hereda del framework
+            class Meta:
+                model = EstudianteM                                                                 -> Asociado al EstudianteM
+                fields = ['id', 'nombre_m', 'apellido_m', 'email_m', 'dni_m', 'matricula_m']        * El modelo es que tenemos en nuestro proyecto general.
+                                                                                                    * 
+        </code>    
+        
+        --- urls.py
+        <code>
+        from django.urls import path, include
+        from rest_framework.routers import DefaultRouter
+        from cac_api import views
+        
+        router = DefaultRouter()
+        router.register(r'estudiantes', views.EstudianteMViewSet, basename='estudiante')            -> De manera automática nos traemos todas
+        
+        urlpatterns = [                                                                             * O bien, especificando las url de manera manual..
+            path('', include(router.urls)),                                                         -> Agregamos las urls de manera automática
+            path('api-auth', include('rest_framework.urls', namespace='rest_framework'))            -> Genera la capa de autenticación automática
+        ]
+        </code>
+        
+        --- views.py
+        <code>
+        from rest_framework import viewsets
+        from rest_framework import permissions
+        from cac.models import EstudianteM
+        from cac_api import serializers
+        
+        
+        # Create your views here.
+        class EstudianteMViewSet(viewsets.ModelViewSet):
+            queryset = EstudianteM.objects.all().order_by('id')                 -> Acá podemos hacer los filtros y los cambios necesarios en la info que traemos.
+            serializer_class = serializers.EstudianteMSerializer
+            permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+        </code>
+
+        --- Ahora en el pig_22820/urls.py
+        <code>
+        from django.contrib import admin
+        from django.urls import path
+        from django.urls.conf import include
+        from cac.admin import mi_admin
+        from cac_api import urls as api_urls                    -> Lo nombramos como api_urls
+        
+        urlpatterns = [
+            path('cac_api/', include(api_urls)),                -> Linkeamos la api
+            path('cacadmin/', mi_admin.urls),
+            path('admin/', admin.site.urls),
+            path('', include('cac.urls'))
+        ]
+        </code>    
     </pre>
     <div class="context">
         <a href="#arriba">Arriba</a>
     </div>
 
-    <p id="10">10. </p>
+    <p class="contenido_p" id="10">10. Ejemplo práctico (interfaz automática)</p>
     <pre>
+        <img src="../../img/img_ref/img108.png" alt=""> 
+        localhost:8000/cac_api/            -> Nos genera el endpoin de nuestra base de datos.
+
+        - Ahora si apuntamos con el postman a esa url.. Aplicamos los verbos HTTPS
+    
+    
+        Para hacer un post, es necesario hacer la autenticación.. De lo contrario solo usamos el get.
+    
+    
+        localhost:8000/cac_api/         -> Si vamos al login, 
+            - Ponemos el usuario y la contraseña.. Iniciamos y podemos entrar con el Post.
+            - Si fuese necesario.. Podemos hacer el put a través del id de los elementos.. También el Delete.
+    
+        * De esta manera nos provee toda una interfaz gráfica..    
+
+        -----------------------
+
+        Si quisieramos hacerlo desde el frontend.. Podemos hacer un fetch usando js..
+        -- Por ejemplo
+        <code>
+        const divProyectos = document.querySelector("#divProyectos");
         
+        fetch('/api_proyectos')                                         -> Le armamos 
+          .then((response) => response.json())
+          .then((data) => {
+            console.log(data);
+            let proyectos = data.data;
+            proyectos.forEach(proyecto => {
+                let html = renderProyecto(proyecto);
+                divProyectos.insertAdjacentHTML('beforeend', html);
+            });
+          });
+        </code>
+        -----------------------
+        Usar un plugins o el framework view para que desde la vista.. Podemos consumir la api.
+        O bien el propio Django..
+            
+            import requests
+        
+            respuesta = requests.get("https://api")         -> La requests la podemos manejar a gusto.. Que mostrar y demás.
+                                                            * Esto se hace en la views.py, el tiempo de respuesta puede variar y el servidor se puede caer.
+                                                            * AWS es gratis, pero c
+        
+        De esta manera con un serializer para mostrar la información de acuerdo a lo necesario.
+        
+        También hay que considerar el asincronismo al momento de manejar las Apis.. Hacer el await y demás.
+        
+        -----------------------        
     </pre>
+    <div class="context">
+        <a href="#arriba">Arriba</a>
+    </div>
+
+    <p class="contenido_p" id="11">11. Despliegue</p>
+    <pre>
+        Django: Despliegue en servidor
+            ● Tipos de infraestructuras (IaaS, PaaS, SaaS)
+            ● Load Balancer
+            ● Python Anywhere
+            ● Heroku
+            ● Amazon EC2
+            ● Docker
+
+        Python Anywhere -> Debemos crear usuario y demás.
+        render.com            
+
+        ----------------------- Infreastructuras        
+        <img src="../../img/img_ref/img109.png" alt=""> 
+        
+        - ¿Donde guardar los archivos?
+        - ¿Hacer o no backup de los archivos?
+        - ¿Tener un servicio de git?
+        - ¿Si va estar todo en el mismo servidor? ¿O aparte? ¿Como se van a conectar?
+        - ¿Si tendremos servidores comunicados como respaldo o queda offline nuestra página?
+        
+        - Infrasestructura = Dinero
+        
+        
+        SAAS -> Software como servicios. Utilizamos el Software. Menos control
+        
+        PAAS -> Plataforma como servicios. Como Heroku.
+        
+        IAAS -> Infrasestructura como servicios. Aws, azure, google compute engine. Armamos la estructura.
+                * Es mayor el control que podemos usar, tenemos que armar una maquina virtual, colocarle un sistema operativo, conectarlo con la base de datos.
+                * Pensar la seguridad y demás, o sea, muchos más conocimientos.
+        
+                ----------------------- PAAS
+                Heroku          
+                
+                
+                PythonAnywhere  -> Tiene una capa gratuita.
+                                *  Dejo de proveer postgresssql de manera gratuita, solo mysql.
+                
+                ----------------------- Elastik VeanStalk - EC2(Server), RDS(DB), Files(S3)
+
+        <img src="../../img/img_ref/img110.png" alt=""> 
+        <img src="../../img/img_ref/img111.png" alt=""> 
+        - Para armar un servidor de Django.
+
+
+        EC2 ->  Maquina virtual, para django es mejor linux.
+                * Tener replicas.
+                - Arriba una capa, el Load Balancer una maquina, que va equilibrando los request.. Balanceando las Cargas.
+                                    - De esta manera tendremos un response más rápido.
+    
+        S3  ->  Servicio de guardado de archivos estáticos.
+                Storage Service, se guarda en otro server
+    
+        RDS ->  Relation Database, donde guardamos la base de datos.
+                Hay capas gratuitas en cada servicio..   FREE TRIAL
+                Estan pre definidas.. 
+
+        ----------------------- ¿Que es DOcker?
+        
+        Es un software, que maneja contenedores.
+        Es una maquina virtual ejecutable dentro de otro sistema operativo.
+        
+        Plataformas -> Kubernetes.
+        
+        Hace lo que tendríamos hacer en un sistema operativo.
+            - Asignar memoria.
+            - Configurar puertos.           ->  Son sentencias que luego corren en otros sistemas.
+            - Conectar a la base de datos       
+        
+        Docker es el intermediario..    Y con las sentencias es el plan de acción, para ejecutar todo.
+                                        Maquina virtual ejecutable adentro de cualquier sistema operativo que posea docker
+        
+        
+        ----------------------- 
+        Pythonanywhere + Github
+        
+        Más sencillo para hacer el despliegue de manera automática.
+        Creamos el Api Token.. Deja activo la instancia para luego utilizarla.
+        
+        Databases, creamos la instancia de base de datos.    
+        </pre>
     <div class="context">
         <a href="#arriba">Arriba</a>
     </div>
     
-    <p id="11">11. </p>
-    <pre>
-        
-    </pre>
-    <div class="context">
-        <a href="#arriba">Arriba</a>
-    </div>
-    <br>
-    <br>
     
-    <p id="12">12. </p>
-    <pre>
-        
-    </pre>
-    <div class="context">
-        <a href="#arriba">Arriba</a>
-    </div>
-    <br>
-    <br>
-
-    <p id="13">13. </p>
-    <pre>
-        
-    </pre>
-    <div class="context">
-        <a href="#arriba">Arriba</a>
-    </div>
-    <br>
-    <br>
-
-    <p id="14">14. </p>
-    <pre>
-        
-    </pre>
-    <div class="context">
-        <a href="#arriba">Arriba</a>
-    </div>
-    <br>
-    <br>
-
-    <p id="15">15. </p>
-    <pre>
-        
-    </pre>
-    <div class="context">
-        <a href="#arriba">Arriba</a>
-    </div>
-    <br>
-    <br>
-
-    <p id="16">16. </p>
-    <pre>
-        
-    </pre>
-    <div class="context">
-        <a href="#arriba">Arriba</a>
-    </div>
-    <br>
-    <br>
-
-    <p id="17">17. </p>
-    <pre>
-        
-    </pre>
-    <div class="context">
-        <a href="#arriba">Arriba</a>
-    </div>
-    <br>
-    <br>
-
-    <p id="18">18. </p>
-    <pre>
-        
-    </pre>
-    <div class="context">
-        <a href="#arriba">Arriba</a>
-    </div>
-    <br>
-    <br>
-
-    <p id="19">19. </p>
-    <pre>
-        
-    </pre>
-    <div class="context">
-        <a href="#arriba">Arriba</a>
-    </div>
-    <br>
-    <br>
-
-    <p id="20">20. </p>
-    <pre>
-        
-    </pre>
-    <div class="context">
-        <a href="#arriba">Arriba</a>
-    </div>
-    <br>
-    <br>
-
-    <p id="21">21. </p>
-    <pre>
-        
-    </pre>
-    <div class="context">
-        <a href="#arriba">Arriba</a>
-    </div>
-    <br>
-    <br>
-
-    <p id="22">22. </p>
-    <pre>
-        
-    </pre>
-    <div class="context">
-        <a href="#arriba">Arriba</a>
-    </div>
-    <br>
-    <br>
-
-    <p id="23">23. </p>
-    <pre>
-        
-    </pre>
-    <div class="context">
-        <a href="#arriba">Arriba</a>
-    </div>
-    <br>
-    <br>
-
-    <p id="24">24. </p>
-    <pre>
-        
-    </pre>
-    <div class="context">
-        <a href="#arriba">Arriba</a>
-    </div>
-    <br>
-    <br>
-
     
     <div class="context">
         <a href="../18/index.html">Volver</a>
         <a href="../../index.html">Inicio</a>
-        <a href="../20/index.html">Siguiente</a>
     </div>
 
     <script src="js/01.js"></script>
