@@ -15,309 +15,231 @@
         <a href="../../index.html">Inicio</a>
         <a href="../9/index.html">Siguiente</a>
     </div>
-    <div class="contenido" id="arriba">
+    <div class="contenido_p" id="arriba">
         <p>Desarrollo Django</p>
     </div>
 
-    <h1>8 - Formularios - 1 (Clase 16)</h1>
-    <ol>
+    <h1 class="contenido_p">8 - Formularios - 1 (Clase 16)</h1>
+    <ul class="contenido_p">
         <li>
-            <a href="#1">1. </a>
+            <a href="#1">1. Formularios</a>
         </li>
         <li>
-            <a href="#2">2. </a>
+            <a href="#2">2. Formularios en HTML</a>
         </li>
         <li>
-            <a href="#3">3. </a>
+            <a href="#3">3. Http Methods</a>
         </li>
         <li>
-            <a href="#4">4. </a>
+            <a href="#4">4. Formularios en DJANGO (template)</a>
         </li>
         <li>
-            <a href="#5">5. </a>
+            <a href="#5">5. Formularios en DJANGO (urls.py y forms.py)</a>
         </li>
         <li>
-            <a href="#6">6. </a>
+            <a href="#6">6. Formularios en DJANGO (views.py)</a>
         </li>
         <li>
-            <a href="#7">7. </a>
+            <a href="#7">7. Ciclo formularios</a>
         </li>
-        <li>
-            <a href="#8">8. </a>
-        </li>
-        <li>
-            <a href="#9">9. </a>
-        </li>
-        <li>
-            <a href="#10">10. </a>
-        </li>
-        <li>
-            <a href="#11">11. </a>
-        </li>
-        <li>
-            <a href="#12">12. </a>
-        </li>
-        <li>
-            <a href="#13">13. </a>
-        </li>
-        <li>
-            <a href="#14">14. </a>
-        </li>
-        <li>
-            <a href="#15">15. </a>
-        </li>
-        <li>
-            <a href="#16">16. </a>
-        </li>
-        <li>
-            <a href="#17">17. </a>
-        </li>
-        <li>
-            <a href="#18">18. </a>
-        </li>
-        <li>
-            <a href="#19">19. </a>
-        </li>
-        <li>
-            <a href="#20">20. </a>
-        </li>
-        <li>
-            <a href="#21">21. </a>
-        </li>
-        <li>
-            <a href="#22">22. </a>
-        </li>
-        <li>
-            <a href="#23">23. </a>
-        </li>
-        <li>
-            <a href="#24">24. </a>
-        </li>
-        <li>
-            <a href="#25">25. </a>
-        </li>
-    </ol>
+        
+    </ul>
 
-    <p id="1">1. </p>
+    <p class="contenido_p" id="1">1. Formularios</p>
     <pre>
-        <img src="../../img/img_ref/img16.png" alt="">
+        <img src="../../img/extras/8-1.png" alt="">  
+        Ahora tendremos el acoplamiento entre vista y plantilla..
+            - Luego también con el modelo
 
-    </pre>
-    <div class="context">
-        <a href="#arriba">Arriba</a>
-    </div>
-
-    <p id="2">2. </p>
-    <pre>
-
+        Las vistas, son las funciones de python, las clases..
+            El formulario lo dibujamos de acuerdo a lo que sugiere django.
     </pre>
     <div class="context">
         <a href="#arriba">Arriba</a>
     </div>
     
-    <p id="3">3. </p>
+    <p class="contenido_p" id="2">2. Formularios en HTML</p>
     <pre>
+        <img src="../../img/extras/8-2.png" alt="">  
         
+        * Donde -> Que backend va a recibir los datos, el hacia donde van los datos.
+        * Como  -> El método que se utilizará
+        <code>
+                Donde               como
+              
+        < form action=“url“      method=“post”> 
+            < input>
+            ...             -> Lo que vaya dentro de los inputs, será lo que se guardará.
+                            -  Cargan los datos, interactuamos con el usuario.
+            < input>
+            < input type=“submit” value=“Guardar”>
+                        cuando
+        < /form>        
+        </code>
     </pre>
     <div class="context">
         <a href="#arriba">Arriba</a>
     </div>
-    <p id="4">4. </p>
+    
+    <p class="contenido_p" id="3">3. Http Methods</p>
     <pre>
+        <img src="../../img/extras/8-3.png" alt="">
         
-    </pre>
-    <div class="context">
-        <a href="#arriba">Arriba</a>
-    </div>
+        El uso de los verbos, dependerá de lo que deseemos realizar.
 
-    <p id="5">5. </p>
-    <pre>
-        
+        Usando GET  -> No afecta al sistema.    -> Los datos se ven en la url
+        Usando Post -> Afecta al Sistema        -> No    
     </pre>
     <div class="context">
         <a href="#arriba">Arriba</a>
     </div>
-
-    <p id="6">6. </p>
+    <p class="contenido_p" id="4">4. Formularios en DJANGO (template)</p>
     <pre>
+        <img src="../../img/extras/8-4.png" alt="">  
         
+        *Donde: Le ponemos la url de nuestro backend
+
+        <code>
+                        donde                       como
+        < form action="{% url "contacto" %}"     method="post">
+            
+            {% csrf_token %}        -> Le agregamos la seguridad, para evitar el cross site 
+            
+            {{ contacto_form }}     -> Elementos de entrada, distintas formas de mostrar
+
+            < input type="submit" value="Contactar">
+                        cuando
+        < /form>
+        </code>
+    </pre>
+    <div class="context">
+        <a href="#arriba">Arriba</a>
+    </div>
+    
+    <p class="contenido_p" id="5">5. Formularios en DJANGO (urls.py y forms.py)</p>
+    <pre>
+        <img src="../../img/extras/8-5.png" alt="">  
+        
+        urls.py:   Apuntamos a esta url con el action a través del form.. 
+
+        <code>
+            path('contacto', views.contacto, name="contacto") DONDE
+        </code>
+    
+        forms.py:   Armamos nuestro formulario de acuerdo a lo necesario..
+        <code>
+        from django import forms
+        
+        class ContactoForm(forms.Form):
+            nombre = forms.CharField(label="Nombre de contacto:", required=True)
+            apellido = forms.CharField(label="Apellido de contacto", required=True)
+            email = forms.EmailField(required=True)
+        
+                        Cada Field -> Cada uno define como se muestra de forma automática.
+                        - Los campos tienen sus propios comportamientos, de acuerdo a lo que necesitemos.    
+        </code>
+    </pre>
+    <div class="context">
+        <a href="#arriba">Arriba</a>
+    </div>
+    
+    <p class="contenido_p" id="6">6. Formularios en DJANGO (views.py)</p>
+    <pre>
+        <img src="../../img/extras/8-6.png" alt="">  
+        
+        <code>
+            def contacto(request):                          -> Definimos la vista.
+                if request.method == "POST":
+                    # Creo la instancia del formulario con los datos cargados en pantalla
+                    contacto_form = ContactoForm(request.POST)
+                    # Valido y proceso los datos.
+                else:
+                    # Creo el formulario vacío con los valores por defecto
+                    contacto_form = ContactoForm()
+                return render(request, "hola_mundo/contacto.html", {'contacto_form': contacto_form})
+        </code>
     </pre>
     <div class="context">
         <a href="#arriba">Arriba</a>
     </div>  
 
-    <p id="7">7. </p>
+    <p class="contenido_p" id="7">7. Ciclo formularios</p>
     <pre>
+        <img src="../../img/img_ref/img16.png" alt="">
+        Dependerá el formulario si viene vinculado o no.. 
+
+        ----------------------- Ejemplo práctico..
+
+        En la urls.py tendremos la url de nuestro contacto..
+        <code>
+        urlpatterns = [
+            path('', views.index, name="index"),
+            path('lenguajes', views.lenguajes, name="pepe"),
+            path('contacto', views.contacto, name="contacto")       -> Registramos la url
+        ] 
+        </code>
         
+        Armamos la plantilla de nuestro contacto.. Eligiendo de que manera mostrar los inputs.
+        <code>        
+            < form action="{% url "contacto" %}" method="post">
+                {% csrf_token %}
+                
+                {% comment %} 
+                    {{ contacto_form }}                         -> Formulario normal
+                {% endcomment %}
+        
+                {% comment %} 
+                    < table>
+                        {{ contacto_form.as_table }}            -> Como tabla
+                    < /table>  
+                {% endcomment %}
+                
+                {% comment %} 
+                    < ul>
+                        {{ contacto_form.as_ul }}               -> Como una lista desordenada
+                    < /ul>  
+                {% endcomment %}
+                
+                {{ contacto_form.as_p}}                         -> Como texto.
+        
+                < input type="submit" value="Contactar">
+            < /form>
+        </code>
+        
+        Ahora en nuestra views.py.. Armamos la función para nuestra vista..
+        
+        <code>
+        from .forms import ContactoForm
+        
+        def contacto(request):
+            if request.method == "POST":
+                # Creao la instancia populada con los datos cargados en pantalla
+                contacto_form = ContactoForm(request.POST)                          -> El request  será en la data proporcionada en el formulario, si el método es POST.
+                # Valido y proceso los datos.
+                contacto_form.is_valid()                    
+        
+            else:
+                # Creo el formulario vacío con los valores por defecto
+                contacto_form = ContactoForm()
+        
+            return render(request, "hola_mundo/contacto.html", {'contacto_form': contacto_form})
+        </code>
+        
+        Y creamos un archivo para nuestros forms.py
+
+        <code>
+        from django import forms
+        
+        class ContactoForm(forms.Form):                                                         -> Con todos los campos que necesitemos.
+            nombre = forms.CharField(label="Contacto:", required=False, max_length=10)
+            apellido = forms.CharField(label="Apellido de contacto", required=False)
+            email = forms.EmailField()        
+        </code>
     </pre>
     <div class="context">
         <a href="#arriba">Arriba</a>
     </div>
     
-    <p id="8">8. </p>
-    <pre>
-        
-    </pre>
-    <div class="context">
-        <a href="#arriba">Arriba</a>
-    </div>
-    
-    <p id="9">9. </p>
-    <pre>
-        
-    </pre>
-    <div class="context">
-        <a href="#arriba">Arriba</a>
-    </div>
-
-    <p id="10">10. </p>
-    <pre>
-        
-    </pre>
-    <div class="context">
-        <a href="#arriba">Arriba</a>
-    </div>
-    
-    <p id="11">11. </p>
-    <pre>
-        
-    </pre>
-    <div class="context">
-        <a href="#arriba">Arriba</a>
-    </div>
-    <br>
-    <br>
-    
-    <p id="12">12. </p>
-    <pre>
-        
-    </pre>
-    <div class="context">
-        <a href="#arriba">Arriba</a>
-    </div>
-    <br>
-    <br>
-
-    <p id="13">13. </p>
-    <pre>
-        
-    </pre>
-    <div class="context">
-        <a href="#arriba">Arriba</a>
-    </div>
-    <br>
-    <br>
-
-    <p id="14">14. </p>
-    <pre>
-        
-    </pre>
-    <div class="context">
-        <a href="#arriba">Arriba</a>
-    </div>
-    <br>
-    <br>
-
-    <p id="15">15. </p>
-    <pre>
-        
-    </pre>
-    <div class="context">
-        <a href="#arriba">Arriba</a>
-    </div>
-    <br>
-    <br>
-
-    <p id="16">16. </p>
-    <pre>
-        
-    </pre>
-    <div class="context">
-        <a href="#arriba">Arriba</a>
-    </div>
-    <br>
-    <br>
-
-    <p id="17">17. </p>
-    <pre>
-        
-    </pre>
-    <div class="context">
-        <a href="#arriba">Arriba</a>
-    </div>
-    <br>
-    <br>
-
-    <p id="18">18. </p>
-    <pre>
-        
-    </pre>
-    <div class="context">
-        <a href="#arriba">Arriba</a>
-    </div>
-    <br>
-    <br>
-
-    <p id="19">19. </p>
-    <pre>
-        
-    </pre>
-    <div class="context">
-        <a href="#arriba">Arriba</a>
-    </div>
-    <br>
-    <br>
-
-    <p id="20">20. </p>
-    <pre>
-        
-    </pre>
-    <div class="context">
-        <a href="#arriba">Arriba</a>
-    </div>
-    <br>
-    <br>
-
-    <p id="21">21. </p>
-    <pre>
-        
-    </pre>
-    <div class="context">
-        <a href="#arriba">Arriba</a>
-    </div>
-    <br>
-    <br>
-
-    <p id="22">22. </p>
-    <pre>
-        
-    </pre>
-    <div class="context">
-        <a href="#arriba">Arriba</a>
-    </div>
-    <br>
-    <br>
-
-    <p id="23">23. </p>
-    <pre>
-        
-    </pre>
-    <div class="context">
-        <a href="#arriba">Arriba</a>
-    </div>
-    <br>
-    <br>
-
-    <p id="24">24. </p>
-    <pre>
-        
-    </pre>
-    <div class="context">
-        <a href="#arriba">Arriba</a>
-    </div>
-    <br>
-    <br>
-
     
     <div class="context">
         <a href="../7/index.html">Volver</a>

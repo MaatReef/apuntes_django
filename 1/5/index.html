@@ -15,307 +15,197 @@
         <a href="../../index.html">Inicio</a>
         <a href="../6/index.html">Siguiente</a>
     </div>
-    <div class="contenido" id="arriba">
+    <div class="contenido_p" id="arriba">
         <p>Desarrollo Django</p>
     </div>
 
-    <h1>1 - Templates en Django (configuración y carpetas de app) (Clase 12)</h1>
-    <ol>
+    <h1 class="contenido_p">5 - Templates en Django (configuración y carpetas de app) (Clase 12)</h1>
+    <ul class="contenido_p">
         <li>
-            <a href="#1">1. </a>
+            <a href="#1">1. Plantillas (templates)</a>
         </li>
         <li>
-            <a href="#2">2. </a>
+            <a href="#2">2. Motor de Plantillas (templates backend)</a>
         </li>
         <li>
-            <a href="#3">3. </a>
+            <a href="#3">3. Configuración (backend)</a>
         </li>
         <li>
-            <a href="#4">4. </a>
+            <a href="#4">4. Configuración (loader)</a>
         </li>
         <li>
-            <a href="#5">5. </a>
+            <a href="#5">5. Lenguaje de Plantillas de Django (DTL)</a>
         </li>
         <li>
-            <a href="#6">6. </a>
+            <a href="#6">6. Ejemplo: Plantilla</a>
         </li>
         <li>
-            <a href="#7">7. </a>
+            <a href="#7">7. Ejemplo: Url y Vista</a>
         </li>
-        <li>
-            <a href="#8">8. </a>
-        </li>
-        <li>
-            <a href="#9">9. </a>
-        </li>
-        <li>
-            <a href="#10">10. </a>
-        </li>
-        <li>
-            <a href="#11">11. </a>
-        </li>
-        <li>
-            <a href="#12">12. </a>
-        </li>
-        <li>
-            <a href="#13">13. </a>
-        </li>
-        <li>
-            <a href="#14">14. </a>
-        </li>
-        <li>
-            <a href="#15">15. </a>
-        </li>
-        <li>
-            <a href="#16">16. </a>
-        </li>
-        <li>
-            <a href="#17">17. </a>
-        </li>
-        <li>
-            <a href="#18">18. </a>
-        </li>
-        <li>
-            <a href="#19">19. </a>
-        </li>
-        <li>
-            <a href="#20">20. </a>
-        </li>
-        <li>
-            <a href="#21">21. </a>
-        </li>
-        <li>
-            <a href="#22">22. </a>
-        </li>
-        <li>
-            <a href="#23">23. </a>
-        </li>
-        <li>
-            <a href="#24">24. </a>
-        </li>
-        <li>
-            <a href="#25">25. </a>
-        </li>
-    </ol>
+    </ul>
 
-    <p id="1">1. </p>
+    <p class="contenido_p" id="1">1. Plantillas (templates)</p>
     <pre>
+        - Templates:
+            - Template Backend
+            - Template Loader
+            - Configuración
+            - Integración con Vistas
+            - Contexto
+            - Variables
         
+        El template se enfoca en como tiene que mostrarse el documento.. 
+            - Genera HTML dinámicamente con una sintaxis especial.
+            - Se encarga de la presentación.
+            NO de la lógica de negocio
     </pre>
     <div class="context">
         <a href="#arriba">Arriba</a>
     </div>
 
-    <p id="2">2. </p>
+    <p  class="contenido_p" id="2">2. Motor de Plantillas (templates backend)</p>
     <pre>
+        - Motor de Plantillas (Templates Backend)
+        - Motor Integrado   -> django.template.backends
+            - django.DjangoTemplates    -> Motor Integrado  (Lo que veremos)
+            - jinja2.jinja2             -> También lo tiene
 
     </pre>
     <div class="context">
         <a href="#arriba">Arriba</a>
     </div>
     
-    <p id="3">3. </p>
+    <p class="contenido_p" id="3">3. Configuración (backend)</p>
     <pre>
+        ----------------------- Al crear el proyecto.. Lo que genera por defecto.
+        <code>
+
+            TEMPLATES = [
+            {
+                'BACKEND': 'django.template.backends.django.DjangoTemplates',
+                'DIRS': [],                                                         -> Lista de Directorios en los que el motor debe buscar archivos fuente de plantillas. Directorios dentro del proyecto.
+                'APP_DIRS': True,                                                   -> Indica si el motor debe buscar plantillas dentro de las aplicaciones instaldas (en la carpeta templates).
+                'OPTIONS': {
+                    'context_processors': [
+                        'django.template.context_processors.debug',
+                        'django.template.context_processors.request',
+                        'django.contrib.auth.context_processors.auth',
+                        'django.contrib.messages.context_processors.messages',
+                    ],
+                },
+            },
+        ]
         
+                    -> Dentro de Options, se pueden poner distintos loaders para la carga de templates..
+            
+            DjangoTemplates -> django.template.loaders.filesystem.Loader        Lo usa por defecto, se puede configurar.
+        
+        </code>        
     </pre>
     <div class="context">
         <a href="#arriba">Arriba</a>
     </div>
-    <p id="4">4. </p>
+    <p class="contenido_p"  id="4">4. Configuración (loader)</p>
     <pre>
-        
+        <img src="../../img/extras/5-6-Loaders.png" alt="">
     </pre>
     <div class="context">
         <a href="#arriba">Arriba</a>
     </div>
 
-    <p id="5">5. </p>
+    <p class="contenido_p" id="5">5. Lenguaje de Plantillas de Django (DTL)</p>
     <pre>
+        ----------------------- Lenguaje de Plantillas de Django (DTL)
+        Una plantilla se representa con un contexto..   El contexto son los datos que el template necesita.
+        El contexto es un diccionario, con su respectiva clave valor.
+
+        Cuando se renderiza (del lado del servidor)
+        2 maeneras: Por variables o ejecutar las sentencias.
+
+        -> Se reemplzan las variables por valores       - Variables -> {{ variable }}    
+
+        -> Se ejecutan las sentencias                   - Sentencias    {% tag %}
+                                        contenido
+                                        {% endtag %}
+
+
+        Como buena práctica es recomendable guardar los templates.. En una carpeta llamada templates
+
+
+        ----------------------- En nuestro settings del proyecto inicial
+        <code>
+        BASE_DIR = Path(__file__).resolve().parent.parent
         
+        TEMPLATES = [
+            {
+                'BACKEND': 'django.template.backends.django.DjangoTemplates',
+                'DIRS': [BASE_DIR / 'templates'],                               -> Especificamos la carpeta templates
+                'APP_DIRS': True,
+                'OPTIONS': {
+                    'context_processors': [
+                        'django.template.context_processors.debug',
+                        'django.template.context_processors.request',
+                        'django.contrib.auth.context_processors.auth',
+                        'django.contrib.messages.context_processors.messages',
+                    ],
+                },
+            },
+        ]
+        </code>
+        
+        ----------------------- Ahora dentro de nuestras app "hola_mundo", creamos nuestro index.html
+        
+        Y desde nuestro views.py
+        <code>
+        from datetime import datetime
+        # from django.template import loader
+        # from django.http import HttpResponse
+        from django.shortcuts import render                                 -> Nos traemos el shorcuts
+        
+        # def index(request):
+        #     template = loader.get_template('hola_mundo/index.html')
+        #     context = {"hoy": datetime.now}
+        #     return HttpResponse(template.render(context, request))
+        
+        
+        def index(request):
+            return render(request, "hola_mundo/index.html", {"hoy": datetime.now})          -> Esta es la forma más "resumida", handler shortcuts
+        </code>
+        
+        ----------------------- Recomendación
+        
+        Los templates se deben manejar en una carpeta templates a base del proyecto.. 
+        Es decir en el proyecto general, evitando crear templates por aplicación..
+        
+            - my_applicationGeneral
+                -> app_1
+                -> app_2
+                - templates             -> dentro, todas las aplicaciones que tengamos.
+                    -> app_1
+                    -> app_2 
+                    
+        <img src="../../img/extras/5-7-Loaders.png" alt="">              
     </pre>
     <div class="context">
         <a href="#arriba">Arriba</a>
     </div>
-
-    <p id="6">6. </p>
+    
+    <p class="contenido_p" id="6">6. Ejemplo: Plantilla</p>
     <pre>
-        
+        <img src="../../img/extras/5-8.png" alt="">              
     </pre>
     <div class="context">
         <a href="#arriba">Arriba</a>
     </div>  
-
-    <p id="7">7. </p>
+    
+    <p class="contenido_p" id="7">7. Ejemplo: Url y Vista</p>
     <pre>
-        
+        <img src="../../img/extras/5-9.png" alt="">              
     </pre>
     <div class="context">
         <a href="#arriba">Arriba</a>
     </div>
     
-    <p id="8">8. </p>
-    <pre>
-        
-    </pre>
-    <div class="context">
-        <a href="#arriba">Arriba</a>
-    </div>
-    
-    <p id="9">9. </p>
-    <pre>
-        
-    </pre>
-    <div class="context">
-        <a href="#arriba">Arriba</a>
-    </div>
-
-    <p id="10">10. </p>
-    <pre>
-        
-    </pre>
-    <div class="context">
-        <a href="#arriba">Arriba</a>
-    </div>
-    
-    <p id="11">11. </p>
-    <pre>
-        
-    </pre>
-    <div class="context">
-        <a href="#arriba">Arriba</a>
-    </div>
-    <br>
-    <br>
-    
-    <p id="12">12. </p>
-    <pre>
-        
-    </pre>
-    <div class="context">
-        <a href="#arriba">Arriba</a>
-    </div>
-    <br>
-    <br>
-
-    <p id="13">13. </p>
-    <pre>
-        
-    </pre>
-    <div class="context">
-        <a href="#arriba">Arriba</a>
-    </div>
-    <br>
-    <br>
-
-    <p id="14">14. </p>
-    <pre>
-        
-    </pre>
-    <div class="context">
-        <a href="#arriba">Arriba</a>
-    </div>
-    <br>
-    <br>
-
-    <p id="15">15. </p>
-    <pre>
-        
-    </pre>
-    <div class="context">
-        <a href="#arriba">Arriba</a>
-    </div>
-    <br>
-    <br>
-
-    <p id="16">16. </p>
-    <pre>
-        
-    </pre>
-    <div class="context">
-        <a href="#arriba">Arriba</a>
-    </div>
-    <br>
-    <br>
-
-    <p id="17">17. </p>
-    <pre>
-        
-    </pre>
-    <div class="context">
-        <a href="#arriba">Arriba</a>
-    </div>
-    <br>
-    <br>
-
-    <p id="18">18. </p>
-    <pre>
-        
-    </pre>
-    <div class="context">
-        <a href="#arriba">Arriba</a>
-    </div>
-    <br>
-    <br>
-
-    <p id="19">19. </p>
-    <pre>
-        
-    </pre>
-    <div class="context">
-        <a href="#arriba">Arriba</a>
-    </div>
-    <br>
-    <br>
-
-    <p id="20">20. </p>
-    <pre>
-        
-    </pre>
-    <div class="context">
-        <a href="#arriba">Arriba</a>
-    </div>
-    <br>
-    <br>
-
-    <p id="21">21. </p>
-    <pre>
-        
-    </pre>
-    <div class="context">
-        <a href="#arriba">Arriba</a>
-    </div>
-    <br>
-    <br>
-
-    <p id="22">22. </p>
-    <pre>
-        
-    </pre>
-    <div class="context">
-        <a href="#arriba">Arriba</a>
-    </div>
-    <br>
-    <br>
-
-    <p id="23">23. </p>
-    <pre>
-        
-    </pre>
-    <div class="context">
-        <a href="#arriba">Arriba</a>
-    </div>
-    <br>
-    <br>
-
-    <p id="24">24. </p>
-    <pre>
-        
-    </pre>
-    <div class="context">
-        <a href="#arriba">Arriba</a>
-    </div>
-    <br>
-    <br>
 
     
     <br> 

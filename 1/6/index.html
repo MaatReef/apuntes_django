@@ -15,308 +15,285 @@
         <a href="../../index.html">Inicio</a>
         <a href="../7/index.html">Siguiente</a>
     </div>
-    <div class="contenido" id="arriba">
+    <div class="contenido_p" id="arriba">
         <p>Desarrollo Django</p>
     </div>
 
-    <h1>6 - Sintaxis en templates de Django (condicionales, bucles, url, etc) (Clase 13)</h1>
-    <ol>
+    <h1 class="contenido_p" >6 - Sintaxis en templates de Django (condicionales, bucles, url, etc) (Clase 13)</h1>
+    <ul class="contenido_p">
         <li>
-            <a href="#1">1. </a>
+            <a href="#1">1. ¿Qué es DTL?</a>
         </li>
         <li>
-            <a href="#2">2. </a>
+            <a href="#2">2. Recordemos </a>
         </li>
         <li>
-            <a href="#3">3. </a>
+            <a href="#3">3. Variables</a>
         </li>
         <li>
-            <a href="#4">4. </a>
+            <a href="#4">4. Tags (etiquetas)</a>
         </li>
         <li>
-            <a href="#5">5. </a>
+            <a href="#5">5. Tag: Filter</a>
         </li>
         <li>
-            <a href="#6">6. </a>
+            <a href="#6">6. Tag: Comment</a>
         </li>
-        <li>
-            <a href="#7">7. </a>
-        </li>
-        <li>
-            <a href="#8">8. </a>
-        </li>
-        <li>
-            <a href="#9">9. </a>
-        </li>
-        <li>
-            <a href="#10">10. </a>
-        </li>
-        <li>
-            <a href="#11">11. </a>
-        </li>
-        <li>
-            <a href="#12">12. </a>
-        </li>
-        <li>
-            <a href="#13">13. </a>
-        </li>
-        <li>
-            <a href="#14">14. </a>
-        </li>
-        <li>
-            <a href="#15">15. </a>
-        </li>
-        <li>
-            <a href="#16">16. </a>
-        </li>
-        <li>
-            <a href="#17">17. </a>
-        </li>
-        <li>
-            <a href="#18">18. </a>
-        </li>
-        <li>
-            <a href="#19">19. </a>
-        </li>
-        <li>
-            <a href="#20">20. </a>
-        </li>
-        <li>
-            <a href="#21">21. </a>
-        </li>
-        <li>
-            <a href="#22">22. </a>
-        </li>
-        <li>
-            <a href="#23">23. </a>
-        </li>
-        <li>
-            <a href="#24">24. </a>
-        </li>
-        <li>
-            <a href="#25">25. </a>
-        </li>
-    </ol>
+    </ul>
 
-    <p id="1">1. </p>
+    <p class="contenido_p" id="1">1. ¿Qué es DTL? </p>
     <pre>
-
+        El Lenguaje de Plantillas de Django (Django Template Language) es un 
+        lenguaje que está diseñado para lograr un equilibrio entre potencia y 
+        facilidad. Está pensado para que aquellos que están acostumbrados a 
+        trabajar con HTML se sientan cómodos. Si tiene conocimiento de otros 
+        lenguajes de plantillas basadas en texto como Smarty o Jinja2, se 
+        sentirá como en casa con este lenguaje.
     </pre>
     <div class="context">
         <a href="#arriba">Arriba</a>
     </div>
 
-    <p id="2">2. </p>
+    <p class="contenido_p" id="2">2. Recordemos </p>
     <pre>
-
+        <img src="../../img/extras/6-1.png" alt="">              
     </pre>
     <div class="context">
         <a href="#arriba">Arriba</a>
     </div>
     
-    <p id="3">3. </p>
+    <p class="contenido_p" id="3">3. Variables</p>
     <pre>
-        
+        <img src="../../img/extras/6-2.png" alt="">              
     </pre>
     <div class="context">
         <a href="#arriba">Arriba</a>
     </div>
-    <p id="4">4. </p>
+    <p class="contenido_p" id="4">4. Tags (etiquetas)</p>
     <pre>
-        
-    </pre>
-    <div class="context">
-        <a href="#arriba">Arriba</a>
-    </div>
+        <img src="../../img/extras/6-3.png" alt="">  
 
-    <p id="5">5. </p>
-    <pre>
+        Simples..
+        <code>
+            csrf_token:
+                {% csrf_token %}
+        </code>
+
+        Argumentos:
+        <code>
+            url:
+                {% url 'nombre-url' v1 v2 %}
         
+            cycle:
+                < li style='color:{% cycle 'red' 'blue' %}'>             -> Intercalar colores.
+                    item
+                < /li>
+        
+            include:
+                {% include "cac/template.html" %}
+        </code>
+        
+        Apertura y Cierre:
+        <code>
+            if:
+                {% if variable == 1 %}
+                    < h1>Hello!< /h1>
+                {% endif}
+        
+            for:
+                < ul>
+                {% for x in frutas %}
+                    < li>
+                        {{ x }}
+                    < /li>
+                {% endfor %}
+                < /ul>                
+        </code>
     </pre>
     <div class="context">
         <a href="#arriba">Arriba</a>
     </div>
-
-    <p id="6">6. </p>
+    
+    <p class="contenido_p" id="5">5. Tag: Filter</p>
     <pre>
+        <img src="../../img/extras/6-4.png" alt="">              
+        <code>
+        {% filter upper %}                  -> Lo pone en mayusculas
+            < h1>Hola Maaat < /h1>
+        {% endfilter%}
         
+        {% filter first | upper %}          -> Pone la primera en mayuscula
+            < h1>Hola Maaat < /h1>
+        {% endfilter%}
+         
+        * La forma más común es .. Mezclado con variables.
+        
+        < h1>Hola {{ nombre|upper }}, como andas? < /h1>
+        < h1>Hola {{ nombre|first|upper }}, como andas? < /h1>
+        </code>   
+    </pre>
+    <div class="context">
+        <a href="#arriba">Arriba</a>
+    </div>
+    
+    <p class="contenido_p" id="6">6. Tag: Comment</p>
+    <pre>
+        <img src="../../img/extras/6-5  .png" alt="">              
+        <code>
+        Comentarios:
+            < h1>Buenas Gente!< /h1>
+            {% comment %}
+                < h1>No se verá!< /h1>
+            {% endcomment %}
+        
+        Comentarios con descripcion:
+            < h1>Buenas Gente!< /h1>
+            {% comment "este era el mensaje oculto" %}
+                < h1>No se verá!< /h1>
+            {% endcomment %}
+        
+        Comentarios pequeños:
+            < h1>Hola gente # comentario oculto #} !< /h1>
+        </code>
+        
+        * Mejor usar git para comentar * 
+        
+        
+        < br>    -> No usar el salto de línea, mejor CSS CON FLEXBOX O CSSGRID.
+        
+        ----------------------- Ejemplo..
+        * Dentro del templates, index.html
+        <code>
+            < li>< a href="{% url 'index' %}" class="nav-link px-2 link-secondary">Inicio< /a>< /li>
+        </code>
+        
+        ----------------------- dentro del urls..
+        <code>
+        from django.urls import path
+        from . import views
+        from django.conf import settings
+        from django.conf.urls.static import static
+        
+        urlpatterns = [
+            path('', views.index, name="index"),
+            path('lenguajes', views.lenguajes, name="pepe"),
+        ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+        </code>
+        
+        Ahora las vistas tienen sus objetos.. views.py
+        
+        <code>
+        from datetime import datetime
+        from django.shortcuts import render
+        from django.conf import settings
+        
+        
+        def index(request):
+            saludos = ['Hola', 'Hello', 'Olá', "Buenas"]                                            -> Lista
+            idioma_saludo = {'en': 'Hello', 'es': 'Hola', 'br': 'Olá'}                              -> Diccionario
+                            
+            return render(request, "hola_mundo/index.html", {"hoy": datetime.now, "saludos": saludos, "idioma_saludos": idioma_saludo})
+                                                            -> Este es el contexto    
+        
+        def lenguajes(request):
+            idiomas = ['English', 'Español', 'Portugues', 'Alemán']
+            return render(request, "hola_mundo/lenguajes.html", {"lenguajes": idiomas})
+        </code>
+        
+        Considerar además nuestras settings donde especificamos la ruta de nuestro template...
+        
+        <code> 
+        TEMPLATES = [
+            {
+                'BACKEND': 'django.template.backends.django.DjangoTemplates',
+                'DIRS': [BASE_DIR / 'templates'],                                   -> Especificamos la base de nuestra carpeta templates
+                'APP_DIRS': True,                                                   -> Además busca en la carpeta de las apps
+                'OPTIONS': {
+                    'context_processors': [
+                        'django.template.context_processors.debug',
+                        'django.template.context_processors.request',
+                        'django.contrib.auth.context_processors.auth',
+                        'django.contrib.messages.context_processors.messages',
+                        'django.template.context_processors.media',
+                    ],
+                },
+            },
+        ]
+        </code>
+        ----------------------- Ahora bien dentro de nuestro index tomamos nuestro contexto y lo mostramos.
+        <code>
+            < div>
+                < h1 style="color:blue">HOLA GENTE! hoy es {{hoy}}< /h1>
+                < h2> {{saludos.0}} gente!< /h2>
+                < h2> {{saludos.1}} people!< /h2>
+                < h2> {{saludos.2}} pessoas!< /h2>
+                < h2> {{saludos.3}} gentuza!< /h2>
+                < h3> {{idioma_saludos.es}} gente!< /h3>
+                < h3> {{idioma_saludos.en}} people!< /h3>
+                < h3> {{idioma_saludos.br}} pessoas!< /h3>
+            < /div>
+        </code>
+        ----------------------- Ahora para recorrer la lista..
+        <code>
+            < ul class="list-group list-group-numbered align-items-center">
+                {% for lenguaje in lenguajes %}
+                    < li class="list-group-item d-flex justify-content-between align-items-start">
+                        < div class="ms-2 me-auto">
+                        < div class="fw-bold"> Lenguaje< /div>
+                        {{lenguaje | upper}}
+                        < /div>
+                    < /li>
+                {% endfor %}
+            < /ul>
+        </code>
+        
+        * Si seleccionamos la palabra control + shift + f   -> Buscamos la palabra en TODOS nuestros archivos.
+        
+        ----------------------- O bien para cambiar el estilo..
+        <code>
+            < ul class="list-group list-group-numbered align-items-center">
+                {% for lenguaje in lenguajes %}
+                    < li style="color: {% cycle 'blue' 'red' %}">                -> Vamos cambiando el color, uno y uno.
+                        < div class="ms-2 me-auto">
+                        < div class="fw-bold"> Lenguaje< /div>
+                        {{lenguaje | upper}}
+                        < /div>
+                    < /li>
+                {% endfor %}
+            < /ul>
+        </code>
+        -----------------------
+        
+        Media y statico
+        
+        Media los archivos que vamos a usar que los usuarios van a cargar.. Foto que suba el usuario.
+        
+        Desde settings en nuestro proyecto lo especificamos
+        <code>
+        MEDIA_URL = "/media/"                               -> Especificamos la carpeta.
+        MEDIA_ROOT = os.path.join(BASE_DIR, 'media')        -> Donde estará guardados específicamente
+        </code>
+        
+        
+        Ahora desde el html.. Apuntamos a esa carpeta, ejemplo
+        <code>
+            < img src="/media/IMAGEN.png" alt="">
+        </code>
+        
+        
+        Con static, es distino para el ambiente de producción..
+        
+        En ambiente de producción tendremos que especificar la url y ademas donde se alojará la data
+        <code>
+        MEDIA_URL =
+        MEDIA_ROOT =
+        </code>
     </pre>
     <div class="context">
         <a href="#arriba">Arriba</a>
     </div>  
 
-    <p id="7">7. </p>
-    <pre>
-        
-    </pre>
-    <div class="context">
-        <a href="#arriba">Arriba</a>
-    </div>
     
-    <p id="8">8. </p>
-    <pre>
-        
-    </pre>
-    <div class="context">
-        <a href="#arriba">Arriba</a>
-    </div>
-    
-    <p id="9">9. </p>
-    <pre>
-        
-    </pre>
-    <div class="context">
-        <a href="#arriba">Arriba</a>
-    </div>
-
-    <p id="10">10. </p>
-    <pre>
-        
-    </pre>
-    <div class="context">
-        <a href="#arriba">Arriba</a>
-    </div>
-    
-    <p id="11">11. </p>
-    <pre>
-        
-    </pre>
-    <div class="context">
-        <a href="#arriba">Arriba</a>
-    </div>
-    <br>
-    <br>
-    
-    <p id="12">12. </p>
-    <pre>
-        
-    </pre>
-    <div class="context">
-        <a href="#arriba">Arriba</a>
-    </div>
-    <br>
-    <br>
-
-    <p id="13">13. </p>
-    <pre>
-        
-    </pre>
-    <div class="context">
-        <a href="#arriba">Arriba</a>
-    </div>
-    <br>
-    <br>
-
-    <p id="14">14. </p>
-    <pre>
-        
-    </pre>
-    <div class="context">
-        <a href="#arriba">Arriba</a>
-    </div>
-    <br>
-    <br>
-
-    <p id="15">15. </p>
-    <pre>
-        
-    </pre>
-    <div class="context">
-        <a href="#arriba">Arriba</a>
-    </div>
-    <br>
-    <br>
-
-    <p id="16">16. </p>
-    <pre>
-        
-    </pre>
-    <div class="context">
-        <a href="#arriba">Arriba</a>
-    </div>
-    <br>
-    <br>
-
-    <p id="17">17. </p>
-    <pre>
-        
-    </pre>
-    <div class="context">
-        <a href="#arriba">Arriba</a>
-    </div>
-    <br>
-    <br>
-
-    <p id="18">18. </p>
-    <pre>
-        
-    </pre>
-    <div class="context">
-        <a href="#arriba">Arriba</a>
-    </div>
-    <br>
-    <br>
-
-    <p id="19">19. </p>
-    <pre>
-        
-    </pre>
-    <div class="context">
-        <a href="#arriba">Arriba</a>
-    </div>
-    <br>
-    <br>
-
-    <p id="20">20. </p>
-    <pre>
-        
-    </pre>
-    <div class="context">
-        <a href="#arriba">Arriba</a>
-    </div>
-    <br>
-    <br>
-
-    <p id="21">21. </p>
-    <pre>
-        
-    </pre>
-    <div class="context">
-        <a href="#arriba">Arriba</a>
-    </div>
-    <br>
-    <br>
-
-    <p id="22">22. </p>
-    <pre>
-        
-    </pre>
-    <div class="context">
-        <a href="#arriba">Arriba</a>
-    </div>
-    <br>
-    <br>
-
-    <p id="23">23. </p>
-    <pre>
-        
-    </pre>
-    <div class="context">
-        <a href="#arriba">Arriba</a>
-    </div>
-    <br>
-    <br>
-
-    <p id="24">24. </p>
-    <pre>
-        
-    </pre>
-    <div class="context">
-        <a href="#arriba">Arriba</a>
-    </div>
-    <br>
-    <br>    
-
     <br> 
     <br> 
     <div class="context">
