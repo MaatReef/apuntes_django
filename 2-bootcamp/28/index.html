@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+      <meta http-equiv="Cache-Control" content="public, max-age=31536000">
+  <meta http-equiv="Expires" content="Mon, 14 Mar 2024 00:00:00 GMT">
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Introducción</title>
+    <link rel="shortcut icon" type=image/jpg href="../../img/logo/favicon.ico"/>
+    <link href="https://fonts.googleapis.com/css2?family=Carrois+Gothic+SC&display=swap" rel="stylesheet"> 
+    <link rel="stylesheet" href="../../css/stylesBlue.css">
+</head>
+<body>
+    <div class="context">
+        <a href="../27/index.html">Volver</a>
+        <a href="../../index.html">Inicio</a>
+        <a href="../29/index.html">Siguiente</a>
+    </div>
+    <div class="contenido_p" id="arriba">
+        <p>Notas - Bootcamp Backend con Python</p>
+    </div>
+
+    <h1 class="contenido_p">6 - Pruebas Automatizadas con DJango</h1>
+    <ul class="contenido_p">
+        <li>
+            <a href="#1">1. ¿Para que escribimos test?</a>
+        </li>
+        <li>
+            <a href="#2">2. ¿Dónde escribir tus test?</a>
+        </li>
+        <li>
+            <a href="#3">3. Tipos de Tests</a>
+        </li>
+        <li>
+            <a href="#4">4. Comenzando con Testing en Python</a>
+        </li>
+        <li>
+            <a href="#5">5. Comparar las Salidas</a>
+        </li>
+        <li>
+            <a href="#6">6. Primer test Unitario</a>
+        </li>
+        <li>
+            <a href="#7">7. Posibles Respuestas</a>
+        </li>
+        <li>
+            <a href="#8">8. Método setUp</a>
+        </li>
+        <li>
+            <a href="#9">9. Comenzando con Testing en Django</a>
+        </li>
+        <li>
+            <a href="#10">10. Descripción general de la estructura de Prueba</a>
+        </li>
+        <li>
+            <a href="#11">11. ¿Que vamos a probar?</a>
+        </li>
+        <li>
+            <a href="#12">12. Algunas pruebas para nuestro proyecto</a>
+        </li>
+        <li>
+            <a href="#13">13. Comenzamos por probar los Formularios</a>
+        </li>
+        <li>
+            <a href="#14">14. ¿Tu clase de test.py se está volviendo demasiado grande?</a>
+        </li>
+        <li>
+            <a href="#15">15. Mocking Values - fixtures</a>
+        </li>
+        <li>
+            <a href="#16">16. Extras</a>
+        </li>
+        
+    </ul>
+
+    <p class="contenido_p" id="1">1. ¿Para que escribimos test?</p>
+    <pre>
+        - Para garantizar la corrección y evitar regresiones.
+        - Para ayudarnos a escribir código limpio y mantenible.
+        - Para permitir un flujo de trabajo rápido y productivo.
+        - Para protegernos de nosotros mismos.
+        - También una Forma de documentación.
+    
+    Los Test te pueden ayudar ahorrando una enorme cantidad de tiempo de resolución de conflictos.
+    
+        - Test Unitario : Por unidad de código, una cosa a la vez.
+    
+        - Podemos crear subcarpetas
+            - Test de Formularios.
+            - Test de Integraciones.        
+    </pre>
+    <div class="context">
+        <a href="#arriba">Arriba</a>
+    </div>
+
+    <p class="contenido_p" id="2">2. ¿Dónde escribir tus test?</p>
+    <pre>
+        A medida que agregas más y más pruebas, tu archivo de test se volverá desordenado y difícil de mantener.
+        Puedes crear una carpeta llamada tests y dividir las pruebas en varios archivos.
+        Es necesario garanttizar que cada archivo comienza con test_
+    </pre>
+    <div class="context">
+        <a href="#arriba">Arriba</a>
+    </div>
+    
+    <p class="contenido_p" id="3">3. Tipos de Tests</p>
+    <pre>
+    Pruebas funcionales y de aceptación: Pruebas donde nos ponemos como usuario.
+        Verifica que nuestro sistema funciona desde el punto de vista del usuario.
+        Dan la mejor garantía de que su app realmente funciona correctamente.
+        "¿Aceptaría el usuario este comportamiento?"
+
+    Pruebas de Integración: Al integrar el TODO (Ejemplo: Facturación, conectado a la Afip, que todo anda Okey).
+        Verifica cómo funcionan los grupos de componentes cuando se usan juntos.
+        Pueden cubrir agrupaciones simplesde componentes hasta todo el sitio web.
+        Le advertirá de cualquier problema de integración entre sus aplicaciones.
+
+    Pruebas unitarias o unittest:
+        Verifica la exactitud de la lógica de su aplicación mientras se realiza el desarrollo.
+        Prueban la app desde la perspectiva del desarrollador.
+        Prueba "Exactamente" un fragmento de código.
+        
+    </pre>
+    <div class="context">
+        <a href="#arriba">Arriba</a>
+    </div>
+    <p class="contenido_p" id="4">4. Comenzando con Testing en Python</p>
+    <pre>
+    Determinar Qué y Cuándo probar es Difícil..
+        Las pruebas unitarias rar vez detectan errores inesperados.
+    
+    El tiempo requerido para verificar manualmente que todo funcione "correctamente", aumentará.
+    Si no automatizamos las pruebas estaríamos la mayor parte de nuestro tiempo probando, y muy poco tiempo mejorando nuestro código. 
+
+    Pasos para escribir un Test Unitario:
+
+    1 - Crea tus entradas.
+        Simula los objetos de prueba (mocks o fixtures), o datos de entrada.
+
+    2 - Ejecuta el código y captura la salida.
+        Ejecuta únicamente el código que quieres validar.
+
+    3 - Compara la salida con un resultado esperado.
+        Verifica si la salida de la ejecución corresponde con lo que esperabas (Assertion)
+
+    4 - Repite hasta que pase el test.
+        Si tu test no pasa, lee o comprende la salida, haz lo cambios y repite hasta que pase el test.
+    </pre>
+    <div class="context">
+        <a href="#arriba">Arriba</a>
+    </div>
+
+    <p class="contenido_p" id="5">5. Comparar las Salidas</p>
+    <pre>
+        Comparar las Salidas: Assertion o Afirmaciones:
+        Método                      Equivalente a:
+        
+        .assertEqual(a,b)           a == b
+        .assertTrue(x)              bool(x) is True
+        .assertFalse(x)             bool(x) is False
+        .assertis(a,b)              a is b
+        .assertisNone(x)            x is None
+        .assertin(a,b)              a in b
+        .assertinstance(a,b)        isinstance(a,b)                
+    </pre>
+    <div class="context">
+        <a href="#arriba">Arriba</a>
+    </div>
+
+    <p class="contenido_p" id="6">6. Primer test Unitario</p>
+    <pre>
+        Primer test Unitario:
+        <code>
+        import unittest
+        
+        class TestSum(unittest.TestCase):
+            
+            def test_sum_list(self):
+                sel.assertEqual(sum([2,2,2]), 6)
+        
+        id __name__ == '__main__':
+            unittest.main()
+        
+        
+        # Comprendiendo la Salida
+        python -m unittest -v example_1                 -> Con la bandera -v, es más verbose, es decir más descriptivo
+        
+        test_sum_list (example_1.TestSum) ... ok                
+        </code>
+    </pre>
+    <div class="context">
+        <a href="#arriba">Arriba</a>
+    </div>  
+
+    <p class="contenido_p" id="7">7. Posibles Respuestas</p>
+    <pre>
+        Cada uno de las pruebas puede devolver tres respuestas en función del resultado:
+
+        Ok      : La prueba ha pasado exitosamente
+        Fail    : La prueba no ha psado y hay una excepción de tipo AssertionError (Verdadero - Falso)
+        Error   : La prueba no ha pasado y además el resultado no es una excepción de tipo AssetionError sino que es otro error.                
+    </pre>
+    <div class="context">
+        <a href="#arriba">Arriba</a>
+    </div>
+    
+    <p class="contenido_p" id="8">8. Método setUp</p>
+    <pre>
+        El nombre del método siempre inicia con test_ y debe ser un nombre muy significativo.
+
+        <code>
+        class TestSum(unittest.TestCase):
+        
+            def setUp(self):                    # Por medio del método setUp, tenemos..
+                self.my_list = [2,2,2]          # Objetos vivos en toda la clase
+                self.my_tuple = (2,2,2)         # 
+        
+            def test_sum_list(self):
+                self.assertEqual(sum(self.my_list, 6)
+        
+            def test_sum_tuple(self):
+                self.assertTrue(sum(self.my_tuple, <= 3)
+        
+            def test_sum_other_object(self):
+                selg.assertisNotEqual(sum(['1', 'zero', 'one']),
+                                        sum(self.my_list))
+        </code>
+        
+        Por lo tanto al correr el test.. Comprendiendo la salida x2
+        <code>
+            python -m unittest -v example_1
+                ok                              -> Es igual a 6
+                FAIL                            -> La suma no es igual o menor 3
+                ERROR                           -> Error, no se puede sumar str
+        </code>
+        
+        *Prestar atención a los tipos de datos.
+        
+        
+        Eliminar Objetos al finalizar el Test:
+        El método tearDown para limpiar:
+            Borrar un fichero, desconectarse del servidor o borrar cualquier objeto creado para la prueba.
+        <code>
+        class TestSum(unittest.TestCase):
+        
+            def setUp(self):                    
+                self.my_list = [2,2,2]          
+                self.my_tuple = (2,2,2)          
+            ...
+        
+            @unittest.skip("demonstrating skipping")            #Con skip, es un decorador, que salta la prueba, el menssaje entre "es opcional"
+            def test_sum_other_object(self):                
+                self.assertNotEqual(sum(['1', 'zero', 'one']),
+                                    sum(self.my_list)) 
+        
+            def tearDown(self):
+                del(self.my_list)               # De esta manera eliminamos lo que al inicio creamos.
+                del(self.my_tuple)                              
+        </code>
+    </pre>
+    <div class="context">
+        <a href="#arriba">Arriba</a>
+    </div>
+    
+    <p class="contenido_p" id="9">9. Comenzando con Testing en Django</p>
+    <pre>
+    ¿Que provee Django para pruenas?
+        - Una sub clase de unittest, con diferentes jerarquías de clases (django.test.TestCase)
+        - Ayuda para probar el comportamiento de un sitio web (CRUD de datos, manejo de solicitudes HTTP, procesamiento de formularios, etc)
+        - Crea una DB propia para pruebas
+        - Nos Ofrece Client() un navegador web ficticio
+    
+    *Django utiliza unittest por defecto.. Ahí dentro puedo simular los navegadores y demás (Lo detallado arriba)
+    *Este módulo define pruebas utilizando un enfoque basado en clases.
+            
+    </pre>
+    <div class="context">
+        <a href="#arriba">Arriba</a>
+    </div>
+
+    <p class="contenido_p" id="10">10. Descripción general de la estructura de Prueba</p>
+    <pre>
+        Django va encontrar cualquier archivo nombrado con el patrón test.py
+
+        Movies/                     -> Esto lo haremos en nuestro proyecto.
+            /tests/
+                __init__.py
+                test_models.py
+                test_forms.py
+                test_views.py
+    
+        *Como ejecutar las pruebas:
+        <code>
+            python manage.py test -v 2
+        </code>
+        *Para ejecutar pruebas específicas:
+        <code>
+            python manage.py test movies.tests-test_models.TourTestClass.FUNCIONESPECIFICASILODESEO -v 2            
+        </code>
+    </pre>
+    <div class="context">
+        <a href="#arriba">Arriba</a>
+    </div>
+    
+    <p class="contenido_p" id="11">11. ¿Que vamos a probar?</p>
+    <pre>
+        No es necesario porbar explícitamente que full_name ha sido almacenado como CharField en al DB porque eso es algo definido por Django.
+        Pero si podemos verificar el texto de las etiquetas (nombre, apellido) y el tamaño máximo del campo (100 caracteres), porque estas configuraciones son parte de nuestro diseño y es algo que podría ser roto/ cambiado en el futuro.
+        
+        Podemos verificar la saldia de métodos que personalizamos como get_absolute_url() y __str__(), y también puedes confiar en que el método de Django reverse() se ha implementado correctamente.                
+        -------------------------------------------------------------------------------
+        Ahora en test.py
+        <code>
+        from django.test import TestCase
+        from .models import Genre
+        
+        class TestGenre(TestCase):
+        
+        
+            def setUp(self) -> None:
+                self.genre_1 = 'accion' 
+                self.genre_2 = 'drama' 
+        
+            def test_create_object(self):
+                g1 = Genre.objects.create(name=self.genre_1)
+                self.assertIsNotNone(g1)
+                self.assertEqual(g1.__str__(), self.genre_1)
+        
+            def test_cero_is_false(self):
+                sels.assertFalse(0)
+        
+            def test_one_is_true(self):
+                self.assertTrue(1)
+        </code>
+        -------------------------------------------------------------------------------
+        Si usamos en vez de TestCase, SimpleTestCase, no crearemos la base de datos..
+        <code>
+        from django.test import SimpleTestCase
+        class TestGenre(SimpleTestCase):        
+        </code>
+    </pre>
+    <div class="context">
+        <a href="#arriba">Arriba</a>
+    </div>
+    <br>
+    <br>
+    
+    <p class="contenido_p" id="12">12. Algunas pruebas para nuestro proyecto</p>
+    <pre>
+        Algunas pruebas para nuestro proyecto:
+        Para el modelo director:
+            - Que el campo full_name no sea mayor a 100 caracteres.
+            - Que el campo years_experience no acepte valores negativos
+            - Que el formulario no permita registrar directores con más de 100 años de expriencia
+            - Que el contexto retorne para un director su mejor película
+            - Probar la salida del método _ _ str _ _
+                
+        Para el modelo película:
+            - Si no hay películas creadas, que se muestre mensaje indicando eso
+            - Que la función use el template adecuado
+            - Que la url sea accesible por el nombre
+            - El código de respuesta de la vista (200, 404, etc)
+        
+        Extra: Probar fechas con django pypi.org/project/freezegun                
+    </pre>
+    <div class="context">
+        <a href="#arriba">Arriba</a>
+    </div>
+    <br>
+    <br>
+
+    <p class="contenido_p" id="13">13. Comenzamos por probar los Formularios</p>
+    <pre>
+        Creamos un paquete para nuestros tests dentro de la app a testear..
+        Debe contener el __init__.py para marcar que es un paquete.
+        
+            - test_forms.py 
+        
+        <code>
+        from ..forms import DirectorForm
+        
+        class DirectorFormTest(TestCase):
+        
+            def setUp(self) -> None:
+                self.good_data = { "full_name" : "Jani Maria", "years_experience" : 15 }
+                self.bad_data = { "full_name" : "Jani Maria", "years_experience" : 105 }
+                self.negative_data = { "full_name" : "Jani Maria", "years_experience" : -15 }
+        
+            def test_form_success(self):
+                form = DirectorForm(data=self.good_data)
+                self.assertTrue(form.is_valid())
+        
+            def test_form_return_error_less_zero(self):
+                form = DirectorForm(data=self.negative_data)
+                self.assertFalse(form.is_valid())
+                print(form.__dict__)               # Vemos el formulario como un diccionario con todos sus atributos
+                self.assertEqual(
+                    form._errors['year_experience'][0], 
+                    "Erorr: los años de experiencia no pueden ser menores a cero."
+                )
+        </code>
+        
+        Ahora creamos el test para nuestras vistas..
+            - test_views.py
+        
+        <code>
+        from django.contribu.auth.models import User
+        from django.test import TestCase
+        from django.urls import reverse
+        
+        from ..models import Movie
+        
+        class TestMoviesViews(TestCase):
+        
+            def setUp(self) -> None:
+                pass
+        
+            def test_get_list_views_without_data(self):                      
+                response = self.client.get('/movies')
+                #print(response.__dict__)                        # Vemos la respuesta como un Diccionario, de acá podemos armar nuestros test
+                self.assertEqual(response.status_code, 200)
+                self.assertContains(response, 'No hay peliculas disponibles')
+                self.assertEqual(response.template_name, 'list_movies.html')
+                self.assertFalse(response.is_paginated)
+        
+            def test_get_list_views_with_data(self):
+                pass
+        
+            def test_user_authenticated_can_create_movies(self):
+                pass
+        
+            def test_detail_movie(self):
+                movie = Movie.objects.create
+                pass
+        
+            def test_list_view_one_movie(self):
+                pass       
+        </code>         
+    </pre>
+    <div class="context">
+        <a href="#arriba">Arriba</a>
+    </div>
+    <br>
+    <br>
+
+    <p class="contenido_p" id="14">14. ¿Tu clase de test.py se está volviendo demasiado grande?</p>
+    <pre>
+        Tal vez sea una señal de que tu vista o modelo es demasiado grande y está haciendo demasiado.
+
+        Tocará modularizar la lógica de negocio o bien los test.. 
+        
+        A medida que mi proyecto Crece:
+        
+        1 - Comienza a usar librerías para crear datos para tus tests: pytest, pytest-django, factory_boy, model mommy, django_dynamic_fixtures
+        2 - No uses datos recientes, si te cuesta imaginar usa alguna librería para datos falsos: random Faker
+        3 - Intenta probar vistas que no sean content-type Json, existe también multipart/form-data (Para archivos multimedia)
+            Más para APIS, para las imágenes
+        4 - Utiliza banderas para acelerar tus test (--keedb, --parallel)
+            Desde consola la bandera.. 
+                --keedb             # Para usar una base de datos por default, "auxiliar", no la actual
+                --parallel          # Para ejecutar los test al mismo tiempo
+        5 - Actualizar la base de datos de test con refresh_from_db
+            Recarga los datos en los modelos..
+                obj.regresh_from_db()
+        6 - Implementar Continuos Integration (Jenkins, Travis, Github Actions)
+        
+        
+        -------------------------------------------------------------------------------
+        <code>
+        django_slowtests        -> Test Más lentos!
+                                Número de Test                
+        </code>
+    </pre>
+    <div class="context">
+        <a href="#arriba">Arriba</a>
+    </div>
+    <br>
+    <br>
+
+    <p class="contenido_p" id="15">15. Mocking Values - fixtures</p>
+    <pre>
+        Mocking Values - fixtures
+        <code>
+        from model_mommy import mommy
+        from family models import Kid
+        
+        kid = mommy.make(kid)
+        
+                            # Recargan valores para nuestros modelos.
+        </code>
+        
+        Datos Random:
+        <code>
+        from faker import faker
+        
+        faker = Faker()
+        print(faker.name())
+        print(faker.addres())
+        print(faker.text())
+        </code>
+        
+        Pruebas con Content Type que no es Json..
+        <code>
+        from django.test improt TestCase
+        from django.test.client import BOUNDARY, MULTIPART_CONTENT, encode_multipart
+        
+        def test_create_image
+        </code>
+        -------------------------------------------------------------------------------
+        
+        Ejemplo para usar la librería de pip install model.mommy                
+    </pre>
+    <div class="context">
+        <a href="#arriba">Arriba</a>
+    </div>
+    <br>
+    <br>
+
+    <p class="contenido_p" id="16">16. Extras</p>
+    <pre>
+        Agregando el CSV a la base de Datos
+        <img src="./img/1 - 1 Para agregar el csv a la abase de datos.png" alt="" width="1200px">
+        <img src="./img/1 - 2 Para agregar el csv a la abase de datos.png" alt="" width="1200px">
+        <img src="./img/1 - 3 Para agregar el csv a la abase de datos.png" alt="" width="1200px">
+        <img src="./img/1 - 4 Para agregar el csv a la abase de datos.png" alt="" width="1200px">
+        <img src="./img/1 - 5 Para agregar el csv a la abase de datos.png" alt="" width="1200px">
+        <img src="./img/1 - 6 Para agregar el csv a la abase de datos.png" alt="" width="1200px">
+        <img src="./img/1 - 7 Para agregar el csv a la abase de datos.png" alt="" width="1200px">
+        <img src="./img/1 - 8 Para agregar el csv a la abase de datos.png" alt="" width="1200px">
+
+        Donde Escribir tus test
+        <img src="./img/6 - 1 Test - Estructura.png" alt="" width="1200px">
+        <img src="./img/6 - 2 Test - Estructura.png" alt="" width="1200px">
+        <img src="./img/6 - 3 Test - Estructura.png" alt="" width="1200px">
+        <img src="./img/6 - 4 Test - Estructura.png" alt="" width="1200px">
+    </pre>
+    <div class="context">
+        <a href="#arriba">Arriba</a>
+    </div>
+    <br>
+    <br>
+
+    
+    <br> 
+    <br> 
+    <div class="context">
+        <a href="../27/index.html">Volver</a>
+        <a href="../../index.html">Inicio</a>
+        <a href="../29/index.html">Siguiente</a>
+    </div>
+    
+</body>
+</html>

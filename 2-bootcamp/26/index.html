@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+      <meta http-equiv="Cache-Control" content="public, max-age=31536000">
+  <meta http-equiv="Expires" content="Mon, 14 Mar 2024 00:00:00 GMT">
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Introducción</title>
+    <link rel="shortcut icon" type=image/jpg href="../../img/logo/favicon.ico"/>
+    <link href="https://fonts.googleapis.com/css2?family=Carrois+Gothic+SC&display=swap" rel="stylesheet"> 
+    <link rel="stylesheet" href="../../css/stylesBlue.css">
+</head>
+<body>
+    <div class="context">
+        <a href="../25/index.html">Volver</a>
+        <a href="../../index.html">Inicio</a>
+        <a href="../27/index.html">Siguiente</a>
+    </div>
+    <div class="contenido_p" id="arriba">
+        <p>Notas - Bootcamp Backend con Python</p>
+    </div>
+
+    <h1 class="contenido_p">4 - Formularios en Django</h1>
+    <ul class="contenido_p">
+        <li>
+            <a href="#1">1. Configurar mi base de datos Mysql</a>
+        </li>
+        <li>
+            <a href="#2">2. Instalando librerías de terceros</a>
+        </li>
+        <li>
+            <a href="#3">3. Login</a>
+        </li>
+        <li>
+            <a href="#4">4. Formularios</a>
+        </li>
+    </ul>
+
+    <p class="contenido_p" id="1">1. Configurar mi base de datos Mysql</p>
+    <pre>
+        Configurar mi base de datos Mysql..
+        <code>
+        DATABASES = {
+            'default': {
+                'ENGINE': 'django.db.backends.mysql',
+                'NAME': 'codigo_facilito',
+                'USER': 'root',
+                'PASSWORD': '',
+                'HOST': 'localhost',
+                'PORT': '',              #Si queda vacío va por defecto segun mysql
+            }
+        }
+        </code>
+        
+        Desde consola.. En mysql
+        <code>
+            CREATE DATABSE codigo_facilito;
+        </code>
+        Desde consola..
+        <code>
+            pip install pymysql
+        </code>
+        Luego importamos en el settings.py
+        <code>
+            import pymysql
+        
+        
+            pymysql.version_info = (1, 4, 2, 'final', 0)
+            pymysql.install_as_MySQLdb()
+            
+        
+            DATABASES = {
+            'default': {
+                'ENGINE': 'django.db.backends.mysql',
+                'NAME': 'codigo_facilito',
+                'USER': 'root',
+                'PASSWORD': '',
+                'HOST': 'localhost',
+                'PORT': '',              #Si queda vacío va por defecto segun mysql
+            }
+        }
+        </code>
+        <code>
+            python manage.py migrate
+            
+            python manage.py createsuperuser
+        </code>
+        ---------------------------------------------------------------
+        <code>
+        {% for city in cities %}
+            {% if forloop.first %} < div class="row"> {% endif %}
+        
+                #De esta manera podemos condicionar como mostrar la data
+        
+                #Para recortar la data usamos el slice
+                < p class="card-title"> {{ city.description|slice:"150" }}..< /p>
+        
+            {% if forloop.counter|divisibleby:3 %} < /div>< div class="row"> {% endif %}
+            {% if forloop.last %} < /div>{% endif %}
+        {% endfor %}
+        </code>
+        --------------------------------------------------------------------------------
+        
+        Agregamos de manera global para nuestros archivos estáticos..
+        <code>
+            staticfiles 
+        </code>
+        Desde settings..
+        <code>
+            STATIC_URL = 'static/'
+        
+            STATICFILES_DIRES = [
+                BASE_DIR / 'staticfiles'        # Agregamos la carpeta
+            ]                
+        </code>
+        -----------------------------------------------------------------
+        <code>
+            pip freeze > requirements.txt
+        </code>
+        -----------------------------------------------------------------
+        Generar Archivos Settings para cada ambiente..
+        Lo que tenemos en nuestro proyecto general de settings, lo llevamos a la base.py
+        <code>
+        settings
+            base.py         (Casi todo)  
+            local.py        (Nuestra base de datos en local, lo que hicimos antes)
+            prod.py
+    
+        base.py
+            from .base import *
+            import pymysql
+        
+        prod.py                     -> Todo para producción, seteamos las variables de ambiente en un archivo .env
+            from .base import *
+            import os 
+            
+            DATABASES = {
+            'default': {
+                'ENGINE': 'django.db.backends.mysql',
+                'NAME': os.environ('DATABASE_NAME'),
+                'USER': os.environ('DATABASE_USER'),
+                'PASSWORD': os.environ('DATABASE_PASSWORD'),
+                'HOST': os.environ('DATABASE_HOST'),
+                'PORT': os.environ('DATABASE_PORT'),
+                }
+            }
+        </code>
+        En el archivo .env..
+        <code>
+        DATABASE_NAME=nombre_de_mi_base_de_datos    
+        </code>
+        -----------------------------------------------------------------
+        
+        Ahora para correr el proyecto con ese nuevo archivo de configuración..
+        <code>
+            python manage.py runserver --settings=settings.local    #Especificamos que usaremos nuestra configuración en local
+        </code>
+
+        Para evitar hacer esto.. Podemos hacer un Makefile
+            - "Facilitador" para crear comandos en Python
+        <code>
+        run: 
+            python manage.py runserver --settings=settings.local
+        
+        migrate: 
+            python manage.py migrate --settings=settings.local
+        
+        makemigrations
+            python manage.py makemigrations --settings=settings.local
+        
+        run-prod: 
+            python manage.py runserver --settings=settings.prod
+        </code>
+        
+        
+        Entonces ahora desde consola..
+        <code>
+            make run        
+            make migrate, etc.. Podemos armar nuestros propios scripts.        
+        </code>
+        -----------------------------------------------------------------
+        Si agregamos nuestra carpeta templates por fuera de nuestro proyecto.. 
+        Debemos especificar su ubicación.
+        En la settings, debemos especificar los templates..
+        <code>        
+            'DIRS': ['templates', 'citiesapp/templates'],                
+        </code>
+    </pre>
+    <div class="context">
+        <a href="#arriba">Arriba</a>
+    </div>
+
+    <p class="contenido_p" id="2">2. Instalando librerías de terceros</p>
+    <pre>
+        <code>
+        pip install django-countries
+        </code>
+        Agregamos la app en settigns.py
+        <code>
+            INSTALLED_APPS = [.., 'django_countries']
+        </code>
+        Ahora en el modelo..
+        <code>
+        from django.db import models
+        from django.utils import timezone
+        
+        from django_countries-fields import CountryField
+        
+        class City(models.Model):
+            name =  models.CharField(max_length=100)
+            description = models.TextField()
+            image = models.ImageField(upload_to='citiesapp/photos')
+            population = models.IntegerField()
+            country = CountryField()                # Lo usamos acá
+            
+            created_date = models.DateTimeField(default=timezone.now)
+            published_date = models.DateTimeField(black=True, null=True)
+        
+            def __str__(self):      
+                return self.name
+        
+            class Meta:       # Información adicional
+                verbose_name_plural = 'Cities'
+        </code>
+        
+        
+        Aplicamos la migración..
+        <code>
+            - make migrations   -> Vemos las modificaciones hechas.
+            - make migrate      -> 
+        </code>
+        
+        Ahora ya tenemos un modelo externo corriendo en nuestra aplicaicón..        
+    </pre>
+    <div class="context">
+        <a href="#arriba">Arriba</a>
+    </div>
+    
+    <p class="contenido_p" id="3">3. Login</p>
+    <pre>
+        Ahora vamos con el login.. 
+        <code>
+        from django.conf import settings
+        from django.conf.urls.static import static
+    
+        
+        urlpatterns = [
+            path.. y bla,
+            path('accounts/', include('django.contrib.auth.urls))         # Nos traemos todo el sistema de Accounts de Django con sus urls
+        ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+        </code> 
+    
+        Ahora creamos nuestros templates..
+            templates
+                registration
+                    - login.html
+        
+        
+        Ahora dentro de nuestro login.html.. Armamos el form y luego lo conectamos con el form de Django.
+        <code>    
+            < form method="post" action="{% url 'login' %}">
+                {% csrf_token %}
+                {{ form }}
+                < button type="submit">Login< /button>
+            < /form>
+        </code>
+        
+        Ahora cuando nos logueamos entroncamos a accounts/profile.. Pero necesitamos ir a otro lugar.
+        Esto lo especificamos desde el base.py desde nuestro settings
+        
+        <code>
+        LOGIN_REDIRECT_URL = '/'
+        </code>
+        
+        
+        Ahora desde nuestro templates, podemos manejar nuestras variables..
+        <code>
+            {{ user.username }}
+        </code>
+    </pre>
+    <div class="context">
+        <a href="#arriba">Arriba</a>
+    </div>
+    <p class="contenido_p" id="4">4. Formularios</p>
+    <pre>
+        A menos que esté planenado crear sitios web y aplicaciones que no hagan nada más que publicar contenido y no acepten aportes de sus visitantes, necesitará comprender y usar formularios.
+        Django proporciona una gama de herramientas y bibliotecas para ayudarlo a crear formularios para aceptar la entrada de datos de los visitantes del sitio y luego procesar y responder a ella.            
+
+
+        Ahora vamos con la parte de los comentarios..
+        Creamos el modelo para ellos..
+        <code>
+        from django.contrib.auth.models import User        # Nos traemos los usuarios que provee Django
+        
+        class Comment(models.Model):
+            user = models.ForeignKey(User, on_delete=models.CASCADE)
+            city = models.ForeignKey(City, on_delete=models.CASCADE )
+            text = models.TextField()
+            created_at = models.DateTimeField(default=timezone.now)
+        
+            def __str__(self):
+                return self.text
+        </code>
+        
+        Lo agregamos al register, para verlo desde el Admin..
+        
+        Ahora dentro de nuestra app, creamos nuestro forms.py
+        <code>
+        from django import forms
+        from django.forms import Textarea
+        
+        from .models import Comment
+        
+        class CommentForm(forms.ModelForm):
+            
+            class Meta:
+                model = Comment
+                fields = ('text',)
+        
+                widgets = {                                     #Importante
+                    'text': Textarea(attrs = {
+                        'class': "form-control",
+                        'placeholder': 'Comment',
+                        'style': 'max-width: 300px',
+                        'id': 'formComment
+                    })
+                }
+        </code>
+        Ahora en la view...
+        <code>
+        from .forms import CommentForm
+        
+        def get_city(request, id):
+            city = City.objects.get(id=id)
+            comments = Comment.objects.filter(city=id)
+        
+            comments_form = CommentForm()
+        
+            return rendrer(request, 'city.html', {'city' : city, 'form': comments_form, 'comments': comments})
+        </code>
+        
+        
+        Ahora desde el template..
+        <code>
+        
+            < form action="{% url 'create_new_comment' id=city.id %}" method="POST">  
+                {% csrf_token %}
+                {{ form }}
+                < button type="submit">Save < /button>
+            < /form>
+        </code>
+        
+        Ahora desde la url..
+        <code> 
+        urlpatterns = [
+            path('', views.index, name="index"),
+            path('city/< int:id>', views.get_city, name="city"),
+            path('city/< int:id>/create_new_comment', views.create_new_comment, name='create_new_comment')
+        ]
+        </code>
+        
+        
+        Ahora creamos la vista..
+        <code>
+            def create_new_comment(request, id):
+                if request.method == 'POST':
+                    
+                    form = CommentForm(request.POST)
+        
+                    if form.is_valid():
+                        new_comment = form.save(commit=False)
+                        new_comment.user = request.user
+                        new_comment.city = City.objects.get(id=id)
+        
+                        new_comment.save()
+        
+                    return redirec('city', id=id)
+                else:
+                    return redirec('city', id=id)
+        </code>
+        -----------------------------------------------------------------
+        Ejercicios Propuestos:
+            - Crear una Nueva App de blog sobre viajes
+            - Asociar un post al Usuario que lo creó
+            - Crear un formulario para dejar likes en los posts
+        
+        Validar desde el Frontend y el Backend
+    </pre>
+    <div class="context">
+        <a href="#arriba">Arriba</a>
+    </div>
+
+
+    
+    <br> 
+    <br> 
+    <div class="context">
+        <a href="../25/index.html">Volver</a>
+        <a href="../../index.html">Inicio</a>
+        <a href="../27/index.html">Siguiente</a>
+    </div>
+    
+</body>
+</html>

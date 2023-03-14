@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+      <meta http-equiv="Cache-Control" content="public, max-age=31536000">
+  <meta http-equiv="Expires" content="Mon, 14 Mar 2024 00:00:00 GMT">
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Introducción</title>
+    <link rel="shortcut icon" type=image/jpg href="../../img/logo/favicon.ico"/>
+    <link href="https://fonts.googleapis.com/css2?family=Carrois+Gothic+SC&display=swap" rel="stylesheet"> 
+    <link rel="stylesheet" href="../../css/stylesRed.css">
+</head>
+<body>
+    <div class="context">
+        <a href="../23/index.html">Volver</a>
+        <a href="../../index.html">Inicio</a>
+        <a href="../26/index.html">Siguiente</a>
+    </div>
+    <div class="contenido_p" id="arriba">
+        <p>Notas - Bootcamp Backend con Python</p>
+    </div>
+
+    <h1 class="contenido_p">3 - Introducción a DJango</h1>
+    <ul class="contenido_p">
+        <li>
+            <a href="#1">1. ¿Cómo Instalar Django?</a>
+        </li>
+        <li>
+            <a href="#2">2. Migración:</a>
+        </li>
+        <li>
+            <a href="#3">3. Términos Importantes:</a>
+        </li>
+        <li>
+            <a href="#4">4. Estructura del Proyecto:</a>
+        </li>
+        <li>
+            <a href="#5">5. Patrones de Diseño:</a>
+        </li>
+        <li>
+            <a href="#6">6. Ejemplo</a>
+        </li>
+        
+    </ul>
+
+    <p class="contenido_p" id="1">1. ¿Cómo Instalar Django?</p>
+    <pre>
+        python -m venv env                  - Creamos el entorno virtual 
+                - Debemos usar el entorno para diferenciar las versiones
+        source venv/bin/activate            
+        pip install Django                  
+        python -m pip install django        
+        python -m django --version          - 
+
+
+        Django-cli
+        django-admin es la utilidad de línea de comandos de Django para tareas administrativas.
+
+        django-admin startproject myproject         - Creamos el proyecto
+        python manage.py runserver                  - Le damos star al server
+
+
+        manage.py                                   -> Es como un "cli" interno del proyecto
+
+        python manage.py createsuperuser            -> Para acceder al panel super usuario
+    </pre>
+    <div class="context">
+        <a href="#arriba">Arriba</a>
+    </div>
+
+    <p class="contenido_p" id="2">2. Migración:</p>
+    <pre>
+        Las migraciones son una manera incremental que tenemos para actualizar el esquema o como está formada la base de datos.
+        Django ya viene con una serie de migraciones listas para aplicar pero tu puedes crear las tuyas que vas construyendo en tu proyecto.
+    
+    
+        python manage.py migrate    
+    </pre>
+    <div class="context">
+        <a href="#arriba">Arriba</a>
+    </div>
+    
+    <p class="contenido_p" id="3">3. Términos Importantes:</p>
+    <pre>
+        Django Project: Es una aplicación web impulsada por Django Framework, también considerado como el punto de entrada de nuestro sitio web.
+
+        Django Apps: Son pequeñas librerías diseñadas para representar un aspecto único del proyecto.
+            Un proyecto Django está construido por múltiples Apps, algunas de ellas son construidas dentro del proyecto y otras pueden venir de terceros.
+    
+        Manage.py: El Script de gestión del proyecto.    
+    </pre>
+    <div class="context">
+        <a href="#arriba">Arriba</a>
+    </div>
+    <p class="contenido_p" id="4">4. Estructura del Proyecto:</p>
+    <pre>
+        TravelwithCami
+        
+            -> TravelwithCami   Django Project
+            -> Settings         Settings
+            -> Cities           App1
+            -> Blog             App2
+            -> Login            App3
+            
+            manage.py
+            Requirements.py
+            .gitignore                      -> Archivos generales
+            README.md
+            <img src="./img/1-Modelo de Base de datos.PNG" alt="" width="1200px">
+
+        ---------------------------------------------------------------------------
+        Creamos la primera aplicación desde Consola:
+
+            python manage.py startapp citiesapp
+    </pre>
+    <div class="context">
+        <a href="#arriba">Arriba</a>
+    </div>
+
+    <p class="contenido_p" id="5">5. Patrones de Diseño:</p>
+    <pre>
+        Patrones de Diseño:
+        Los patrones de Diseño o Design Patterns, son una solución general, reutilizable y aplicable a diferentes problemas de diseño de Software.
+        Se trata de plantillas que idetifican problemas en el sistema y rpoporcionan soluciones apropiedadas a problemas generales a los que se han enfrentado los desarrolladores durante un largo período de tiempo, a través de prueba y error.
+    
+        Antipatrones.
+        
+        ---------------------------------------------------------------------------
+        Model Vista Controlador (MVC)
+        Modelo: Se encarga de los datos, generalmente (pero no obligatoriamente) consultando la base de datos.
+                Actualizaciones, consutlas, búsqeudas, etc, todo eso va aquí, en el modelo.
+        
+        Vistas: Son la representación visual de los datos, todo lo que tenga que ver con la interfaz gráfica va aquí.
+                Ni el modelo ni el controlador se preocupan de cómo se verán los datos, esa responsabilidad es únicamente de la vista.
+        
+        Controlador: Se encarga de controlar, recibe las órdenes del usuario y se encargar de solicitar los datos al modelo y de comunicárselos a la vista.
+        
+        ---------------------------------------------------------------------------
+        Model Template Vista (MTV):
+        En django, el controlador sigue estando presente, nada más que de una manera intrínseca, ya que todo el framwork Django es el controlador.
+        
+        Modelo: Manjea todo lo relacionado con la información, esto incluye cómo acceder a esta, la validación, relación entre los datos y su comportamiento.
+        
+        Template: Decide cómo será mostrada la información.
+        
+        Vista: Es un enlace entre el modelo y el Template. Decide qué información será mostrada y por cual template.
+        
+        
+        Navegador   -> 1. Url Map -> 2. View -> 3. Model a la base de datos.
+                    -> 4. Desde el modelo al o desde el modelo, a la vista y luego al Template (Dependerá) -> 5. De regreso al navegador.
+        
+        
+        El controlador acá es el "View".
+        La vista acá es el "Controlador".
+    </pre>
+    <div class="context">
+        <a href="#arriba">Arriba</a>
+    </div>
+
+    <p class="contenido_p" id="6">6. Ejemplo</p>
+    <pre>
+        <code>
+        from django.db import models
+        from django.utils import timezone
+        
+        class City(models.Model):
+            name =  models.CharField(max_length=100)
+            description = models.TextField()
+            image = models.ImageField(upload_to='citiesapp/photos')
+            population = models.IntegerField()
+            country = models.CharField(max_length=100)
+            
+            created_date = models.DateTimeField(default=timezone.now)
+            published_date = models.DateTimeField(black=True, null=True)
+        
+            def __str__(self):      # Sobrescribimos el string que se verá en el admin
+                return self.name
+        
+            class Meta:       # Información adicional
+                verbose_name_plural = 'Cities'
+        </code>
+        ---------------------------------------------------------------------------
+        Registramos el modelo en el Admin
+        <code>
+        from django.contrib import admin
+        from .models import City
+        
+        admin.site.register(City)
+        
+        
+        Debemos registar la app en la configuracion general..
+        INSTALLED_APPS = [
+            '..las demas',
+            'citiesapp'
+        ]
+        </code>
+        ---------------------------------------------------------------------------
+        Desde consola..
+        <code>
+            - pip install Pillow             # Para subir las imágenes
+        
+                {{city.image.url}}          -> Pillow maneja la url de esta manera.
+        </code>
+        <code>
+        
+            # Esto va en el proyecto general, no en las apps
+            from django.conf import settings
+            from django.conf.urls.static import static
+        
+            
+            urlpatterns = [
+                path.. y bla
+            ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+        </code>
+        ---------------------------------------------------------------------------
+        Desde Consola:
+        <code>
+            python manage.py makemigrations         Para ver los cambios
+            python manage.py migrate                
+        </code>
+        ---------------------------------------------------------------------------
+        Desde la vista:
+        <code>
+        from .models import City
+        
+        def index(request):
+            cities = City.objects.all()
+        
+            return render(request, 'cities.html', {'cities': cities})
+        </code>
+        ---------------------------------------------------------------------------
+        En la settings, debemos especificar los templates..
+        <code>
+            'DIRS': ['citiesapp/templates'],
+        </code>
+        ---------------------------------------------------------------------------
+        Para abrir el shell django
+        <code>
+            python manage.py shell
+        
+            from cirtiesapp.models import City
+            City.objects.all()
+            
+            City.objects.get(id=2)
+            
+            City.objects.filter(name='Medellin')                
+        </code>
+    </pre>
+    <div class="context">
+        <a href="#arriba">Arriba</a>
+    </div>  
+
+    
+    <br> 
+    <br> 
+    <div class="context">
+        <a href="../24/index.html">Volver</a>
+        <a href="../../index.html">Inicio</a>
+        <a href="../26/index.html">Siguiente</a>
+    </div>
+    
+</body>
+</html>

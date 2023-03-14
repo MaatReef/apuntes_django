@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+      <meta http-equiv="Cache-Control" content="public, max-age=31536000">
+  <meta http-equiv="Expires" content="Mon, 14 Mar 2024 00:00:00 GMT">
+    
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Introducción</title>
+    <link rel="shortcut icon" type=image/jpg href="../../img/logo/favicon.ico"/>
+    <link href="https://fonts.googleapis.com/css2?family=Carrois+Gothic+SC&display=swap" rel="stylesheet"> 
+    <link rel="stylesheet" href="../../css/stylesRed.css">
+</head>
+<body>
+    <div class="context">
+        <a href="../32/index.html">Volver</a>
+        <a href="../../index.html">Inicio</a>
+        <a href="../34/index.html">Siguiente</a>
+    </div>
+    <div class="contenido_p" id="arriba">
+        <p>Notas - Bootcamp Backend con Python</p>
+    </div>
+
+    <h1 class="contenido_p">11 - Despliegue a Producción con Django</h1>
+    <ul class="contenido_p">
+        <li>
+            <a href="#1">1. Los 5 pasos para desplegar una aplicación en Django</a>
+        </li>
+        <li>
+            <a href="#2">2. ¿Qué es el despliege de producción?</a>
+        </li>
+        <li>
+            <a href="#3">3. Los pasos</a>
+        </li>
+        <li>
+            <a href="#4">4. Requerimientos para el Despliegue</a>
+        </li>
+        <li>
+            <a href="#5">5. Usamos la aplicación con los medicamentos y los laboratorios.</a>
+        </li>
+        <li>
+            <a href="#6">6. Paso 1 - Creamos nuestro servidor Remoto</a>
+        </li>
+        <li>
+            <a href="#7">7. Paso 2 - A preparar el servidor</a>
+        </li>
+        <li>
+            <a href="#8">8. Paso 3 - Instalar Gunicorn y el Servicio</a>
+        </li>
+        <li>
+            <a href="#9">9. Paso 4 - Configurar Nginx</a>
+        </li>
+        <li>
+            <a href="#10">10. Paso 5 - Agregando archivos estáticos</a>
+        </li>
+        <li>
+            <a href="#11">11. Extra - DUDAS</a>
+        </li>
+    </ul>
+
+    <p class="contenido_p" id="1">1. Los 5 pasos para desplegar una aplicación en Django</p>
+    <pre>
+        1 - Crear una nueva cuenta en el servidor remoto
+        2 - Ejecutar el proyecto en el servidor remoto (Más tardado, toca instalar redis, mysql, etc)
+            - Paso que lleva Más tiempo
+            *Si logramos levantar el servidor de Django como en local, vamos bien.
+        3 - Trabajamos con gunicorn
+            - Creamos el socket
+        4 - Creamos nuestro servicio
+            - Con el servicio disparamos el socket
+        5 - Configuramos Nginex             
+    </pre>
+    <div class="context">
+        <a href="#arriba">Arriba</a>
+    </div>
+
+    <p class="contenido_p" id="2">2. ¿Qué es el despliege de producción?</p>
+    <pre>        
+        Proceso de lanzar una aplicación en un entorno de producción, es decir,
+        en un ambienten en el que el software estará disponible para su uso
+        por parte de los usuarios finales.
+    </pre>
+    <div class="context">
+        <a href="#arriba">Arriba</a>
+    </div>
+    
+    <p class="contenido_p" id="3">3. Los pasos</p>
+    <pre>
+        Los pasos:
+
+        - Crear Servidor
+            - Crear un nuevo usuario, con la llave pública.
+        - Preparar el servidor con los requerimientos de Software
+            - Base de datos
+        - Instalar Gunicorn
+        - Crear Servicio                - Opcional
+        - Configurar Nginx              - Opcional
+        - Desplegar archivos estáticos  - Opcional (Css, js si no tiene usamos Cdn)            
+    </pre>
+    <div class="context">
+        <a href="#arriba">Arriba</a>
+    </div>
+    <p class="contenido_p" id="4">4. Requerimientos para el Despliegue</p>
+    <pre>
+        Requerimientos para el Despliegue
+
+        - Contar con el proyecto a Desplegar.
+        - Conexión Vía SSH con el servidor Remoto.
+        - Servidor remoto con un S.O Unix. (Ubuntu)
+        - Conocimientos básicos de terminal.            
+    </pre>
+    <div class="context">
+        <a href="#arriba">Arriba</a>
+    </div>
+
+    <p class="contenido_p" id="5">5. Usamos la aplicación con los medicamentos y los laboratorios</p>
+    <pre>
+        Usamos la aplicación con los medicamentos y los laboratorios.
+
+        * Debemos generar el archivo con el requeriments.txt
+
+        <code>
+            - pip freeze > requirements.txt
+        </code>
+
+        - El puente entre lo local y el servidor será Github
+    </pre>
+    <div class="context">
+        <a href="#arriba">Arriba</a>
+    </div>
+
+    <p class="contenido_p" id="6">6. Paso 1 - Creamos nuestro servidor Remoto</p>
+    <pre>
+        Creamos nuestro servidor Remoto    
+        -> DigitalOcean
+    
+        - Creamos nuestro Droplets
+            - Usamos ubuntu 18.04  como sistema operativo, es algo más viejo 
+            - Disco regular
+            - Conexión con Contraseña
+            - Creamos el servidor
+                -> Nos da la ip
+    
+    
+        - Nos conectamos desde Consola:
+        <code>
+            ssh root@121.121.12.12  
+                -> Con la contraseña, entramos dentro del servidor.
+                -  No usar el root, buena práctica generar un nuevo usuario para cada servicio.
+                    - Ejemplo, 5 aplicaciones con usuarios disntintos.
+                    - Administrar servidor.
+        
+            adduser maat
+                - Nos pide una contraseña
+                - Ahora toca agregar ese usuario al grupo de admins
+        
+            usermod -aG sudo maat
+                - Ahora tiene los permismos, IMPORTANTE
+        
+            sudo -maat
+                - Cambiamos a este usuario
+        
+            whoami
+                - Para ver que estamos usando ese usuario
+        </code>
+        *Configuramos las llaves, evitamos la conexión por password, mejor las llaves.
+        <code>
+            sudo apt update 
+                - Actualizamos los paquetes, buena práctica
+        </code>
+        
+        ---------- Acabamos de crear nuestro primer paso - Crear Servidor-------------------------    
+    </pre>
+    <div class="context">
+        <a href="#arriba">Arriba</a>
+    </div>  
+
+    <p class="contenido_p" id="7">7. Paso 2 - A preparar el servidor</p>
+    <pre>
+        ----------------------------------------------------------------
+        Ahora vamos a preparar el servidor para que funciones, segundo paso. 
+        Instalando el software necesario..
+        <code>
+            sudo apt install mysql-server 
+                - Instalamos mysql, dentro del servidor
+                - indicamos que si..
+        
+            sudo apt install mysql-client -y          -> Con la bandera -y decimos YES
+                - Instalamos todo
+        
+            sudo apt install libmysqlclient-dev
+                - Dependecia para conectar django 
+                
+                *No usar el usuario root de mysql, generemos otro con permisos.
+        
+            
+            sudo mysql       -> Entramos a la shell de mysql
+                - CREATE USER 'maat'@'localhost' IDENTIFIED BY 'password';
+                    -> Creamos el usuario distinto al root, maat
+        
+                - GRANT ALL PRIVILEGES ON *.* TO 'maat'@'localhost';
+                    -> Le damos todos los permisos para todas las tablas al usuario maat
+                    -> *.*, todas las tablas * de todas las Bases de Datos * 
+                
+                - exit
+        </code> 
+        ->Volvemos a la consola del servidor
+        <code>
+            mysql -u maat -p         -> Nos autenticamos con ese usuario y el password
+        
+                - CREATE DATABASE mi_base_de_datos;
+        
+                - exit
+        </code>
+        Ahora toca clonar el proyecto de github al servidor.
+        <code>
+            ls
+            mkdir project
+            cd project          
+                -> Dentro de project en la raíz del servidor, guardamos todo
+        </code>
+        Podemos clonar pos ssh si tenemos las llaves o bien por HTTPS
+        <code>
+            git clone https://github.com/mi_usuario/mi_proyecto.git
+        </code>
+        Ahora preparamos python, son 4 cosas
+        <code>
+            sudo apt install python3-pip -y
+            sudo apt install python3-venv -y
+            sudo apt install python3-dev -y
+            sudo apt install python3-wheel -y
+        </code>
+        Ahora entramos a la carpeta de nuestro proyecto clonado de github
+        <code>
+            cd my_project
+            ls  
+                            -> Deberiamos ver todo lo de github
+        
+            python3 -m venv env
+                            -> Creamos el entorno de desarrollo
+        
+            pip install -r requirements.txt
+                            -> Instalamos todas las dependencias.
+        </code>
+        *Importante: No exponer las variables de entorno
+        - Usar un archivo de tipo local_settings.py, en la raíz del proyecto Django
+        - Aca dentro guardaremos todas las variables que no subiremos al repo.
+            - En el gitignore lo manejamos
+        
+        En el proyecto de settings.py importamos estas variables para su uso.
+            - De esta manera debemos crear el archivo local_settings.py en el Servidor
+        
+        <code>
+            nano local_settings.py              
+                    -> Acá dentro guardamos todo lo que no queremos exponer
+        
+            DEBUG = false
+            PASSWORD_DB = 'password'
+            ALLOWED_HOSTS = ['la_direccion_ip_del_Servidor']
+                            ['*'] -> Indicamos que cualquiera pueda hacerse pasar por Nos
+        </code>
+        
+        Ahora debemos configurar nuestro usuario dentro de la settings.py de nuestro proyecto, del servidor.
+        <code>
+            nano cf_medical/settings.py 
+        
+            DATABASES = {
+                'default': {
+                    'ENGINE': 'django.db.backends.mysql',
+                    'NAME': 'mi_base_de_datos',             -> La que configuramos
+                    'USER': 'maat', 
+                            -> Podemos exponerlo, no problem
+                    'PASSWORD': PASSWORD_DB,
+                            -> Este no, mejor que quede "secreto"
+                    'HOST': 'localhost',
+                    'PORT': '3306'
+                }
+            }
+        </code>
+        
+        Ahora si, si hacemos..
+        <code>
+            python manage.py migrate 
+            
+            python manage.py runserver              
+            
+            python manage.py runserver 0.0.0.0:8000     -> Todo okey
+        </code>
+        
+        --------- Concluimos el paso 2, configurar el servidor--------------                
+    </pre>
+    <div class="context">
+        <a href="#arriba">Arriba</a>
+    </div>
+    
+    <p class="contenido_p" id="8">8. Paso 3 - Instalar Gunicorn y el Servicio</p>
+    <pre>
+        Ya preparamos el servidor con los requerimientos de Software.
+        - Instalar la base de datos.
+        - Clonar el Proyecto
+    
+        Ahora toca instalar Gunicorn..
+        Para que nuestro servicio SIEMPRE esté diponible.
+        Debemos crear un servicio.. El cual dispare nuestro proyecto en Django.
+        <code>
+            - pip install gunicorn            -> Es el puente
+        
+            - gunicorn --bind 0.0.0.0:8000 my_proyecto_django.wsgi 
+                                -> Puerta de entrada al proyecto
+        
+                                        -django es opcional, puede ser lo que deseemos
+            - sudo nano /etc/systemd/system/django.service 
+                - Guardamos la contraseña
+        </code>
+        * Los servicios se conforman por 3 bloques, [Unit] [Service] [Install]
+        <code>
+        [UNIT]
+        Description=Description
+        After=network.target
+                -> Cuando haya conexión a internet disparamos el servicio
+        
+        [Service]   -> El servicio como tal
+        User=maat
+        Group=www-data
+        WorkingDirectory=/home/<user>/project/<project foldser> 
+                        -> Ejecutamos gunicorn a través de la ruta absoluta
+                        - Debemos tener el entorno que es es env, y haber isntalado gunicorn, tenerlo en el requiremntes.txt
+        ExecStart=/home/<user>/project/<project clone>/env/bin/gunicorn --workers 3 --bind unix: <project folder>.sock <project folder>.wsgi
+            -> Acá podemos usar los comandos que deseemos de acuardo al lenguaje
+            Ejemplo:
+                ExecStart: python3 main.py runserver, etc...
+        
+        [Install]
+        watedBy=multi-user.target
+        </code>
+        
+        
+        Entonces quedaría algo así...
+        <code>
+        [UNIT]
+        Description=Description
+        After=network.target        
+        
+        [Service]
+        User=maat
+        Group=www-data
+        WorkingDirectory=/home/maat/la_carpeta_del_proyecto/nuestro_proyecto
+        ExecStart=/home/maat/maat/la_carpeta_del_proyecto/nuestro_proyecto/env/bin/gunicorn --workers 3 --bind unix: nuestro_proyecto.sock nuestro_proyecto.wsgi
+        
+        [Install]
+        watedBy=multi-user.target
+        </code>
+        
+        -> Esta es la estructura base
+        Guardamos la data con nano
+        <code>
+            - sudo nano /etc/systemd/system/django.service
+                *Pegamos y guardamos
+        </code>
+        Ahora debemos iniciar el servidor.
+        <code>
+                -> systemctl es el comando que administra todos los Servicios
+                                -> django, el nombre de nuestro proyecto
+            sudo systemctl start django
+        
+            sudo systemctl status django    -> Vemos si el service está activo. 
+        </code>
+        
+        Si el servicio está activo, encontraremos dentro de la carpeta del proyecto..
+        <code>
+            nuestro_proyecto.sock
+                -> El socket, está activo y esperando la comunicación
+        
+            sudo systemctl enable django
+                -> Indicamos que el servicio siempre inicie si el servidor se reinicia.
+        </code>
+        -------------- Ahora ya instalamos Gunicorn y creamos el Servicio
+    </pre>
+    <div class="context">
+        <a href="#arriba">Arriba</a>
+    </div>
+    
+    <p class="contenido_p" id="9">9. Paso 4 - Configurar Nginx</p>
+    <pre>
+        Ahora toca configurar Nginx
+        ----------------------------------------------------------------
+        Tenemos Nginx y Apache.
+        <code>
+            sudo apt install nginx -y
+        </code>
+        Ahora al ingresar a la ip, vemos el html de nginx, ya no la "página caída"
+        Lo que toca configurar ahora es que cada petición, la reciba nginx y se la pase a nuestro socket de gunicorn, gunicorn se la pase a nuestra aplicación Django.
+            -> Django a través de wsgi hace lo que hace.. 
+            Django Lo devuelve a gunicorn, gunicorn a nginx y nginx al cliente.
+        <code>
+                                                -> django, nombre del proyecto
+            sudo nano /etc/nginx/sites-available/django
+        
+        server {
+            listen 80;
+            server_name < domain>;
+        
+            location / {
+                include proxy_params;
+                proxy_pass http://unix:/home/< user>/project/< project>/< gunicorn.sock>;
+            }
+        }
+        </code>
+        
+        Quedaría algo así..
+        <code>
+        server {
+            listen 80;
+            server_name www.mi_dominio.com;    -> O la ip, 123.2323.121.3123
+                        -> Dependediendo uno u otro lo debemos aclarar en DIgitalOcean
+        
+            location / {                       -> A partir de /, root respodemos
+                include proxy_params;
+                proxy_pass http://unix:/home/maat/project/mi_proyecto/nombre_del_sock.sock;
+            }
+        }
+        </code>
+        Guardamos con nano esta configuración..
+        <code>
+            sudo nano  /etc/nginx/sites-available/django
+                -> Pegamos dentro y guardamos
+        </code>
+        
+        Ahora debemos reemplazar la configuración inicial de nginx por la nuestra.
+        <code>
+            sudo ln -s /etc/nginx/sites-available/django /etc/nginx/sites-enabled
+                    -> Hacemos un link entre ambos sitios..
+        
+            nginx -t 
+                -> Para ver si hay errores.
+        
+        
+            sudo systemctl restart nginx           -> Reiniciamos para ver y todo okey.
+        </code>
+        
+        Podemos acceder a una página web por medio del dominio o la ip.                
+    </pre>
+    <div class="context">
+        <a href="#arriba">Arriba</a>
+    </div>
+
+    <p class="contenido_p" id="10">10. Paso 5 - Agregando archivos estáticos</p>
+    <pre>
+        Para agregar los archivos estáticos.. Debemos especificar lo siguiente.
+
+        <code>
+        Esto dentro del settings.py
+        
+        STATIC_URL = '/static/'         -> Este el que va igual nginx settings
+        
+        STATIC_ROOT = BASE_DIR / 'staticfiles'              -> Esto para el deploy
+        STATICFILES_DIRS = [
+            BASE_DIR / "static",
+        ]
+        </code>
+        
+        Ahora en la urls debemos especificar la ruta..
+        <code>
+        from django.conf import settings
+        from django.conf.urls.static import static
+        
+        urlpatterns = [
+            path()
+            path()
+            ..
+        ] + static(settings.STATIC_URL, document_root=settings.MEDIA_ROOT)
+        </code> 
+        
+        
+        * Todo esta en la documentación
+        <code>    
+            - mkdir static                   -> Creamos la carpeta para los estáticos
+        
+            - python manage.py collecstatic  -> Hacemos la recolección
+            
+            - cd staticfiles/
+            - ls
+            - pwd               -> Para ver el direcorio
+        </code>
+        Ahora debemos configurar nginx para que pueda responder con los archivos estáticos.. Al mismo archivo de configuración.
+        
+        <code>
+            - sudo nano /etc/nginx/sites-available/django
+        </code>
+        Quedaría algo así..
+        <code>
+        server {
+            listen 80;
+            server_name www.mi_dominio.com;   
+        
+            location / {                       
+                include proxy_params;
+                proxy_pass http://unix:/home/maat/project/mi_proyecto/nombre_del_sock.sock;
+            }
+        
+            location /static/ {
+                alias /home/maat/project/mi_proyect/staticfiles/;     -> El pwd
+            }
+        }
+        </code>
+        <code>
+            - sudo systemctl restart django     -> Reiniciamos
+            - sudo systemctl restart nginx      -> Reiniciamos
+        </code>
+        
+            - Y todo okey..                  
+    </pre>
+    <div class="context">
+        <a href="#arriba">Arriba</a>
+    </div>
+    
+    <p class="contenido_p" id="11">11. Extra - DUDAS</p>
+    <pre>
+        Extra - DUDAS:
+    
+        - Dentro del servidor podemos desplegar otros proyectos, creando otro usuario
+            - Un usuario para cada aplicación, como buena práctica. 
+    
+        - Redis guarda la información en la memoria Ram, para ejecutar tareas en tiempo real.
+    
+        - Son pasos Universales, lo que hacemos.
+    
+        - Considerar las compatibilidades de las versiones que instalamos con lo que necesitamos.
+    
+        - Podemos acceder a una página web por medio del dominio o la ip.
+    
+        - Cuando creamos nuestro proyecto en React, debemos compilarlo y movelor a Django, 
+    
+        - El socket espera una petición.
+    
+        - Si realizamos cambios, debemos reiniciar el proyecto en django y nginx            
+    </pre>
+    <div class="context">
+        <a href="#arriba">Arriba</a>
+    </div>
+    
+    <br> 
+    <br> 
+    <div class="context">
+        <a href="../32/index.html">Volver</a>
+        <a href="../../index.html">Inicio</a>
+        <a href="../34/index.html">Siguiente</a>
+    </div>
+    
+</body>
+</html>

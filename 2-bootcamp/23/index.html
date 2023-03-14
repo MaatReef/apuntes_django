@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+      <meta http-equiv="Cache-Control" content="public, max-age=31536000">
+  <meta http-equiv="Expires" content="Mon, 14 Mar 2024 00:00:00 GMT">
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Introducción</title>
+    <link rel="shortcut icon" type=image/jpg href="../../img/logo/favicon.ico"/>
+    <link href="https://fonts.googleapis.com/css2?family=Carrois+Gothic+SC&display=swap" rel="stylesheet"> 
+    <link rel="stylesheet" href="../../css/stylesBlue.css">
+</head>
+<body>
+    <div class="context">
+        <a href="../20/index.html">Volver</a>
+        <a href="../../index.html">Inicio</a>
+        <a href="../25/index.html">Siguiente</a>
+    </div>
+    <div class="contenido_p" id="arriba">
+        <p>Notas - Bootcamp Backend con Python</p>
+    </div>
+
+    <h1 class="contenido_p">2 - Introducción a Base de Datos Relacionales</h1>
+    <ul class="contenido_p">
+        <li>
+            <a href="#0">0. Introducción Y Ejercicios</a>
+        </li>
+        <li>
+            <a href="#1">1. Relaciones y Normalización en Base de Datos</a>
+        </li>
+        <li>
+            <a href="#2">2. ¿Que es la Normalización de base de Datos?</a>
+        </li>
+        <li>
+            <a href="#3">3. Tipos de Normalización</a>
+        </li>
+        <li>
+            <a href="#4">4. Ejemplo</a>
+        </li>
+    </ul>
+
+    <p class="contenido_p" id="0">0. Introducción Y Ejercicios</p>
+    <pre>
+        Bases de Datos <-> el Gestor de la Base de datos.
+                - Mysql   
+                - Sqlserver(De Pago)        - Más populares
+                - PostgreSQL
+
+        CRUD (Create, read, update, delete)
+
+
+        SQL  -> Lenguaje de consultas, base.
+
+        -------------------------------------------
+        <code>
+        CREATE DATABASE <db name>;
+
+        USE <db Name>;
+
+        CREATE TABLE <db name> (
+        -- Columns
+        );
+        </code>
+        -------------------------------------------
+        -u usuario
+        root superusuario
+        -p password
+
+        Desde consola:
+        <code>
+        mysql -u root -p 
+
+        SHOW DATABASES;             -> (Comando Exclusivo de Mysql)
+
+
+        CREATE DATABASE bootcamp;
+
+        USE bootcamp;               -> Para seleccionar la base de datos
+
+        SELECT DATABASE();          -> Para ver que base de datos estamos usando
+
+        SHOW TABLES;                -> Para ver las tablas.
+
+        CREATE TABLE users (        -> Campos necesarios, hacer "lluvia de ideas", buena DEFINICIÓN
+                            -- Para comentar -- o /* Comentarios en bloques */
+        id INT UNSIGNED PRIMARY KEY,                            
+        name VARCHAR(50) NOT NULL,
+        password VARCHAR(50),
+        last_name VARCHAR(50),
+        email VARCHAR(50) NOT NULL,
+        country VARCHAR(10) NOT NULL,
+        cp VARCHAR(10) NOT NULL,
+        gender ENUM('male', 'female') NOT NULL DEFAULT 'female',
+        created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
+                            -- ENUMS, listado de opciones predefinidas
+                            -- VARCHAR, string
+        );
+
+        -- Los tipos de datos, nos ayudan para que nuestras consultas luego sean más accesibles.
+
+        DESC users;                 -> Para ver la descripción o detalles de la tabla que acabamos de crear.
+        </code>
+        --------------------------------------------------------------------------------------------------------------
+        Constraints
+        Reglas establecidas para cada una de las columnas de una tabla.
+        <code>
+        - AUTO_INCREMENT    - Incremento en 1
+        - NOT NULL          - No nulos, obligatoriamente debemos tener un valor
+        - UNIQUE            - No valores repetidos
+        - PRIMARY KEY       - Indexa la columna y no permite
+        - DEFAULT           - Para agregar data de manera default
+        - UNSIGNED          - Sin signos, solo "numeros positivos"
+        - ENUMS!            - Para pocas opciones pre definidas, ejemplo, 4 opciones.
+        </code>
+        --------------------------------------------------------------------------------------------------------------
+        <code>
+        DROP TABLE users;   -> Eliminamos la tabla
+
+        INSERT INTO users (             -> Insertamos info dentro de la tabla
+        name, email, country, cp
+        ) VALUES (
+        'Maat', 'maat@gmail.com', 'Argentina', '8300'
+        );
+        </code>
+        --------------------------------------------------------------------------------------------------------------
+        <code>
+        SELECT 10 + 1;                                              -> podemos crear una tabla de manera temporal    
+        SELECT 10 + 1 AS 'resultadto';                              -> podemos crear una tabla de manera temporal y renombrarla como resultado    
+        SELECT @username;                                           -> 
+        SELECT columns FROM table;                                  -> 
+        SELECT columns FROM table WHERE condition;                  -> 
+        SELECT columns FROM table WHERE condition \G;               -> \G para ver en formato en carta, para ver la tabla en otro formato, formato "carta.. id: 1
+        SELECT columns AS <Alias> FROM table WHERE condition ;      -> 
+
+        SOURCE archivo_a_cargar.sql                                 -> Importamos un archivo sql.
+        </code>
+        --------------------------------------------------------------------------------------------------------------
+        Ejercicios:
+        <code>
+        CREATE DATABSE breack;
+        USER breack;
+        SOURCE archivo_a_cargar.sql                 -> Importamos un archivo sql, si lo tenemos en la misma ruta genial, de lo contrario ingresamos la ruta completa.
+
+        SELECT name FROM users\G;                   -> Recomendación usar solo las columnas que vamos a utilizar
+
+        UPDATE users SET last_name = 'Reef', password = '123' WHERE id = 1;
+                                            -> Upgradeamos
+
+        SELECT name FROM users\G;                   -> Corroboramos el update.
+
+        DELETE FROM users;                          -> Eliminamos todo lo de la tabla
+        DELETE FROM users WHERE id = 2;             -> Eliminamos lo especificado, WHERE, donde el id sea 2
+
+        TRUNCATE users;                             -> Reseteamos la tabla, los id vuelven a 1
+
+        -- SOFT DELETE                              -> El dato no se muestra, no se borra.
+        </code>
+
+        --------------------------------------------------------------------------------------------------------------
+        Para ejecutar un script para crear la tabla y realizar el insert.. Paso a paso.
+        <code>
+        CREATE DATABASE IF NOT EXISTS bootcamp;         
+
+        USE bootcamp;
+
+        DROP TABLE IF EXISTS users;
+
+        CREATE TABLE users (        
+        id INT UNSIGNED PRIMARY KEY AUTO_INCREMENT,                            
+        name VARCHAR(50) NOT NULL,
+        age INT NOT NULL,
+        username VARCHAR(50) NOT NULL UNIQUE,
+        email VARCHAR(50) NOT NULL,
+        country VARCHAR(20) NOT NULL,
+        cp VARCHAR(10) NOT NULL,
+        gender ENUM('male', 'female') NOT NULL DEFAULT 'female',
+        created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
+        );        
+
+        INSER
+
+        </code>
+        - source inserts.sql 
+        --------------------------------------------------------------------------------------------------------------
+        Los SELECTS, para agilizar las consultas.
+
+        Obtener el nombre y correo de todos los usuarios.
+        <code>
+        - SELECT name, email FROM users;
+        </code>
+        Obtener el nombre de todos los usuarios cuyo sexo es Femenino.
+        <code>
+        - SELECT name FROM users WHERE gender = 'female';
+        </code>
+        Obtener el nombre de todos los usuarios cuyo sexo es masculino y tengan una edad mayor a 50.
+        <code>
+        - SELECT name FROM users WHERE gender = 'male' AND age > 50;
+        </code>
+        Obtener todos los usuarios cuya edad sea mayor a 20.
+        <code>
+        - SELECT * FROM users WHERE age > 20;
+        </code>
+        Obtener el username y correo electrónico de los usuarios cuya edad se encuentre en el rango 30 a 50
+        <code>
+        - SELECT username FROM users WHERE age > 30 AND age < 50;
+        
+        - CREATE TABLE users_2 (SELECT username FROM users WHERE age > 30 AND age < 50);            -> Creamos una tabla, necesitariamos además una vista.
+        </code>
+        Obtener el username de todos los usuarios cuyo correo no terminen con @example.com
+        <code>
+        - SELECT username FROM users WHERE email LIKE '%@example.com';          -> Que si finaliza  
+        - SELECT username FROM users WHERE email NOT LIKE '%@example.com';      -> Que no finalice
+        </code>
+        Obtener el username de todos los usuarios cuyo país sea Alemania, Finlandia o Canadá.
+        <code>
+        - SELECT username FROM users WHERE country = 'Germany' OR country = 'Finland' OR country = 'Canada';
+
+        - SELECT username FROM users WHERE country IN ('Germany', 'Canada', 'Finland');                         -> In, para agregar más opciones si lo necesitamos.
+        - SELECT username FROM users WHERE id IN (SELECT id FROM users WHERE country IN ('Germany', 'Canada', 'Finland'));         
+                                                                                                      -  Podemos hacer una subconsulta, obtenemos el user a través dle id, y la subconsulta para extraer el id a través del páis.
+        </code>
+        Obtener el número de países en el Data Set
+        <code>
+        - SELECT DISTINCT country from users;                                       -> Obtenemos los valores únicos.
+        - SELECT COUNT(*) FROM (SELECT DISTINCT country from users) AS result;      -> Contamos el resultado
+                                                                -> El as es obligatorio.
+        </code>
+        Obtener el nombre y correo de todos los usuarios de Sexo Femenino que sean del país Alemania.
+        <code>
+        - SELECT name, email FROM users WHERE gener = 'female' AND country = 'Germany'; 
+        </code>
+        Obtener el promedio de edad de todos los usuarios de sexo femenino de Canda mayores a 20 años.
+        <code>
+        - SELECT age FROM users WHERE gender = 'female' AND age > 20;          -> Podemos ver todos los registros
+        - SELECT AVG(age) FROM users WHERE gender = 'female' AND age > 20 AND country='Canada';     -> Obtenemos el promedio
+        </code>
+        Conocer la cantidad de usuarios que residen en Finlandia.
+        <code>
+        - SELECT COUNT(*) FROM users WHERE country = 'Finland';
+        </code>
+        Mostrar en consola la cantidad de hombres y mujeres en el data set.
+        <code>
+        - SELECT gender, count(*) FROM users GROUP BY gender;                        
+        - SELECT count(*), gender FROM users GROUP BY gender;
+        </code>
+        Mostrar en consola el país con más mujeres.
+        <code>
+        - SELECT country, count(*) FROM users WHERE gender = 'female' GROUP BY country;
+
+                            - 1ª Obtiene la información.
+                            - 2ª Despues agrupa
+                            - 3ª Despues Muestra
+                            - 4ª Despues limitamos
+
+        - SELECT country, count(*) as total FROM users WHERE gender = 'female' GROUP BY country ORDER BY total DESC;
+        - SELECT country, count(*) as total FROM users WHERE gender = 'female' GROUP BY country ORDER BY total DESC LIMIT 1;
+        </code>
+        Obtener los 3 países con más usuarios
+        <code>
+        - SELECT country, count(*) as total FROM users GROUP BY country ORDER BY total DESC LIMIT 3;
+        </code>
+        Conocer el país de la persona más vieja.
+        <code>
+        - SELECT country FROM users ORDER BY age DESC LIMIT 1;
+        - SELECT country, age, name FROM users ORDER BY age DESC LIMIT 1;
+        </code>
+
+        Conocer el país con el promedio de edad más grande.
+        <code>
+        - SELECT country, AVG(age) AS avg FROM users GROUP BY country ORDER BY avg DESC LIMIT 1;
+        </code>
+    </pre>
+    <div class="context">
+        <a href="#arriba">Arriba</a>
+    </div>
+    <br>
+    <br>
+    <p class="contenido_p" id="1">1. Relaciones y Normalización en Base de Datos</p>
+    <pre>
+        Palabras Claves:
+        Base de Datos               -> Lugar donde almacenamos la Información
+                                    - Recopilación organizada de información o datos estructurados,
+                                    - que normalmente se almacena de forma electrónica en un sisteam informático.
+                                    - Esta controlada por un sisteam de Gestión de Bases de Datos (DBMS)
+        Gestores de Bases de Datos  -> Para administrar la Base de Datos
+                                    - Software que administra las Bases de Datos.
+                                    - Permite crear, modificar y salvaguardar las Bases de Datos.
+        Tablas                      -> "Hojas de Excel" Filas y Columnas
+        Sql                         -> Lenguaje        
+    </pre>
+    <div class="context">
+        <a href="#arriba">Arriba</a>
+    </div>
+
+    <p class="contenido_p" id="2">2. ¿Que es la Normalización de base de Datos?</p>
+    <pre>
+        Son técnicas que permiten organizar la información de nuestras tablas.
+        Puediendo así evitar redundancia de datos, simplificar la actualización de datos.
+        Y garantizar la integridad de los datos.
+        
+        1FN - 6FN
+        
+        ¿Que es una llave Primaria?
+        Es un identificador único para cada fila de una tabla.
+        Es utilizado para indexar los datos almacenados.
+        
+        ¿Que es una llave Foránea?
+        Es una llave primaria que existe en una tabla diferente..
+        Funciona para relacionar tablas entre Sí.
+    </pre>
+    <div class="context">
+        <a href="#arriba">Arriba</a>
+    </div>
+    
+    <p class="contenido_p" id="3">3. Tipos de Normalización</p>
+    <pre>
+        1NF
+            - Los atributos de una tabla debe ser Atómicos.
+                Ejemplos (Nombre, Apellidos)
+            - Crear tablas independientes para cada conjunto de datos.
+            - Identificar cada conjunto mediante un Id.
+        
+        2NF
+            - Encontrarse en 1NF
+            - Todas las columnas que no son llave primaria deben depender únicamente de la llave Principal.
+            - Las Llaves foráneas deben ser implementadas para identificar una relación entre tablas.
+
+        3NF
+            - Encontrarse en 2NF 
+            - Eliminar atributos que no dependan de una llave (Primarias o Foráneas) (Eliminar Dependencias Transitivas)        
+    </pre>
+    <div class="context">
+        <a href="#arriba">Arriba</a>
+    </div>
+    <p class="contenido_p" id="4">4. Ejemplo</p>
+    <pre>
+    En este curso laburamos con las siguientes tablas
+        - users
+        - products
+        - categories
+        - product_categories
+        - shopping_cart
+        - shopping_cart_products
+    
+    Tipos de Relaciones a usar:
+        - Relación uno a uno.           -> Un usuario que tiene una una unica configuración.
+                                        - Menos usado (5)
+        - Relación uno a muchos.        -> Un autor que tiene muchos libros.
+                                        - Mas usado (80)
+        - Relacion muchos a muchos.     -> Un producto puede tener muchas categorías, y una categoría en múltiples productos.
+                                        - Intermedio (15)
+    
+    --------------------------------------------------------------------
+    - Relacion muchos a muchos:
+        - Para establecer esta relación debemos tener una tabla puente, que haga la relación entre una tabla y la otra.
+        - Por medio de las tablas puentes, hacemos la relación entre las entidades.
+    
+    --------------------------------------------------------------------
+    - Tipo de Lectura:
+          Uno a muchos (En el carrito de compra tendremos la llave foránea):
+        - Un usuario posee uno o múltiples carrito de Compras. Un carrito de compras le pertenece a un usuario.
+    
+          Muchos a Muchos:
+        - Un carrito de compras posee múltiples productos. Un producto puede encontrarse en múltiples carritos de compras.
+        
+          Muchos a Muchos:
+        - Un producto posee múltiples categorías. Una categoría se encuentra en múltiples productos.
+    
+    --------------------------------------------------------------------
+    Para Relacionar: Joins.
+    
+    --------------------------------------------------------------------
+    
+    Ahora desde VCode, en sentences.sql, armamos el script para luego correrlo desde consola, dentro del gestor de mysql:
+    <code>
+        DROP DATABASE IF EXISTS bootcamp;               -> Si existe la borramos
+    
+        CREATE DATABASE IF NOT EXISTS bootcamp;         -> Si no existe la creamos
+    
+        USE bootcamp;                                   -> La usamos
+    
+        CREATE TABLE IF NOT EXISTS users(
+            id INT PRIMARY KEY AUTO_INCREMENT,
+            username VARCHAR(50) UNIQUE NOT NULL,
+            created_ad DATETIME DEFAULT CURRENT_TIMESTAMP
+        );
+        CREATE TABLE IF NOT EXISTS products(
+            id INT PRIMARY KEY AUTO_INCREMENT,
+            name VARCHAR(50) UNIQUE NOT NULL,
+            price INT NOT NULL, 
+            created_ad DATETIME DEFAULT CURRENT_TIMESTAMP
+        );
+        CREATE TABLE IF NOT EXISTS categories(
+            id INT PRIMARY KEY AUTO_INCREMENT,
+            name VARCHAR(50) UNIQUE NOT NULL,
+            created_ad DATETIME DEFAULT CURRENT_TIMESTAMP
+        );
+        CREATE TABLE IF NOT EXISTS product_categories(
+            id INT PRIMARY KEY AUTO_INCREMENT,
+            product_id INT,                                     -- Nuestra llave foránea
+            category_id INT,                                    -- Nuestra llave foránea
+            created_ad DATETIME DEFAULT CURRENT_TIMESTAMP,
+            FOREIGN KEY(product_id) REFERENCES products(id) ON DELETE CASCADE,      -- Establecemos la llave foránea, las tablas puente la debemos agregar después de tener las tablas principales
+            FOREIGN KEY(category_id) REFERENCES categories(id) ON DELETE CASCADE    -- Cuando eliminamos lo principal elimnamos lo que siga
+        );
+        CREATE TABLE IF NOT EXISTS shopping_carts(
+            id INT PRIMARY KEY AUTO_INCREMENT,
+            user_id INT,                                     
+            created_ad DATETIME DEFAULT CURRENT_TIMESTAMP,
+            FOREIGN KEY(user_id) REFERENCES users(id) ON DELETE CASCADE    
+        );
+        CREATE TABLE IF NOT EXISTS shopping_cart_products(
+            id INT PRIMARY KEY AUTO_INCREMENT,
+            shopping_cart_id INT,                                     
+            product_id INT,
+            created_ad DATETIME DEFAULT CURRENT_TIMESTAMP,
+            FOREIGN KEY(shopping_cart_id) REFERENCES shopping_cart(id) ON DELETE CASCADE,
+            FOREIGN KEY(product_id) REFERENCES products(id) ON DELETE CASCADE
+        );
+    </code>
+    
+    Ahora desde consola:
+    <code>
+        mysql -u root -p                -> Autenticamos en nuestro mysql
+    
+        SOURCE sentences.sql;           -> Abrimos nuestro script
+    </code>
+    --------------------------------------------------------------------
+    
+    Agregando data a nuestra base de datos..
+    <code>
+    -- users
+    INSERT INTO users(username) VALUES ('user1');
+    INSERT INTO users(username) VALUES ('user2');
+    INSERT INTO users(username) VALUES ('user3');
+    INSERT INTO users(username) VALUES ('user4');
+    
+    -- products
+    INSERT INTO products(name, price) VALUES ('Manzana', 1);
+    INSERT INTO products(name, price) VALUES ('Coco', 2);
+    
+    INSERT INTO products(name, price) VALUES ('Smartphone', 400);
+    INSERT INTO products(name, price) VALUES ('Laptop', 600);
+    INSERT INTO products(name, price) VALUES ('Monitor', 300);
+    
+    INSERT INTO products(name, price) VALUES ('Playera', 30);
+    INSERT INTO products(name, price) VALUES ('Camisa', 40);
+    INSERT INTO products(name, price) VALUES ('Sudadera', 40);
+    
+    -- Categories
+    INSERT INTO categories(name) VALUES ('Comida');
+    INSERT INTO categories(name) VALUES ('Tecnología');
+    INSERT INTO categories(name) VALUES ('Ropa');
+    INSERT INTO categories(name) VALUES ('Autos');
+    
+    -- Product Categories
+    INSERT INTO product_categories(product_id, category_id) VALUES(1, 1);
+    INSERT INTO product_categories(product_id, category_id) VALUES(2, 1);
+    
+    INSERT INTO product_categories(product_id, category_id) VALUES(3, 2);
+    INSERT INTO product_categories(product_id, category_id) VALUES(4, 2);
+    INSERT INTO product_categories(product_id, category_id) VALUES(5, 2);
+    
+    INSERT INTO product_categories(product_id, category_id) VALUES(6, 3);
+    INSERT INTO product_categories(product_id, category_id) VALUES(7, 3);
+    INSERT INTO product_categories(product_id, category_id) VALUES(8, 3);
+    
+    
+    -- shopping cart
+    INSERT INTO shopping_cart(user_id) VALUES (1);
+    INSERT INTO shopping_cart(user_id) VALUES (2);
+    INSERT INTO shopping_cart(user_id) VALUES (3);
+    
+    
+    -- shopping_cart_products
+    INSERT INTO shopping_cart_products(shopping_cart_id, product_id) VALUES (1,1);  -- Carrito 1
+    INSERT INTO shopping_cart_products(shopping_cart_id, product_id) VALUES (1,2);
+    INSERT INTO shopping_cart_products(shopping_cart_id, product_id) VALUES (1,3);
+    
+    INSERT INTO shopping_cart_products(shopping_cart_id, product_id) VALUES (2,1);  -- Carrito 2
+    INSERT INTO shopping_cart_products(shopping_cart_id, product_id) VALUES (2,2);
+    INSERT INTO shopping_cart_products(shopping_cart_id, product_id) VALUES (2,3);
+    INSERT INTO shopping_cart_products(shopping_cart_id, product_id) VALUES (2,4);
+    INSERT INTO shopping_cart_products(shopping_cart_id, product_id) VALUES (2,5);
+    </code>
+    --------------------------------------------------------------------
+    
+    Obtener el nombre de todos los productos cuya categoría sea id 1
+    <code>    
+        - SELECT products.name FROM                             -- products.name, el products especifica a que tabla pertenece de la relación que estamos haciendo.
+            products INNER JOIN products_categories 
+            ON products.id = products_categories.product_id
+            WHERE product_categories.category_id = 1;
+        
+        - SELECT 
+            products.name 
+            FROM products 
+            NATURAL JOIN products_categories 
+                -- ON products.id = products_categories.product_id   -- Con el NATURAL JOIN nos ahorramos la condición
+            WHERE product_categories.category_id = 1;
+    </code>
+    Obtener la suma total de precios de todos los productos con categorías 1 y 2.
+    <code>
+        - SELECT
+            SUM(product.price) AS total  -- Sum, sumamos, total le damos el nombre
+            FROM products
+            INNER JOIN products_categories ON products.id = products_categories.product_id
+            WHERE products_categories.category_id IN (1,2);
+    </code>
+    Obtener el nombre de la categoría con más productos.
+    <code>
+        SELECT 
+            categories.name, COUNT(*) AS total
+            FROM categories
+            INNER JOIN product_categories 
+            ON categories.id = product_categories.category_id;
+            GROUP BY categories.id
+            ORDER BY total DESC
+            LIMIT 1;
+    </code>
+    Obtener todos aquellos productos sin categoría.
+    <code>
+        SELECT * FROM products
+            LEFT JOIN products_categories 
+            ON products.id = product_categories.product_id
+            WHERE product_id IS NULL;
+    </code>
+    Obtener todos aquellos productos en un carrito de compras.
+    <code>
+        SELECT 
+            products.name 
+            FROM products
+            INNER JOIN shopping_cart_products 
+            ON products.id = shopping_cart_products.product_id
+            GROUP BY products.name;
+    ó 
+        SELECT DISTINCT
+            products.name 
+            FROM products
+            INNER JOIN shopping_cart_products 
+            ON products.id = shopping_cart_products.product_id;
+    </code>
+    Listar todos los productos del usuaruo cuyo id es 1.
+    <code>
+        SELECT 
+            products.name           -- Solo los nombres
+            FROM products
+            INNER JOIN shopping_cart_products 
+                ON products.id = shopping_cart_products.product_id
+            INNER JOIN shopping_cart 
+                ON shopping_cart_products.shopping_cart_id = shopping_cart.id
+            WHERE shopping_cart.user_id = 1;
+    </code>
+    Muestra en pantalla la cantidad de productos del usuario 1
+    <code>
+        SELECT 
+                COUNT(*) 
+            FROM shopping_cart
+            INNER JOIN shopping_cart_products 
+                ON shopping_cart_id = shopping_cart_products.shopping_cart_id
+            WHERE shopping_cart.user_id = 1;
+    </code>
+    Mostrar en pantalla el total del carrito de compras del usuario cuyo id es 2.
+    <code>
+        SELECT 
+                SUM(products.price) AS total
+            FROM products
+            INNER JOIN shopping_cart_products 
+                ON products.id = shopping_cart_products.product_id
+            INNER JOIN shopping_cart 
+                ON shopping_cart_products.shopping_cart_id = shopping_cart.id
+            WHERE shopping_cart.user_id = 2;
+    </code>
+    Mostrar en pantalla el nombre de las categorías con por lo menos 4 productos.
+        1 - Obtiene la información - where
+        2 - Agrupar, se puede crear nuevas columnas -> Having
+        3 - Order
+        4 - LIMIT
+    <code>
+        SELECT 
+                categories.name,
+                count(*) AS total
+            FROM categories
+            INNER JOIN product_categories
+                ON categories.id = product_categories.category_id;
+            GROUP BY categories.name
+            HAVING total >=  4;            
+    </code>
+    </pre>
+    <div class="context">
+        <a href="#arriba">Arriba</a>
+    </div>
+
+
+    
+    <br> 
+    <br> 
+    <div class="context">
+        <a href="../22/index.html">Volver</a>
+        <a href="../../index.html">Inicio</a>
+        <a href="../24/index.html">Siguiente</a>
+    </div>
+    
+</body>
+</html>

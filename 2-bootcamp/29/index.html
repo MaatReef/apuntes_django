@@ -1,0 +1,592 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+      <meta http-equiv="Cache-Control" content="public, max-age=31536000">
+  <meta http-equiv="Expires" content="Mon, 14 Mar 2024 00:00:00 GMT">
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Introducción</title>
+    <link rel="shortcut icon" type=image/jpg href="../../img/logo/favicon.ico"/>
+    <link href="https://fonts.googleapis.com/css2?family=Carrois+Gothic+SC&display=swap" rel="stylesheet"> 
+    <link rel="stylesheet" href="../../css/stylesRed.css">
+</head>
+<body>
+    <div class="context">
+        <a href="../28/index.html">Volver</a>
+        <a href="../../index.html">Inicio</a>
+        <a href="../30/index.html">Siguiente</a>
+    </div>
+    <div class="contenido_p" id="arriba">
+        <p>Notas - Bootcamp Backend con Python</p>
+    </div>
+
+    <h1 class="contenido_p">7 - Curso para Consumir APIs con Python</h1>
+    <ul class="contenido_p">
+        <li>
+            <a href="#1">1. Introducción</a>
+        </li>
+        <li>
+            <a href="#2">2. Petición Get</a>
+        </li>
+        <li>
+            <a href="#3">3. Params</a>
+        </li>
+        <li>
+            <a href="#4">4. POST</a>
+        </li>
+        <li>
+            <a href="#5">5. Encabezados</a>
+        </li>
+        <li>
+            <a href="#6">6. Random User</a>
+        </li>
+        <li>
+            <a href="#7">7. PUT y DELETE</a>
+        </li>
+        <li>
+            <a href="#8">8. Descargar Archivos Remotos</a>
+        </li>
+        <li>
+            <a href="#9">9. Cookies</a>
+        </li>
+        <li>
+            <a href="#10">10. Sesion</a>
+        </li>
+        <li>
+            <a href="#11">11. 1 - Creación de la Aplicación.</a>
+        </li>
+        <li>
+            <a href="#12">12. 2 - Obtener TOken</a>
+        </li>
+        <li>
+            <a href="#13">13. 3 - Obtener el Access Token</a>
+        </li>
+        <li>
+            <a href="#14">14. 4 - Obtener el Usuario Autenticado</a>
+        </li>
+        <li>
+            <a href="#15">15. 5 - Final</a>
+        </li>
+        
+    </ul>
+
+    <p class="contenido_p" id="1">1. Introducción</p>
+    <pre>
+        Desde consola
+        <code>
+        - python3 -m venv env
+    
+        - soruce env/bin/activate
+    
+        - pip install request            
+        </code>
+    </pre>
+    <div class="context">
+        <a href="#arriba">Arriba</a>
+    </div>
+
+    <p class="contenido_p" id="2">2. Petición Get</p>
+    <pre>
+        Petición Get:
+
+            httpbin.org     Usaremos esta página para probar..
+        
+        <code>        
+        main.py
+        
+        import requests 
+        
+        URL = 'https://httpbin.org/get'
+        
+        response = request.get(URL)     # GET
+        print(response)
+        
+        print(response.status_code)     # 200
+        
+        print(response.text)            # Objeto Json
+        
+        print(response.json())          # Diccionario
+        
+        payload = response.json()
+        print(payload.get('origin'))    # IP
+        
+        print(response.url)             # La ruta
+        </code>
+    </pre>
+    <div class="context">
+        <a href="#arriba">Arriba</a>
+    </div>
+    
+    <p class="contenido_p" id="3">3. Params</p>
+    <pre>
+        Params
+        <code>
+        main.py
+        
+        import requests 
+        
+        URL = 'https://httpbin.org/get?name=maat&password=123&email=maat@gmail.com'
+        #query, tres variables al servidor, luego del ?, se pone todo junto y se separa con & si necesitamos enviar más variables.
+        
+        response = request.get(URL)     # GET
+        
+        if response.status_code == 200:
+            print(response.text)                -> Obtendremos los args, nos lo retorna en el servidor.
+        
+        if response.status_code == 200:
+            payload = response.json()
+            params = payload['args']    
+        
+            print(params['name'])
+            print(params['password'])
+            print(params['email'])                
+        </code>
+        <code>
+        -----------------------------------------------------------------------
+        # Otra manera al usar los params, por separado
+        import requests
+        
+        URL = 'https://httpbin.org/get'
+        
+        params = { 
+            'name': 'maat', 
+            'password': '123', 
+            'email': 'maat@gmail.com'
+        }
+        
+        response = request.get(URL, params=params)
+        
+        if response.status_code == 200:
+            payload = response.json()
+            params = payload['args']    
+        
+            prin(params['name'])
+            prin(params['password'])
+            prin(params['email'])
+        
+            print(response.url)          #El servidor hace un eco de lo que enviamos.
+        </code>
+    </pre>
+    <div class="context">
+        <a href="#arriba">Arriba</a>
+    </div>
+    <p class="contenido_p" id="4">4. POST</p>
+    <pre>
+        POST -> Lo anterior era Get
+
+        import requests
+        
+        URL = 'https://httpbin.org/post'
+        
+        data = {
+            'username': 'maat',
+            'password': '123',
+        }
+        
+        response = request.post(URL, data=data)
+        
+        print(response)                     -> Todo ok con el post
+        
+        # if response.status_code == request.codes.ok:   otra manera al usar los mensajes
+        if response.status_code == 200:
+            payload = response.json()
+            print(payload)                  -> Diccionario
+        
+            print(response.text)            -> Esto se envía en el cuerpo de la petición
+        
+            print(response.url)              ->
+        
+        
+        # Con el protocolo https , al infornmación en el cuerpo de la petición va encriptada.                
+    </pre>
+    <div class="context">
+        <a href="#arriba">Arriba</a>
+    </div>
+
+    <p class="contenido_p" id="5">5. Encabezados</p>
+    <pre>
+        Encabezados: Enviar metada al servidor
+        <code>
+        import requests
+        
+        URL = 'https://httpbin.org/post'
+        
+        #encabezado, acá la info es más pública
+        headers = { 
+            'Course': 'Curso de python',
+            'version': '2.0',
+            'authon': 'maat',
+        }
+        
+        #query, acá la info es más pública
+        params = {
+            'platform': 'MaatReef'
+        }
+        
+        #cuerpo, acá más reservada
+        data = {
+            'username': 'maat',
+            'password': '123'
+        }
+        
+        response = request.post(URL, headers=headers, params=params, data=data)
+        
+        if response.status_code == 200:
+            print(response.text) 
+        </code>
+
+        # Podemos enviar valores a través del encabezado, del body o a través del get.
+        Generalmente con el metodo GET, lo hacemos a través del query.
+        Regularmente con el metodo POST, lo hacemos a través del body, el cuerpo de la petición.                 
+    </pre>
+    <div class="context">
+        <a href="#arriba">Arriba</a>
+    </div>
+
+    <p class="contenido_p" id="6">6. Random User</p>
+    <pre>
+        ----------------------------------------------------------------
+        Ahora usaremos una api.. Para un user aleatorio.
+            randoruser.me
+        <code>
+        import request
+
+        URL = 'https://randomuser.me/api/"
+
+        response = request.get(URL)
+
+        if response.status_code == 200:
+            print(response.text)               # Nos traemos un usuario aleatorio.
+        <code>
+
+        ----------------------------------------------------------------
+        <code>
+        import request
+
+        URL = 'https://randomuser.me/api/?results=100"   # Nos traemos 100 usuarios
+
+        count = int(inpu('Ingresa la cantidad de usuarios: '))
+
+        response = request.get(URL, params={'result': count})
+
+        if response.status_code == 200:
+            print(response.text)               # Nos traemos un usuario aleatorio.
+
+            payload = response.json()
+            result = payload.get('results')
+
+            print(len(result))                  #Corroboramos los 100 usuarios
+
+            for user in result:
+                name = user.get('name')
+
+                # print(f"{name['title']} {name['first']} {name['last']}")
+
+                print("{title} {first} {last}".format(**name))        
+        </code>
+    </pre>
+    <div class="context">
+        <a href="#arriba">Arriba</a>
+    </div>  
+
+    <p class="contenido_p" id="7">7. PUT y DELETE</p>
+    <pre>
+        <code>
+        import request
+
+        URL = 'https://httpbin.org/put' 
+        
+        response = request.put(URL, 
+                                params= {'name': 'Mat'},            -> Como query
+                                headers = {'version': '2.0'},       -> Encabezado
+                                data= {'id': 1})                    -> Body, el cuerpo
+        
+        #response = request.delete(URL,  podemos hacer lo mismo con delete y todo ok
+        
+        if response.status_code == 200:
+            print(response.text)                 
+        </code>
+    </pre>
+    <div class="context">
+        <a href="#arriba">Arriba</a>
+    </div>
+    
+    <p class="contenido_p" id="8">8. Descargar Archivos Remotos</p>
+    <pre>
+        <code>
+        import requests
+
+        URL = "https://codigogacilito.com/images/cody'    # png
+        
+        # stream=True, el stream es como un túnel que debe mantenerse abierto, por eso queda en True, así podremos bajar los chunks, y descargar la imagen.
+        response = requests.get(URL, stream=True)
+        
+        if respons.status_code == 200:
+            with open('images/cody.png', 'wb') as file:      # Creamos la carpeta images
+                for chunk in response.iter_content(1024):
+                    file.write(chunk)
+        </code>
+
+        # De esta manera descargamos información de cualquier servidor.
+        Desde consola
+        <code>
+            - python3 main.py                
+        </code>
+    </pre>
+    <div class="context">
+        <a href="#arriba">Arriba</a>
+    </div>
+    
+    <p class="contenido_p" id="9">9. Cookies</p>
+    <pre>
+        Cookies:
+        <code>
+        import requests
+        
+        URL = "https://httpbin.org/cookies"
+        
+        cookies = {
+            'sessions': 'abc123',
+            'name': 'Maat',
+            'email': 'maat@example.com'
+        }
+        
+        response = requests.get(URL, cookies=cookies)    # Enviamos las cookies.
+        
+        if response.status_code == 200:
+            print(response.json())              # Un objeto que tiene el atributo cokkie
+        </code>  
+    </pre>
+    <div class="context">
+        <a href="#arriba">Arriba</a>
+    </div>
+
+    <p class="contenido_p" id="10">10. Sesion</p>
+    <pre>
+        Sesion, laburamos con la autenticación.
+        <code>
+        import requests
+        from getpass import getpass
+        
+        
+        URL = "https://httpbin.org/basic-auth/maat/123"
+        
+        password = getpass('Ingresa la contraseña: ')
+                    # Nos pide la contraseña desde consola y no la veremos.
+        
+        
+        session =  requests.Session()
+        session.auth = ( 'maat', 'password' )    # Intentamos autenticar
+        
+        response = session.get(URL) 
+        
+        if response.status_code == 200:
+            print(response.json())          # Okey
+        
+        if response.status_code == 401:
+            print("Autenticación fallida")                
+        </code>
+    </pre>
+    <div class="context">
+        <a href="#arriba">Arriba</a>
+    </div>
+    
+    <p class="contenido_p" id="11">11. 1 - Creación de la Aplicación</p>
+    <pre>
+        1 - Creación de la Aplicación.
+
+        Auth    Es la autenticación por medio de un tercero
+                Al ingresar con facebook o google por ejemplo.. 
+        
+        Lo haremos con github.. 
+            Desde configuración. COnfiguración de desarrollo, Auth Application
+                Name 
+                Url, la pagina full
+                Description
+                Callback url, la página donde ingresará el usuario al momento del auth
+        
+                Registramos la aplicación.
+        
+            Client ID y el CLient Secrets. 
+        
+        
+        Creamos un archivo settings.py
+        <code>
+        CLIENT_ID =  EL ID
+        SECRET_ID =  EL CLIENT_SECRET                
+        </code> 
+    </pre>
+    <div class="context">
+        <a href="#arriba">Arriba</a>
+    </div>
+    <br>
+    <br>
+    
+    <p class="contenido_p" id="12">12. 2 - Obtener TOken</p>
+    <pre>
+        Creamos un nuevo archivo main.py
+        Usamos la url que provee github..
+        
+            htpps://github.com/login/oauth/authorize?client_id=elid&scope=user
+        
+            Hago esta petición por medio del navegador web y nos llevará a la autenticación de github
+        
+            El codigo "code=1212901" que nos envia en la url github, debemos copiarlo y almacenarlo para crear luego el acces token.. Nos redirige a nuestra página.                
+    </pre>
+    <div class="context">
+        <a href="#arriba">Arriba</a>
+    </div>
+    <br>
+    <br>
+
+    <p class="contenido_p" id="13">13. 3 - Obtener el Access Token</p>
+    <pre>
+        <code>
+        import requests
+        from settings import *
+        
+        code = '9028091' # codigo que nos viene en la URL
+        
+        url = 'https://github.com/login/oauth/access_token'
+        
+        params = {
+            'client_id': CLIENT_ID,
+            'client_secret': SECRET_ID,
+            'code': code
+        }
+        
+        headers = {
+            'Accept': 'application/json'
+        }
+        
+        response = requests.post(URL, params=params, headers=headers)
+        
+        if response.status_code == 200:
+            print(response.json())
+        </code>
+        # Corremos desde consola y obtenemos el Access Token                
+    </pre>
+    <div class="context">
+        <a href="#arriba">Arriba</a>
+    </div>
+    <br>
+    <br>
+
+    <p class="contenido_p" id="14">14. 4 - Obtener el Usuario Autenticado</p>
+    <pre>
+        <code>
+        import requests
+
+        access_token = 'el Access Token'
+        
+        URL = 'https://github.com/user'
+        
+        
+        headers = {
+            'Accept': 'application/vnd.github+json',
+            'Authorization': f'Bearer {access_token}'    #Lo enviamos en el encabezado
+        }   #   En  actual
+        
+        response = requests.get(URL , headers=headers)
+        
+        
+        if response.status_code == 200:
+            username = response.json().get('login') 
+            print(username)                                 # El usuario autenticado
+        
+        </code>
+        # Creamos la aplicaicon en github
+        # Obtenemos el codigo del usuario
+        # Hacemos una petición a la url para obtener el access_token        
+    </pre>
+    <div class="context">
+        <a href="#arriba">Arriba</a>
+    </div>
+    <br>
+    <br>
+
+    <p class="contenido_p" id="15">15. 5 - Final</p>
+    <pre>
+        Final
+        # Generamos la aplicaicon
+        # Obtenermos el codigo en la url
+        # Con el codigo de la url, obtenemos el access_token
+        # Obtenemos al usuario autenticado
+        <code>
+        import requests
+        improt webbrowser
+        from settings import *
+        
+        
+        # Obtener el código
+        def get_url_code():
+            url = 'https://github.com/login/oauth/authorize'
+            params = {
+                'client_id': CLIENT_ID,
+                'scoepe': 'user'
+            }
+            response = requests.get(url, params=params)
+            return response.url
+        
+        
+        #Obtener el access_token
+        def get_access_token():
+            url = 'https://github.com/login/oauth/access_token'
+            params = {
+                'client_id': CLIENT_ID,
+                'client_secret': SECRET_ID,
+                'code': code
+            }
+            headers = {'Accept' :'application/json'}
+        
+            response = requests.post(url, params=params, headers=headers)
+        
+            if response.status_code == 200:
+                paylod = response.json()
+                return payloadlod.get('access_token')
+        
+        # Obtener el usuario autenticado
+        def get_user(access_token):
+            url = 'https://api.github.com/user'
+        
+            headers = {
+                'Accept': 'application/vnd.github+json', 
+                'Authorization': f'Bearer {access_token}'
+            }
+        
+            response = requests.get(url, headers=headers)
+            if response.status_code == 200:
+                return response.json()
+        
+        
+        if __name__ == "__main__":
+            url = get_url_code()
+        
+            webbrowser.open(url)
+        
+            code = input('Ingresa el código: ')
+            code = code.strip().replace('\n', '')
+        
+            access_token = get_access_token(code)
+            print(access_token)
+        
+            user = get_user(access_token)
+            print(user)        
+        </code>
+    </pre>
+    <div class="context">
+        <a href="#arriba">Arriba</a>
+    </div>
+    
+    
+    <br> 
+    <br> 
+    <div class="context">
+        <a href="../28/index.html">Volver</a>
+        <a href="../../index.html">Inicio</a>
+        <a href="../30/index.html">Siguiente</a>
+    </div>
+    
+</body>
+</html>

@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+      <meta http-equiv="Cache-Control" content="public, max-age=31536000">
+  <meta http-equiv="Expires" content="Mon, 14 Mar 2024 00:00:00 GMT">
+    
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Introducción</title>
+    <link rel="shortcut icon" type=image/jpg href="../../img/logo/favicon.ico"/>
+    <link href="https://fonts.googleapis.com/css2?family=Carrois+Gothic+SC&display=swap" rel="stylesheet"> 
+    <link rel="stylesheet" href="../../css/stylesBlue.css">
+</head>
+<body>
+    <div class="context">
+        <a href="../33/index.html">Volver</a>
+        <a href="../../index.html">Inicio</a>
+    </div>
+    <div class="contenido_p" id="arriba">
+        <p>Notas - Bootcamp Backend con Python</p>
+    </div>
+
+    <h1 class="contenido_p">12 - Automatización de tareas con Python</h1>
+    <ul class="contenido_p">
+        <li>
+            <a href="#1">1. ¿Qué es Fabric?</a>
+        </li>
+        <li>
+            <a href="#2">2. ¿Que es lo que necesitamos para actualizar nuestro Proyecto?</a>
+        </li>
+        <li>
+            <a href="#3">3. Paso a Paso</a>
+        </li>
+        <li>
+            <a href="#4">4. Correr Comandos de Manera Local</a>
+        </li>
+        <li>
+            <a href="#5">5. Apuntes - Dudas</a>
+        </li>
+
+    </ul>
+
+    <p class="contenido_p" id="1">1. ¿Qué es Fabric?</p>
+    <pre>
+        Es una librería de Python que nos permite ejecutar instrucciones/comandos en máquinas remotas utilizando SSH.
+
+        Requerimientos:
+        
+            - Servidor Remoto
+            - Proyecto en Producción.
+            - Llaves Públicas y Privadas
+        
+        
+        Instalación:
+        <code>
+            - pip install fabric3                
+        </code>
+    </pre>
+    <div class="context">
+        <a href="#arriba">Arriba</a>
+    </div>
+
+    <p class="contenido_p" id="2">2. ¿Que es lo que necesitamos para actualizar nuestro Proyecto?</p>
+    <pre>
+        ¿Que es lo que necesitamos para actualizar nuestro Proyecto?
+
+        - git pull
+        - instalar nuevas dependencias
+        - aplicar migraciones
+        - precargar archivos estáticos
+        - reiniciar servicio
+        - reiniciar Nginx
+    
+        *Estos 6 pasos lo debemos crear en un único comando.
+    </pre>
+    <div class="context">
+        <a href="#arriba">Arriba</a>
+    </div>
+    
+    <p class="contenido_p" id="3">3. Paso a Paso</p>
+    <pre>
+    Desde consola, en local, desde nuestro proyecto en local..
+    <code>
+        - source env/bin/activate                  -> activamos el entorno virtual
+    
+        - pip install fabric3                      -> instalamos fabric3 dentro del entorno
+    </code>
+    
+    Ahora debemos crear un archivo al mismo nivel de manage.py.. fabfile.py
+    Al mismo nivel del requeriments.txt, acá dentro ejecutaremos todas las instrucciones que deseemos automatizar.
+    Desde consola..
+    <code>
+        - fab -l                                   -> Para ver las instrucciones que tenemos dentro del archivo
+    
+        - fab "le pasamos lo que deseemos ejecutar"
+    </code>
+    -----------
+    Por lo tanto ahora armamos nuestas instrucciones..
+    <code>
+    from fabric.api import run                     -> Con run ejecutamos comandos de servidores remotos
+    
+    def deploy():
+        print('>>> Nos conectamos a nuestro servidor remoto.')
+    
+        run('ls')                                  -> Para listar los comandos
+        run('whoami')                              -> Para saber quien soy
+    
+    
+    def mkdir(folder):
+        command = f'mkdir {folder}'
+        run(command) 
+    
+    Ahora desde consola..
+        - fab -l                                   -> Listamos lo que armamos
+        - fab deploy                               -> Le damos el run a nuestra función
+        
+        - fab -l
+        - fab mkdir:folder=nueva_carpeta          -> Le pasamos el nombre de la carpeta y la creamos dentro del servidor
+    </code>
+    
+    - Le pasamos el host.. Que será nuestra ip, del digitalocean
+    - No nos pide el password ya que las llaves estás configuradas. 
+    
+    
+    De esta manera podemos automatizar todas nuestras tareas, lo que deseemos.
+    
+    ---------- Para evitar pasar el host y el user e ir más rápido, podemos hacer
+    <code>
+        fab -H 104.236.4.54 --user=maat deploy                    -> De esta manera ejecutamos pasando el host y el user
+    </code>
+    -----------------------------------------------------------------------------
+    Ahora continuamos agregando..
+    <code>
+    from fabric.api import run                     
+    from fabric.api import env
+    
+    env.hosts = ['104.236.4.54']
+    env.user = 'maat'
+    env.key_filename = '/home/maat/.ssh/id_ed29238923.pub'           -> Donde se encuentre nuestra llave
+    
+    def deploy():
+        print('>>> Nos conectamos a nuestro servidor remoto.')
+    
+        run('ls')                                  
+        run('whoami')                              
+    </code>
+    
+    Ahora desde consola, dentro de nuestro proyecto al ejecutar el comando..
+    Evitamos ingresar el host y el user..
+    <code>
+        fab deploy                              -> Ya ingresamos y ejecutamos el deploy
+    </code>
+    -----------------------------------------------------------------------------
+    Podriamos además configurar nuestro alias.. Importando desde el archivo config.
+    <code>
+    env.hosts = ['my_server']
+    
+    De esta manera nos "guardamos" la siguientes líneas.. Las ocultamos
+    env.hosts = ['104.236.4.54']
+    env.user = 'maat'
+    env.key_filename = '/home/maat/.ssh/id_ed29238923.pub'
+    </code>
+    
+    -----------------------------------------------------------------------------
+    <code>
+    from fabric.api import run                     
+    from fabric.api import env, cd, prefix, sudo    -> Importamos cd para navegar en las carpetas
+                                                    -> El prefix nos ayuda a levantar el entorno virtual
+                                                    -> Con sudo, ejecutar comandos como super usuario
+    
+    env.hosts = ['104.236.4.54']
+    env.user = 'maat'
+    env.key_filename = '/home/maat/.ssh/id_ed29238923.pub'           
+    
+    def deploy():
+        print('>>> Nos conectamos a nuestro servidor remoto.')
+    
+        with cd('project'):                            -> Con with laburamos por bloques, es de decir, como una cadena, entrando y entrando
+            with cd('cf_medical'):
+                run('ls')                              -> Listamos dentro.
+    
+                run ('git pull')
+    
+                with prefix('source env/bin/activate'):         -> Debemos activar el entorno virtual
+                    run ('pip install -r requirements.txt')     -> Instalamos las dependencias
+    
+                    run ('python manage.py migrate')                    -> Aplicamos las migraciones
+    
+                    run ('python manage.py collectstatic --noinput')    ->  --noinput sobreescribe y demás, no nos pide confirmar o no, solo lo hace y ya
+                                                                                      salta todo..
+        sudo('suso systemctl restart django')
+        sudo('suso systemctl restart nginx')                -> Como super usuario reiniciamos los servicios.
+                                                            * Este sudo lo activamos en la raíz, fuera del contexto with            
+    </code>
+    </pre>
+    <div class="context">
+        <a href="#arriba">Arriba</a>
+    </div>
+    <p class="contenido_p" id="4">4. Correr Comandos de Manera Local</p>
+    <pre>
+        -----------------------------------------------------------------------------
+        Ahora para correr comandos de manera local..
+        <code>
+        from fabric.api import run                     
+        from fabric.api import env, cd, prefix, sudo    
+        
+        from fabric.api import local                            -> De esta manera ejecutamos comandos de manera local
+        
+        env.hosts = ['104.236.4.54']
+        env.user = 'maat'
+        env.key_filename = '/home/maat/.ssh/id_ed29238923.pub'           
+        
+        def deploy():
+            print('>>> Nos conectamos a nuestro servidor remoto.')
+        
+            with cd('project'):                            
+                with cd('cf_medical'):
+                    run('ls')                              
+        
+                    run ('git pull')
+        
+                    with prefix('source env/bin/activate'):         
+                        run ('pip install -r requirements.txt')     
+        
+                        run ('python manage.py migrate')                    
+        
+                        run ('python manage.py collectstatic --noinput')    
+        
+            sudo('suso systemctl restart django')
+            sudo('suso systemctl restart nginx')               
+                        
+            print("Proceso de deploy finaliado")
+        
+        def master(commit):
+            local('git add --all')
+            local(f'git commit -m "{commit}"')
+        
+            local('git push origin master ')
+        
+        </code>
+        --- Ahora desde consola
+        
+        <code>
+            fab -l
+            fab master:commit="Deploy"
+        
+            fab deploy        
+        </code>
+    </pre>
+    <div class="context">
+        <a href="#arriba">Arriba</a>
+    </div>
+
+    <p class="contenido_p" id="5">5. Apuntes - Dudas</p>
+    <pre>
+        * Swagger para documentar si estamos Desarrolando una Api
+
+        * Podriamos además controlar los tests, si los test pasaron la salida es 0 y todo es exitoso, si es distinto a 0 es incorrecto.
+        Todos los programan retorna 0, si es 0 es correcto..
+        
+        * Todo se puede automatizar
+        
+        -------------------------------
+        Si quiseramos hacer un dump de nuestra base de datos..
+        
+        Debemos setear nuestra contraseña en un archivo aislado
+        El archivo va dentro de ..
+        <code>
+            --defaults-extra-files=/etc/mysql/mysqlpassword.cnf
+        </code>
+
+        <code>
+        [mysqldump]
+        # Te following passwotd will be sent to mysqldump
+        password="ThisIsThePassword"
+        </code>
+
+        Y desde consola o bien desde nuestro archivo automatizado..
+        
+        <code>
+        def run_dump_myBdsql():
+            run("mysqldump --defaults-extra-files/etc/mysql/mysqlpassword.cnf -u rrot paydaydebt")
+        </code>
+        
+        - pywombat.com
+        
+        - Generar Crone, un demonio que se ejecuta cada vez que se inicia el servidor.
+        - Con esto podemos generar de acuerdo al UTC de la zona horaria.                
+    </pre>
+    <div class="context">
+        <a href="#arriba">Arriba</a>
+    </div>
+
+    
+    <br> 
+    <br> 
+    <div class="context">
+        <a href="../33/index.html">Volver</a>
+        <a href="../../index.html">Inicio</a>
+    </div>
+    
+</body>
+</html>

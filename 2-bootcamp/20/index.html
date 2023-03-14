@@ -1,0 +1,991 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+      <meta http-equiv="Cache-Control" content="public, max-age=31536000">
+  <meta http-equiv="Expires" content="Mon, 14 Mar 2024 00:00:00 GMT">
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Introducción</title>
+    <link rel="shortcut icon" type=image/jpg href="../../img/logo/favicon.ico"/>
+    <link href="https://fonts.googleapis.com/css2?family=Carrois+Gothic+SC&display=swap" rel="stylesheet"> 
+    <link rel="stylesheet" href="../../css/stylesRed.css">
+
+</head>
+<body>
+    <div class="context">
+        <a href="../../1/19/index.html">Volver - Apuntes Generales</a>
+        <a href="../../index.html">Inicio</a>
+        <a href="../23/index.html">Siguiente</a>
+    </div>
+    <div class="contenido_p" id="arriba">
+        <p>Notas - Bootcamp Backend con Python</p>
+    </div>
+
+    <h1 class="contenido_p">1 - Conceptos de Python Para Backend</h1>
+    <ul class="contenido_p">
+        <li>
+            <a href="#1">1. Paquetes y Módulos</a>
+        </li>
+        <li>
+            <a href="#2">2. ¿Qué son los decoradores?</a>
+        </li>
+        <li>
+            <a href="#3">3. Cómo trabajan las funciones</a>
+        </li>
+        <li>
+            <a href="#4">4. Resumen de decoradores</a>
+        </li>
+        <li>
+            <a href="#5">5. Funciones Lambda</a>
+        </li>
+        <li>
+            <a href="#6">6. Uso apropiado de las funciones lambda</a>
+        </li>
+        <li>
+            <a href="#7">7. Properties</a>
+        </li>
+        <li>
+            <a href="#8">8. Métodos</a>
+        </li>
+    </ul>
+
+    <p class="contenido_p" id="1">1. Paquetes y Módulos</p>
+    <pre>
+        Los módulos son archivos con extension.py
+        Un paquete es una carpeta con el archivo __init__, que contiene modulos o subpaquetes.
+        
+        Como en Python todo es un objeto..
+        Al momento de ejecutar un archivo, python le da el valor de __name__
+        <code>
+        __name__ => al nombre del archivo.
+        
+        __name__ toma el valor de __main__ : Toma el valor del nombre dle archivo
+        
+        if __name__ == "__main__":                      -> Para ejecutar codigo antes
+            print("Si se ejcuto python main.py  ")
+        </code>
+        Al hacer el python3 sobre el modulo aislado.. 
+            Ejemplo
+            python cupones.py
+        Su valor pasa a valer __main__, apuntamos a ese modulo como main.
+        
+        -----------
+        El reccorido entre modulos, lo hace al toque.. Va entrando y entrando, hasta que no hallan mas import
+        Cuando no hay mas import va regresando y ejecutando lo que quedó pendiente.
+        
+        Los atributos con __ al principio, son los propios de Python.
+        
+        -----------
+        __pycache__   
+            Cuando importamos un módulo lo compila.. SOlo una vez, para aumentar la rapidez.
+            archivo.pyc   -> Binarios
+        
+        -----------
+        Para que los archivos no se dupliquen se usan hash..
+            md5sum main.py              -> Vemos el hash, que va cambiando por cada byte que se modifique, una mínima condificación.
+        
+        Un paquete es un conjunto de módulos..
+        
+        Para indicar que es un paquete, dentro DEBE tener un archivo de tipo __init__.pyc
+            el __init__.py es que el primero se inicia y por ende lo necesitamos..
+                - En este nos conectamos a la base de datos, consultamos a slack, improtamos, etc.
+        __init__.py
+                -> con . indicamos la misma carpeta, pero no es muy recomendable.
+        from .product import product as Alias_que_Deseemos
+        
+        from ecommerce.product import product as Alias_que_Deseemos   -> Mejor usar de manera explicito el nombre del paquete
+        
+        *Si tenemos un subpaquete, también debe tener su __init__.py
+        
+        
+        De esta manera en el módulo solo tendremos codigo que haga referencia a su contexto.
+        Codigo más limpio y menos líneas.
+        
+        
+        - Cuando tenemos el error de import circular, es como un ping pong de recursividad, al ir y venir python no puede detener el programa.
+            el __init__ puede ser el punto en común para compartir a los otros módulos.
+        
+        --------
+        Archivo opcional dentro de los paquetes, para ejecutarlos directaement.
+        <code>
+        __main__.py         -> Es opcional, de esta manera es la puerta de entrada para ese paquete.
+        
+            python3 -m nombre_del_paquete           -> con -m ejecutamos el archivo __main__
+        </code>        
+        *De esta manera podemos probar el paquete o dar acceso directo a ese paquete.
+        
+        ------ 
+        También podemos importar dentro de funciones..
+        <code>
+        def example():
+            from ecommerce import Product           -> Importamos
+                                                    -  Nos permite traer data, recordar que al traer se puede ejecutar data dentro de ella, lo cual puede generar conflictos..
+            p = Product('p', 10)
+            print(p)
+        
+        exampel()    
+        </code>
+    </pre>
+    <div class="context">
+        <a href="#arriba">Arriba</a>
+    </div>
+
+    <p class="contenido_p" id="2">2. ¿Qué son los decoradores?</p>
+    <pre>
+        Son un patrón de diseño en Python que permite agregar funcionalidades a un objeto existente (funciones) sin modificar su estructura.
+
+        <code>
+            //Ejemplo decorador
+            @app.route('/secret_page')
+            @login_required
+                def secret_page():
+                    pass
+        </code>
+        Ejemplo Con Flask
+        <code>
+            from functools import wraps
+            from flask import Flask, g, request, redirect, url_for
+            import functools
+            
+            
+            app = Flask(__name__)
+            
+            
+            # Decorador para requerir login
+            def login_required(f):
+                @wraps(f)
+                def decorated_function(*args, **kwargs):
+                    if g.user is None:
+                        return redirect(url_for('login', next=request.url))
+                    return f(*args, **kwargs)
+                return decorated_function
+            
+            
+            @app.route("/secret")
+            @login_required
+            def secret_page():
+                pass
+        </code>
+    </pre>
+    <div class="context">
+        <a href="#arriba">Arriba</a>
+    </div>
+    
+    <p class="contenido_p" id="3">3. Cómo trabajan las funciones</p>
+    <pre>
+        Cómo trabajan las funciones:
+        Las funciones son muy importantes en Python y estas retornan un valor de acuerdo a los argumentos que les pasamos:
+            ➔ Asignando funciones a variables
+            ➔ Definiendo funciones dentro de otras funciones
+            ➔ Pasando funciones como argumentos de otras funciones
+            ➔ Funciones retornando otras funciones
+
+        <code>
+            // Ejemplo de una función
+            def plus_one(number):
+                return number + 1
+            
+            plus_one(8)                 -> 9
+        </code>
+
+        Asignando funciones a variables
+        <code>
+            def plus_one(number):
+                return number + 1
+        
+            add_one = plus_one
+            add_one(5)                  -> 6
+        </code>
+        Definiendo funciones dentro de otras funciones
+        <code>
+            def plus_one(number):
+                def add_one(number):
+                    print("Executing add_one")
+                    return number + 1
+            
+                print("Executing plus_one")
+                result = add_one(number)
+                return result
+        
+            plus_one(4)       
+                                        -> Ejecutando plus_one
+                                        -> Ejecutando add_one
+                                        -> 5    
+        </code>
+        Pasando funciones como argumentos de otras funciones
+        <code>
+            def plus_one(number):
+                print("Executing plus_one")
+                return number + 1
+            
+            def function_call(function):
+                print("Executing function_call")
+                number_to_add = 5
+                return function(number_to_add)
+            
+            function_call(plus_one)            
+                                        -> Executing function_call
+                                        -> Executing plus_one
+                                        -> 6
+        </code>
+        Funciones retornando otras funciones
+        <code>
+            def hello_function():
+                def say_hi():
+                    print("Executing say_hi")
+                    return "Hi"
+                print("Executing hello_function")
+                return say_hi
+            
+            hello = hello_function()
+            hello()
+                                        -> Executing hello_function
+                                        -> Executing say_hi
+                                        -> 'Hi'
+        </code>
+        Las funciones anidadas tienen acceso al las variables de la función 
+        <code>
+            def print_message(message):
+                "Enclosong Function"
+                def message_sender():
+                    "Nested Function"
+                    print(message)
+            
+                message_sender()
+            
+            print_message("Some random message")
+        </code>
+
+        <code>
+            // Creando un decorador
+            def my_decorator(func):
+                def wrapper():
+                    print("Something is happening before the function is called.")
+                    func()
+                    print("Something is happening after the function is called.")
+                return wrapper
+            
+            @my_decorator
+            def say_whee():
+                print("Whee!")
+             
+            say_whee = my_decorator(say_whee)
+            say_whee()        
+                                                -> Something is happening before the function is called.
+                                                -> Whee!
+                                                -> Something is happening after the function is called.
+        </code>
+        <code>
+            def my_decorator(func):
+                def wrapper():
+                    print("Something is happening before the function is called.")
+                    func()
+                    print("Something is happening after the function is called.")
+                return wrapper
+            
+            @my_decorator
+            def say_whee():
+                print("Whee!")
+                
+            say_whee()            
+                                                -> Something is happening before the function is called.
+                                                -> Whee!
+                                                -> Something is happening after the function is called.
+        </code>
+        Aplicando multiples decoradores a una misma función
+        <code>
+            def uppercase_decorator(function):
+                def wrapper():
+                    func = function()
+                    make_uppercase = func.upper()
+                    return make_uppercase
+            
+                return wrapper            
+        </code>
+        <code>
+            def split_string(function):
+                def wrapper():
+                    func = function()
+                    splitted_string = func.split()
+                    return splitted_string
+            
+                return wrapper            
+        </code>
+        <code>
+            @split_string
+            @uppercase_decorator
+            def say_hi():
+                return 'hello there'
+            say_hi()            
+        </code>
+        Decorando funciones con argumentos
+        <code>
+            def decorator_with_arguments(function):
+                def wrapper_accepting_arguments(arg1, arg2):
+                    print(f"My arguments are: {arg1}, {arg2}")
+                    function(arg1, arg2)
+                return wrapper_accepting_arguments
+
+
+            @decorator_with_arguments
+            def cities(city_one, city_two):
+                print(f"Cities I love are {city_one} and {city_two}")
+
+            cities("Pereira", "Medellín")
+                                                -> My arguments are: Pereira, Medellín
+                                                -> Cities I love are Pereira and Medellín
+        </code>
+        <code>
+            // Definiendo decoradores de propósito general
+            def a_decorator_passing_arbitrary_arguments(function_to_decorate):
+                def a_wrapper_accepting_arbitrary_arguments(*args,**kwargs):
+                    print('The positional arguments are', args)
+                    print('The keyword arguments are', kwargs)
+                    function_to_decorate(*args, **kwargs)
+                return a_wrapper_accepting_arbitrary_arguments
+            
+            @a_decorator_passing_arbitrary_arguments
+            def function_with_arguments(a, b, c):
+                print(a, b, c)
+            
+            function_with_arguments(1,2,3)            
+                                                -> The positional arguments are (1, 2, 3)
+                                                -> The keyword arguments are {}
+                                                -> 1 2 3
+        </code>
+        <code>
+            @a_decorator_passing_arbitrary_arguments
+            def function_with_keyword_arguments(first_name="", last_name="", country="Colombia"):
+                print(f"This has shown keyword arguments: ")
+                print(f"first_name: {first_name}")
+                print(f"last_name: {last_name}")
+                print(f"country: {country}")
+            
+            function_with_keyword_arguments(first_name="Derrick", last_name="Mwiti")
+                                                -> The positional arguments are ()
+                                                -> The keyword arguments are {'first_name': 'Derrick', 'last_name': 'Mwiti'}
+                                                -> This has shown keyword arguments: 
+                                                -> first_name: Derrick
+                                                -> last_name: Mwiti
+                                                -> country: Colombia            
+        </code>
+        Pasando argumentos al decorador
+        <code>
+            def decorator_maker_with_arguments(decorator_arg1, decorator_arg2, decorator_arg3):
+                def decorator(func):
+                    def wrapper(function_arg1, function_arg2, function_arg3) :
+                        "This is the wrapper function"
+                        print(f"The wrapper can access all the variables\n"
+                            f"\t- from the decorator maker: {decorator_arg1} {decorator_arg2} {decorator_arg3}\n"
+                            f"\t- from the function call: {function_arg1} {function_arg2} {function_arg3}\n"
+                            f"and pass them to the decorated function")
+                        return func(function_arg1, function_arg2, function_arg3)
+            
+                    return wrapper
+            
+                return decorator
+            
+            pandas = "Pandas"
+            @decorator_maker_with_arguments(pandas, "Numpy","Scikit-learn")
+            def decorated_function_with_arguments(function_arg1, function_arg2, function_arg3):
+                print("This is the decorated function and it only knows about its arguments: ")
+                print(f"{function_arg1} {function_arg2} {function_arg3}")
+            
+            decorated_function_with_arguments(pandas, "Science", "Tools")            
+                                                -> The wrapper can access all the variables
+                                                        - from the decorator maker: Pandas Numpy Scikit-learn
+                                                        - from the function call: Pandas Science Tools
+                                                -> and pass them to the decorated function
+                                                -> This is the decorated function and it only knows about its arguments: 
+                                                -> Pandas Science Tools
+        </code>
+        Debugueando decoradores
+        <code>
+            decorated_function_with_arguments.__name__
+                                                -> 'wrapper'
+
+        </code>
+        <code>
+            decorated_function_with_arguments.__doc__            
+                                                -> 'This is the wrapper function'
+        </code>
+        <code>
+            import functools
+
+            def uppercase_decorator(func):
+                @functools.wraps(func)
+                def wrapper():
+                    return func().upper()
+                return wrapper            
+        </code>
+        <code>
+            @uppercase_decorator
+            def say_hi():
+                "This will say hi"
+                return 'hello there'
+            
+            say_hi()
+                                                -> 'HELLO THERE'            
+        </code>
+        <code>
+            say_hi.__name__
+                                                -> 'say_hi'
+        </code>
+        <code>
+            say_hi.__doc__
+                                                -> 'This will say hi'            
+        </code>
+    </pre>
+    <div class="context">
+        <a href="#arriba">Arriba</a>
+    </div>
+    <p class="contenido_p" id="4">4. Resumen de decoradores</p>
+    <pre>
+        Resumen de decoradores
+        Los decoradores alteran dinámicamente una función, método o clase sin tener que cambiar el código de estas para ser decoradas. 
+        Usar decoradores en Python ayuda a que tu código sea DRY (Don’t Repeat Yourself). Algunos casos de uso son:
+            ➔ Autorización en frameworks como Flask y Django
+            ➔ Logging
+            ➔ Medición de ejecución de tiempo
+            ➔ Sincronización                
+
+            Material complementario 
+        Decoradores:
+        Link:
+        https://www.datacamp.com/tutorial/decorators-python
+        Link: 
+        https://realpython.com/primer-on-pythondecorators/#simple-decorator
+
+    </pre>
+
+    <div class="context">
+        <a href="#arriba">Arriba</a>
+    </div>
+
+    <p class="contenido_p" id="5">5. Funciones Lambda</p>
+    <pre>
+        ¿Qué son las funciones lambda?
+        Son también conocidas como funciones anónimas y son funciones que pueden definir cualquier número de parámetros pero una única expresión. Esta expresión es evaluada y devuelta.
+
+        <code>
+            //Ejemplo función lambda
+            lambda parámetros: expresión
+            cuadrado = lambda x: x ** 2
+            
+            print(cuadrado(4))
+                                                -> 16
+        </code>
+    </pre>
+    <div class="context">
+        <a href="#arriba">Arriba</a>
+    </div>
+
+    <p class="contenido_p" id="6">6. Uso apropiado de las funciones lambda</p>
+    <pre>
+        Uso apropiado de las funciones lambda
+        Algunas veces las funciones lambda no son muy recomendadas por que la lectura de su código a veces es complicada e imponen un pensamiento funcional, y la sintaxis puede ser un poco enredada, por eso se aconseja usarla en casos específicos y con otras funciones como:
+        
+            ➔ map()
+            ➔ filter()
+            ➔ reduce()        
+
+        Material complementario funciones lambda:
+        Link:
+            https://j2logo.com/python/funciones-lambda-en-python/
+        Link: 
+            https://realpython.com/python-lambda
+
+        map()
+            La función map() en Python aplica una función a cada uno de los elementos de una lista.
+        <code>
+            enteros = [1, 2, 4, 7]
+            cuadrados = []
+            for e in enteros:
+                cuadrados.append(e ** 2)
+                
+            print(cuadrados)
+            [1, 4, 16, 49]            
+                                            -> [1, 4, 16, 49]
+                                            -> [1, 4, 16, 49]
+        </code>
+        <code>
+            enteros = [1, 2, 4, 7]
+            cuadrados = list(map(lambda x : x ** 2, enteros))
+            print(cuadrados)            
+                                            -> [1, 4, 16, 49]
+        </code>
+
+        filter()
+            La función filter() filtra una lista de elementos para los que una función devuelve True.
+        <code>
+            valores = [1, 2, 3, 4, 5, 6, 7, 8, 9]
+            pares = []
+            for valor in valores:
+                if valor % 2 == 0:
+                    pares.append(valor)
+            print("Pares-> ", pares)
+                                            -> Pares->  [2, 4, 6, 8]            
+        </code>
+        <code>
+            valores = [1, 2, 3, 4, 5, 6, 7, 8, 9]
+            pares = list(filter(lambda x : x % 2 == 0, valores))
+            print("Pares-> ", pares)
+                                            -> Pares->  [2, 4, 6, 8]            
+        </code>
+        
+        reduce()
+            Esta función se utiliza principalmente para llevar a cabo un cálculo acumulativo sobre una lista de valores y devolver el resultado.
+        <code>
+            valores = [2, 4, 6, 5, 4]
+            suma = 0
+            for el in valores:
+                suma += el
+            print(suma)
+                                            -> 21
+        </code>     
+        <code>
+            from functools import reduce
+            suma = reduce(lambda x, y: x + y, valores)
+            print(suma)
+                                            -> 21            
+        </code>       
+
+        sorted()
+            Esta función ordena una lista en forma lexicográfica.
+        <code>
+            ids = ['id1', 'id2', 'id30', 'id3', 'id22', 'id100']
+            print(sorted(ids)) # Lexicographic sort
+                                            -> ['id1', 'id100', 'id2', 'id22', 'id3', 'id30']            
+        </code>
+        <code>
+            sorted_ids = sorted(ids, key=lambda x: int(x[2:])) # Integer sort
+            print(sorted_ids)            
+                                            -> ['id1', 'id2', 'id3', 'id22', 'id30', 'id100']
+        </code>
+    </pre>
+    <div class="context">
+        <a href="#arriba">Arriba</a>
+    </div>  
+
+    <p class="contenido_p" id="7">7. Properties</p>
+    <pre>
+        ¿Qué son las properties?
+        Las properties() son la forma pythonica de evitar la creación de métodos para obtener y modificar atributos de una clase. Esta función nos ayuda a convertir atributos de una clase en properties o managed attributes.        
+
+        <code>
+            //Ejemplo properties
+            class Point:
+                def __init__(self, x, y):
+                    self._x = x
+                    self._y = y
+                
+                def get_x(self):
+                    return self._x
+                
+                def set_x(self, value):
+                    self._x = value
+                
+                def get_y(self):
+                    return self._y
+                
+                def set_y(self, value):
+                    self._y = value   
+                    
+            point = Point(5, 9)
+            point.get_x()
+                                            -> 5
+
+            point.get_y()   
+                                            -> 9
+
+            point.set_x(8)
+            point.get_x()
+                                            -> 8
+            
+            point._x
+                                            -> 8
+        </code>
+
+        <code>
+            // Cómo crear properties
+            class Circle:
+                def __init__(self, radius):
+                    self._radius = radius
+            
+                def _get_radius(self):
+                    print("Get radius")
+                    return self._radius
+            
+                def _set_radius(self, value):
+                    print("Set radius")
+                    self._radius = value
+            
+                def _del_radius(self):
+                    print("Delete radius")
+                    del self._radius
+            
+                radius = property(
+                    fget=_get_radius,
+                    fset=_set_radius,
+                    fdel=_del_radius,
+                    doc="The radius property."
+                )        
+
+                circle = Circle(42.0)
+                
+                circle.radius
+                                            -> Get radius
+                                            -> 42.0
+
+                circle.radius = 50
+                                            -> Set radius
+
+                circle.radius
+                                            -> Get radius
+                                            -> 50
+                            
+                del circle.radius
+                                            -> Delete radius
+
+                cicle.radius
+                                            -> Error No hay circle, lo borramos arriba
+        </code>
+
+        <code>
+            // Usando property() como decorador
+            class Circle:
+                def __init__(self, radius):
+                    self._radius = radius
+             
+                @property
+                def radius(self):
+                    """The radius property."""
+                    print("Get radius")
+                    return self._radius
+            
+                @radius.setter
+                def radius(self, value):
+                    print("Set radius")
+                    self._radius = value
+            
+                @radius.deleter
+                def radius(self):
+                    print("Delete radius")
+                    del self._radius       
+
+            circle = Circle(42.0)
+
+            circle.radius
+                                                -> Get radius
+                                                -> 42.0
+                                        
+            circle.radius = 50
+                                                -> Set radius
+
+            circle.radius
+                                                -> Get radius
+                                                -> 50
+
+            del circle.radius
+                                                -> Delete radius
+
+            circle.radius            
+                                                -> Error No hay circle, lo borramos arriba
+        </code>
+
+        Creando atributos de solo lectura
+        <code>
+            class Point:
+                def __init__(self, x, y):
+                    self._x = x
+                    self._y = y
+
+                @property
+                def x(self):
+                    return self._x
+
+                @property
+                def y(self):
+                    return self._y
+
+            point = Point(12, 5)    
+            point.x
+                                                -> 12
+
+            point.y
+                                                -> 5
+
+            point.x = 10
+                                                -> No podemos setear por que está definido como solo es de lectura
+        </code>
+
+        Creando atributos de solo escritura
+        <code>
+            import hashlib
+            import os
+            
+            class User:
+                def __init__(self, name, password):
+                    self.name = name
+                    self.password = password
+            
+                @property
+                def password(self):
+                    raise AttributeError("Password is write-only")
+            
+                @password.setter
+                def password(self, plaintext):
+                    salt = os.urandom(32)
+                    self._hashed_password = hashlib.pbkdf2_hmac(
+                        "sha256", plaintext.encode("utf-8"), salt, 100_000
+                    )
+                    
+            user = User("Carolina", "secure_password")
+            user.password
+                                                    -> No se puede leer, solo escrbiri
+
+            user.password = "another_Secure_password"
+        </code>
+
+        Algunos casos de uso de las properties
+        <code>
+            class Point:
+                def __init__(self, x, y):
+                    self.x = x
+                    self.y = y
+            
+                @property
+                def x(self):
+                    return self._x
+            
+                @x.setter
+                def x(self, value):
+                    try:
+                        self._x = float(value)
+                        print("Validated!")
+                    except ValueError:
+                        raise ValueError('"x" must be a number') from None
+            
+                @property
+                def y(self):
+                    return self._y
+            
+                @y.setter
+                def y(self, value):
+                    try:
+                        self._y = float(value)
+                        print("Validated!")
+                    except ValueError:
+                        raise ValueError('"y" must be a number') from None            
+            
+            point = Point(2, 5)
+                                                        -> Validated!
+                                                        -> Validated!
+
+            point.x = "hola"
+                                                        -> Error, debemos ingresar un número
+        </code>
+        
+        Para agregar atributos que requieren algún calculo
+
+        <code>
+            class Rectangle:
+                def __init__(self, width, height):
+                    self.width = width
+                    self.height = height
+            
+                @property
+                def area(self):
+                    return self.width * self.height            
+
+            rectangle = Rectangle(30, 50)
+            rectangle.area
+                                                        -> 1500
+        </code>
+
+
+
+        Material complementario de properties:
+        Link:
+            https://realpython.com/python-property
+    </pre>
+    <div class="context">
+        <a href="#arriba">Arriba</a>
+    </div>
+    
+    <p class="contenido_p" id="8">8. Métodos</p>
+    <pre>
+        Métodos de instancia, métodos de clase y métodos estáticos
+
+        ➔ Los métodos de instancia son creados para modificar un objeto instanciado de una clase.
+
+        ➔ Los métodos de clase trabajan directamente con la clase, desde que su parámetro es la clase en sí.
+
+        ➔ Los métodos estáticos no saben nada acerca de la clase, solo trabajan con los parámetros recibidos.
+
+        <code>
+            class MyClass:
+                def method(self):
+                    """ Instance method """
+                    return 'instance method called', self
+            
+                @classmethod
+                def class_method(cls):
+                    """ Class method """
+                    return 'class method called', cls
+            
+                @staticmethod
+                def static_method():
+                    """ Static method """
+                    return 'static method called'
+           
+            obj = MyClass()
+            obj.method()
+                                                    -> ('instance method called', <__main__.MyClass at 0x10964c9a0>)
+
+            MyClass.method(obj)
+                                                    -> ('instance method called', <__main__.MyClass at 0x1089358e0>)
+
+            obj.class_method()
+                                                    -> ('class method called', __main__.MyClass)
+
+            obj.static_method()
+                                                    -> 'static method called'
+        </code>
+        ¿Qué pasa si accedemos a los metodos sin instanciar un objeto de la clase?
+        <code>
+            MyClass.class_method()
+                                                    -> ('class method called', __main__.MyClass)
+
+            MyClass.static_method()
+                                                    -> 'static method called'
+
+            MyClass.method()
+                                                    -> Error, no le pasamos el self
+        </code>
+
+        Ejemplos de uso
+        <code>
+            class Pizza:
+                def __init__(self, ingredients):
+                    self.ingredients = ingredients
+
+                def __repr__(self):
+                    return f'Pizza({self.ingredients})'
+
+            margherita = Pizza(['mozzarella', 'tomatoes'])
+            cheese = Pizza(['mozzarella', 'provolone', 'cheddar', 'Parmesan'])
+
+            margherita
+                                                    -> Pizza(['mozzarella', 'tomatoes'])
+
+            cheese
+                                                    -> Pizza(['mozzarella', 'provolone', 'cheddar', 'Parmesan'])
+
+            
+            class Pizza:
+                def __init__(self, ingredients):
+                    self.ingredients = ingredients
+            
+                def __repr__(self):
+                    return f'Pizza({self.ingredients})'
+                
+                def create_custom_pizza(self, ingredients):
+                    self.ingredients = ingredients
+                    return self
+            
+                @classmethod
+                def margherita(cls):
+                    return cls(['mozzarella', 'tomatoes'])
+            
+                @classmethod
+                def cheese(cls):
+                    return cls(['mozzarella', 'provolone', 'cheddar', 'Parmesan'])
+
+            Pizza.margherita()
+                                                    -> Pizza(['mozzarella', 'tomatoes'])
+
+            Pizza.cheese()
+                                                    -> Pizza(['mozzarella', 'provolone', 'cheddar', 'Parmesan'])
+
+            first_pizza = Pizza([])
+
+            first_pizza.ingredients
+                                                    -> []
+
+            first_pizza.create_custom_pizza(['chicken', 'mozzarella'])
+                                                    -> Pizza(['chicken', 'mozzarella'])
+
+            first_pizza.margherita()
+                                                    -> Pizza(['mozzarella', 'tomatoes'])
+
+            first_pizza.ingredients
+                                                    -> ['chicken', 'mozzarella']
+
+
+            import math
+
+            class Pizza:
+                def __init__(self, radius, ingredients):
+                    self.radius = radius
+                    self.ingredients = ingredients
+            
+                def __repr__(self):
+                    return (f'Pizza({self.radius}, '
+                            f'{self.ingredients})')
+            
+                def area(self):
+                    return self.circle_area(self.radius)
+            
+                @staticmethod
+                def circle_area(r):
+                    return r ** 2 * math.pi
+
+            p = Pizza(4, ['mozzarella', 'tomatoes'])
+
+            p.area()
+                                                    -> 50.26548245743669
+
+            Pizza.circle_area(4)
+                                                    -> 50.26548245743669
+
+            Pizza.circle_area(5)
+                                                    -> 78.53981633974483
+
+            p.area()
+                                                    -> 50.26548245743669
+        </code>
+
+        Resumen de métodos de instancia, clase y estáticos
+            ➔ Los métodos de instancia necesitan una instancia de una clase y pueden acceder dicha instancia por medio de self.
+
+            ➔ Los métodos de clase no necesitan una instancia de una clase. Ellos no pueden acceder a la instancia (self), pero tienen acceso a la clase por medio de cls.
+
+            ➔ Los métodos estáticos no tienen acceso a cls o self. Ellos trabajan como funciones regulares pero pertenecen al namespace de la clase.
+
+            ➔ Los métodos estáticos y de clase son útiles al momento de diseñar una clase, estos tienen muchos beneficios en el mantenimiento y lectura del código.
+
+        Material complementario métodos de instancia, clase y estáticos:
+        Link:
+            https://realpython.com/instance-class-and-static-methods-demystified/
+        Link: 
+            https://www.programiz.com/python-programming/methods/built-in/classmethod
+        Link: 
+            https://docs.python.org/3/tutorial/classes.html
+    </pre>
+    <div class="context">
+        <a href="#arriba">Arriba</a>
+    </div>
+    
+    
+    <br> 
+    <br> 
+    <div class="context">
+        <a href="../../1/19/index.html">Volver - Apuntes Generales</a>
+        <a href="../../index.html">Inicio</a>
+        <a href="../21/index.html">Siguiente</a>
+    </div>
+    
+</body>
+</html>

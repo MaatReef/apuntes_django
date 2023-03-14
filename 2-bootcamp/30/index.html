@@ -1,0 +1,704 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+      <meta http-equiv="Cache-Control" content="public, max-age=31536000">
+  <meta http-equiv="Expires" content="Mon, 14 Mar 2024 00:00:00 GMT">
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Introducción</title>
+    <link rel="shortcut icon" type=image/jpg href="../../img/logo/favicon.ico"/>
+    <link href="https://fonts.googleapis.com/css2?family=Carrois+Gothic+SC&display=swap" rel="stylesheet"> 
+    <link rel="stylesheet" href="../../css/stylesBlue.css">
+</head>
+<body>
+    <div class="context">
+        <a href="../29/index.html">Volver</a>
+        <a href="../../index.html">Inicio</a>
+        <a href="../31/index.html">Siguiente</a>
+    </div>
+    <div class="contenido_p" id="arriba">
+        <p>Notas - Bootcamp Backend con Python</p>
+    </div>
+
+    <h1 class="contenido_p">8 - Crea tu Apis con Django Rest</h1>
+    <ul class="contenido_p">
+        <li>
+            <a href="#1">1. ¿Que es una Api?</a>
+        </li>
+        <li>
+            <a href="#2">2. Listado de Endpoints</a>
+        </li>
+        <li>
+            <a href="#3">3. Versiona tu API</a>
+        </li>
+        <li>
+            <a href="#4">4. ¿Que es una REST API (Restful)?</a>
+        </li>
+        <li>
+            <a href="#5">5. Creamos el proyecto en DJango.</a>
+        </li>
+        <li>
+            <a href="#6">6. Comenzamos con la API</a>
+        </li>
+        <li>
+            <a href="#7">7. Para agregar otra versión</a>
+        </li>
+        <li>
+            <a href="#8">8. Espacio de Dudas</a>
+        </li>
+        
+    </ul>
+
+    <p class="contenido_p" id="1">1. ¿Que es una Api?</p>
+    <pre>
+        Es una pieza de software que permite la comunicación entre diferentes sistemas de software.
+
+        Por ejemplo:
+            Para conectar nuestra aplicación móvil con el servidor de nuestra página web.
+        
+            ¿Que es un Rest?
+            Representational State Transfer es una arquitectura diseñada para aplicaciones web.
+            Establece las reglas para la creación de una Api.
+        
+        Características de REST:
+        
+            - Se apoya en los protocolos y verbos de HTTP(s)
+                - Get     Obtener
+                - Post    
+                - Put 
+                - Delete
+            - Define un estándar para el envío y recepción de datos.
+                - JSON/XML (Lo que normalmente retornamos, más JSON actualmente)
+            - Es universal. No depende del sistema operativo, lenguaje de programación y/o plataforma.                
+    </pre>
+    <div class="context">
+        <a href="#arriba">Arriba</a>
+    </div>
+
+    <p class="contenido_p" id="2">2. Listado de Endpoints</p>
+    <pre>
+        Listado de Endpoints: Endpoins, ruta de la API
+
+            - medicamentos/crear
+            - medicamentos/nuevo
+            - medicamentos/eliminar
+        
+            - laboratorios/<id>/actualizar
+            - laboratorios/update/<id>
+        
+        --------------------------------------------------------------------------------------------------------------------------------
+        Listado de Endpoints: Estructura
+        
+        Acciones        Endpoints           Método HTTP
+        Listar          /medicines          GET
+        Crear           /medicines          POST
+        Detallar        /medicines/<id>     GET
+        Editar          /medicines/<id>     PUT
+        Eliminar        /medicines/<id>     DELETE
+        
+        De esta manera la ruta más el método, es más sencillo de descifrar que hará.    
+    </pre>
+    <div class="context">
+        <a href="#arriba">Arriba</a>
+    </div>
+    
+    <p class="contenido_p" id="3">3. Versiona tu API</p>
+    <pre>
+        Versiona tu API
+
+        -api/V1
+        -api/V2
+        -api/V3
+        -api/V..
+        
+        Se pueden tener la 11 y la 1 andando y todo bien..
+        Si la 1 anda pero la podemos mejorar, pasamos a la 2 y así.                
+    </pre>
+    <div class="context">
+        <a href="#arriba">Arriba</a>
+    </div>
+    <p class="contenido_p" id="4">4. ¿Que es una REST API (Restful)?</p>
+    <pre>
+        Una api que implementa la arquitectura REST, dejando que sean los verbos/métodos 
+        del protocolo HTTP(s) y los endpoints quienes definan qué hacer.    
+        
+        Por lo tanto una api rest, es una api que se construyo con las reglas de REST.
+        Rest es la arquitectura, las reglas, y la api rest usan esas reglas.
+        
+        *Si tenemos que agregar una nueva url a nuestra api rest, la agregamos solo y solo si, ella no interfiere con las demás.                
+    </pre>
+    <div class="context">
+        <a href="#arriba">Arriba</a>
+    </div>
+
+    <p class="contenido_p" id="5">5. Creamos el proyecto en DJango.</p>
+    <pre>
+        Creamos el proyecto en DJango.
+        Creamos 2 modelos, uno para cada aplicacion, medicines y laboratories
+        Cada aplicación en Django es un paquete.
+        
+        <code>
+        class Laboratory(models.Model):
+            name = models.CharField(max_length=50, null=False)
+            created_at = models.DateTimeField(auto_now_add=True)
+        
+            def __str__(self):
+                return self.name
+        </code>
+        --------------------------
+        <code>
+        from django.db import models
+        
+        from laboratories.models import Laboratory
+        
+        
+        class Medicine(models.Model):
+            name = models.CharField(max_length=50, null=False)
+            price = models.IntegerField(default=1, null=False)
+            laboratory = models.ForeignKey(Laboratory, on_delete=models.CASCADE, related_name='medicines')   
+                #Uno a muchos, un laboratorio puede tener muchos medicamentos, y un medicamento le pertenece a un laboratorio
+            created_at = models.DateTimeField(auto_now_add=True)
+        
+            def __str__(self):  
+                return self.name
+        </code>
+        -------
+        Si vemos un _ _ "doble guion" en uno de los atributos de la clase de nuestro modelo..
+        Quiere decir que no debemos modificarlo dentro de la clase, queda como "privado"
+        
+        --------------------------------------------------------------------------------------------------------------------------------
+        python manage.py shell    -> O bien usarl el shell_plus
+        <code>
+            - from laboratories.models import Laboratory
+        
+            - Laboratory.objects.create(name="Laboratorio CF")
+        
+            - from medicines.models import Medicine
+        
+            - Medicine.objects.create(name="Medicamento 1", price=2000, laboratory_id=1)
+            - Medicine.objects.create(name="Medicamento 2", price=2000, laboratory_id=1)
+        
+            - Laboratory.objects.first()                    # Obtenemos el primero
+        
+            - Laboratory.objects.first().medicines.all()    # Todos los medicamentos
+        </code>
+        --------------------------------------------------------------------------------------------------------------------------------
+        
+        Si tenemos los templates dentro de la aplicación, y también la API, tenemos un proyecto Monolítica
+        Está okey                
+    </pre>
+    <div class="context">
+        <a href="#arriba">Arriba</a>
+    </div>
+
+    <p class="contenido_p" id="6">6. Comenzamos con la API</p>
+    <pre>
+        Ahora comenzamos con la API
+
+        Solo haremos lo de los medicamentos.. 
+        En la app de medicines, creamos el archivo urls.py
+        
+        <code>
+        from django.urls improt path
+        
+        from medicines.views import medicines
+        
+        urlpatterns = [
+            path('', medicines)
+        ]
+        </code>
+        
+        ------------------- 
+        Ahora en nuestro views.py
+        <code>        
+        from django.shortcuts import render
+        
+        def medicines(request):
+            return 'Hola mundo!'
+        </code>
+        --------------------------------------------------------------------------------------------------------------------------------
+        
+        Ahora en el urls.py de nuestro proyecto general debemos incluir las rutas de nuestra aplicación.
+        <code>
+        from django.contrib import admin
+        from django.urls improt path, include
+        
+        urlpatterns = [
+            path('admin/', admin.site.urls)
+            path('api/v1/medicines', include('medicines.urls'))
+        ]
+        </code>
+        ------------------- 
+        Ahora en nuestro views.py, de nuestra app de medicines
+        <code>
+        from django.shortcuts import render
+        from django.http improt JsonResponse
+        from medicines.models import Medicine
+        
+        def medicines(request):
+            #Json
+            medicines = Medicine.objects.all()
+        
+            resultado = []
+            for medicine in medicines:
+                m = {
+                    'id': medicine.id,
+                    'name': medicine.name,
+                    'price': medicine.price,
+                }
+                resultado.append(m)
+        
+            return JsonResponse(
+                {
+                    'data': resultado,
+                    'code': 200,               #De esta manera pasamos más información.
+                    'message': 'ok'
+                }
+            )
+        </code>
+        # Los diccionarios se pueden serializar
+        # De esta manera en vez de devolver un template, estamos devolviendo un JSON
+        --------------------------------------------------------------------------------------------------------------------------------
+        
+        De otra manera.. Ahora en nuestro views.py, de nuestra app de medicines
+        <code>
+        from django.shortcuts import render
+        
+        from django.http improt JsonResponse
+        
+        from medicines.models import Medicine
+        
+        def medicines(request):
+            #Json
+            medicines = Medicine.objects.all().__dict__       #Con el atributo dict
+        
+            
+            return JsonResponse(
+                {
+                    'data': medicines,
+                    'code': 200,               #Es otra manera más corta, TOCA VERLA
+                    'message': 'ok'
+                }
+            )
+        </code>
+        --------------------------------------------------------------------------------------------------------------------------------
+        De esta manera toca recordar que la Api sirve la información, la retorna, no la presenta como lo hace el HTML
+        Como se pinte dependerá de que dispositivo la consume.
+        
+        *Si quisieramos agregar VUE.js, deberíamos agregar una carpeta al mismo nivel del manage.py.. 
+        La carpeta se llamaría Frontend, los componentes irían dentro..
+        
+        También con django, una carpeta llamada templates o bien dentro de cada aplicación.
+        Recomendación, colocar los templates en cada aplicación.
+        
+        --------------------------------------------------------------------------------------------------------------------------------
+        
+        Ahora en nuestro views.py, de nuestra app de medicines
+        <code>
+        from django.shortcuts import render
+        
+        from django.http improt JsonResponse
+        
+        from medicines.models import Medicine
+        
+        def medicines(request):
+            if not 2 == 3:        # El not usuario tiene los permisos de admin, acá le damos la lógica
+                return JsonResponse ({
+                    'message': 'Lo sentimos, no tienes los permisos necesarios'  
+        
+                        # Este mensaje se puede hacer desde el cliente, usando js.. Se hace un async con la petición al servidor
+                        # Si el codigo de respuesta es distinto a 200, creamos un pop para mostrar el mensaje de mensaje denegado
+                        # También con los success, usando los mensajes del servidor.. 
+                })
+        
+        
+            medicines = Medicine.objects.all()
+        
+            resultado = []
+            for medicine in medicines:
+                m = {
+                    'id': medicine.id,
+                    'name': medicine.name,
+                    'price': medicine.price,
+                }
+                resultado.append(m)
+        
+            return JsonResponse(
+                {
+                    'data': resultado,
+                    'code': 200,               
+                    'message': 'ok'
+                }
+            )   
+        </code>
+        --------------------------------------------------------------------------------------------------------------------------------
+        Es necesario tener una tabla exclusiva para los tokens de los usuarios en la base de datos..
+        Cada usuario puede tener múltiples tokens, y también la tabla tenga una columna de fecha de creación y de expiración.
+        - De esta manera los tokens funcionan pese a que se caiga el servidor, y mandar más información.
+        
+        Pro buenas prácticas los tokens deben tener caducidad.
+        En el momento de crear el token, debemos informar el tiempo de caducidad, cuando uno expira se genera uno nuevo.                
+    </pre>
+    <div class="context">
+        <a href="#arriba">Arriba</a>
+    </div>  
+
+    <p class="contenido_p" id="7">7. Para agregar otra versión</p>
+    <pre>
+        Ahora para agregar otra versión..
+
+        Ahora en el urls.py de nuestro proyecto general debemos incluir las rutas de nuestra aplicación.
+        <code>
+        from django.contrib import admin
+        from django.urls improt path, include
+        
+        urlpatterns = [
+            path('admin/', admin.site.urls)
+            path('api/v1/medicines', include('medicines.urls')),
+            path('api/v2/medicines', include('medicines.urls_v2'))
+        ]
+        </code>
+
+        # O bien, podemos crear una carpeta llamada Api dentro de nuestra app..
+            api
+                - v1
+                    urls.py
+                - v2
+                    urls.py
+        
+        De esta manera en nuestra urls.. 
+        <code>
+        urlpatterns = [
+            path('admin/', admin.site.urls)
+            path('api/v1/medicines', include('medicines.urls')),
+            path('api/v2/medicines', include('medicines.api.v2.urls'))
+        ]
+        </code>
+        --------------------------------------------------------------------------------------------------------------------------------
+        Todo esto lo hicimos de manera manual.. Ahora usaremos DjangoRestFramework
+        Esto es recomendable, cuando tenemos una página creada, con los modelos listos.. 
+        De esta manera con nuestra página ya creada, servimos la información para que otras apps o dispositvos, la consuman..
+        <code>
+            pip install djangorestframework
+        </code>
+        Registramos en nuestras settings..
+        <code>
+        INSTALLED_APPS = [
+            ...
+            'medicines',
+            'rest_framework'
+        ]
+        </code>
+        Ahora en nuestra app de medicines.. Debemos crear nuestro serializers.py
+        Clases para transporar la información desde el servidor al cliente..
+        Esta clase se encarga de transformar un objeto del orm a un diccionario.. Para trasladarlo.
+        <code>
+        from rest_framework improt serializers
+        
+        class MedicineSerializer():
+            id = serializers.IntegerField()
+            name = serializers.CharField()
+            price = serializers.IntegerField()
+        </code>
+        ---- 
+        Ahora en nuestro views.py, de nuestra app de medicines
+        <code>
+        from medicines.models import Medicine
+        from rest_framework.response import Response
+        from rest_framework.decorators import api_view
+        from medicines.serializers import MedicineSerializer
+        
+        @api_view(['GET'])       # Solo listaremos la información
+        def medicines(request):
+            medicines = Medicine.objects.all()
+            serializer_medicines = MedicineSerializer(medicines, many=True)
+        
+            print(serializer_medicines.data) # el serializer_medicines, tiene muuuchos métodos
+        
+            return Response(serializer_medicines.data)
+        </code>
+        
+        Ahora tendremos una información más amigable..
+        
+        Además si tuviesesmos en nuestro modelo otra data..
+        
+        <code>
+        class Medicine(models.Model):
+            name = models.CharField(max_length=50, null=False)
+            price = models.IntegerField(default=1, null=False)
+            laboratory = models.ForeignKey(Laboratory, on_delete=models.CASCADE, related_name='medicines')   
+            created_at = models.DateTimeField(auto_now_add=True)
+        
+            @property
+            def price_format(self):
+                return f'${self.price / 100}.00'
+        
+            def __str__(self):  
+                return self.name
+        </code>
+
+        Podemos usar los atributos de nuestro modelo , como los métodos.. 
+        Y esta propiedad de nuestro modelo, también lo podemos usar en nuestro serializers.py
+        <code>
+        from rest_framework improt serializers
+        from medicines.models import Medicine
+        
+        class MedicineSerializer(serializers.Serializer):
+            id = serializers.IntegerField(read_only=True)    # Solo de lectura, nosotros no lo enviamos
+            name = serializers.CharField()
+            price_format = serializers.CharField()
+            laboratory_id = serializers.IntegerField()
+        
+            def create(self, name, price, laboratory_id):
+                return Medicine.objects.create(
+                    name=name, 
+                    price=price,
+                    laboratory_id=laboratory_id
+                )
+        </code>
+        --------------------------------------------------------------------------------------------------------------------------------
+        Ahora en nuestro views.py, de nuestra app de medicines
+        <code>
+        from medicines.models import Medicine
+        from rest_framework.response import Response
+        from rest_framework.decorators import api_view
+        from medicines.serializers import MedicineSerializer
+        
+        @api_view(['GET', 'POST'])       
+        def medicines(request):
+        
+            if request.method == 'GET':
+                medicines = Medicine.objects.all()
+                serializer_medicines = MedicineSerializer(medicines, many=True)
+                return Response(serializer_medicines.data)
+                
+            else:                                                           # POST
+                serializer_medicines = MedicineSerializer(request.data)
+                print(serializer_medicines.data)
+        
+                # Los campos que enviamos por el serializador, serán solo esos..
+                # Si queremos agregar más data, el serializador no la recibe.
+                # Con lo que agregamos para crear en el serializador.. Ahora..
+        
+                serializer_medicines.create(
+                    request.data['name'],
+                    request.data['price'],
+                    request.data['laboratory_id']
+                )
+        
+                return Response(serializer_medicines.data)
+        </code>
+        Serializar es como el FORM de Django, "UN PRIMO".. 
+        Podemos agregar nuevos atributos o métodos a nuestros modelos, desde nuestro serialzador, acorde al modelo.
+        Aunque también se puede hacer desde la vista.. Por ejemplo
+        <code>
+        from medicines.models import Medicine
+        from rest_framework.response import Response
+        from rest_framework.decorators import api_view
+        from medicines.serializers import MedicineSerializer
+        
+        @api_view(['GET', 'POST'])       
+        def medicines(request):
+        
+            if request.method == 'GET':
+                medicines = Medicine.objects.all()
+                serializer_medicines = MedicineSerializer(medicines, many=True)
+                return Response(serializer_medicines.data)
+                
+            else:                                                           # POST
+                serializer_medicines = MedicineSerializer(request.data)
+                print(serializer_medicines.data)
+        
+                # En el serializador además existe el método para validar, como en el formulario..
+                if serializer_medicines.is_valid():          # Validamos que todos los datos sean los correctos.
+        
+                    Medicine.objects.create(            # Lo hacemos directamente desde la vista.. Y borramos lo del serializador
+                        name=request.data['name'],
+                        price=request.data['price'],
+                        laboratory_id=request.data['laboratory_id']
+                    )
+        
+                return Response(serializer_medicines.data)
+        </code>
+        
+        Entonces el serializador nos queda sin el método de create()
+        <code>
+        from rest_framework improt serializers
+        from medicines.models import Medicine
+        
+        class MedicineSerializer(serializers.Serializer):
+            id = serializers.IntegerField(read_only=True)    # Solo de lectura, nosotros no lo enviamos
+            name = serializers.CharField()
+            price_format = serializers.CharField()
+            laboratory_id = serializers.IntegerField()
+        </code>
+        -------
+        Para agregar la data de nuestro Laboratory debemos crear otra clase para ello..
+        <code>
+        from rest_framework improt serializers
+        
+        from medicines.models import Medicine
+        from laboratories.models import Laboratory
+        
+        class LaboratorySerializer(serializers.ModelSerializer):    # Este como un model form
+        
+            class Meta:
+                model = Laboratory          # Aclaramos sobre que modelo aplicamos este serializador
+                fields = ['id', 'name']     # Los campos que queremos
+        
+        class MedicineSerializer(serializers.Serializer):           # Aca lo hacemos como un formulario normal
+            id = serializers.IntegerField(read_only=True)           # En ambas es la misma estructura
+            name = serializers.CharField()
+            price_format = serializers.CharField()
+            laboratory_id = serializers.IntegerField()
+        
+            laboratory = LaboratorySerializer(read_only=True)
+        
+        class MedicineCreateSerializer(serializers.Serializer):           # Creamos este para modificar el Laboratory
+            name = serializers.CharField()
+            price = serializers.IntegerField()
+        </code>
+        
+        
+        # Debemos separar el request del response, para un mayor orden..
+        Es decir..
+        class MedicineSerializer  puede llamarse class MedicineSerializerResponse
+        class MedicineCreateSerializer  puede llamarse class MedicineSerializerRequestUpdated -> Para ser aún más puntuales.
+        
+        De esta manera, tenemos el request, al pedir.. El Get, y el response al hacer el update.
+        No lo cambio porque toca cambiar todo lo otro.
+        
+        # De esta manera ahora dentro de nuestro Json, tenemos la especificamos del Laboratorio, el id y el nombre.
+        
+        * Ya tenemos todo para listrar y para crear.. Ahora toca agregar update y el delete.
+        
+        
+        
+        Ahora en las urls de los medicines..
+        <code>
+        from django.urls import path
+        from medicines.views import medicines
+        from medicines.views import detail_medicine
+        
+        urlpatterns = [
+            path('', medicines),
+            path('/<int:pk>', detail_medicine)
+        ]
+        </code>
+
+        Ahora desde la vista..
+        <code>
+        from medicines.models import Medicine
+        from rest_framework.response import Response
+        from rest_framework.decorators import api_view
+        
+        from medicines.serializers import MedicineSerializer
+        from medicines.serializers improt MedicineCreateSerializer    # Traemos ese método específico para crear.
+        
+        
+        @api_view(['GET', 'POST'])       
+        def medicines(request):
+        
+            if request.method == 'GET':
+                medicines = Medicine.objects.all()
+                serializer_medicines = MedicineSerializer(medicines, many=True)
+                return Response(serializer_medicines.data)
+                
+            else:                                                           
+                serializer_medicines = MedicineSerializer(data=request.data)
+                print(serializer_medicines.data)
+        
+                if serializer_medicines.is_valid():          
+        
+                    Medicine.objects.create(            
+                        name=request.data['name'],
+                        price=request.data['price'],
+                        laboratory_id=request.data['laboratory_id']
+                    )
+        
+                return Response(serializer_medicines.data)
+        
+                
+        @api_view(['GET', 'PUT', 'DELETE'])     
+        def detail_medicine(request, pk):
+            medicine = Medicine.objects.get(pk=pk) 
+            
+            if request.method == 'GET':
+                pass
+            
+            if request.method == 'PUT':
+                serializer = MedicineCreateSerializer(data=request.data)            # Colocamos ese método
+                if serializer.is_valid(): 
+                    
+                    medicine.name = request.data['name']
+                    medicine.price = request.data['price']
+        
+                    medicine.save()
+        
+            serializer = MedicineCreateSerializer(medicine)
+            return Response(serializer.data)                
+        </code>
+    </pre>
+    <div class="context">
+        <a href="#arriba">Arriba</a>
+    </div>
+    
+    <p class="contenido_p" id="8">8. Espacio de Dudas</p>
+    <pre>
+        Espacio de Dudas:
+        - Crear la página o crear la Api
+    
+        - FastApi, hace lo mismo para validar las response y request, pero con anotaciones.
+            Las anotaciones, define tipos en las variables
+    
+        - Con el raw, del orm podemos ejecutar código directo SQL, por ejemplo un Truncate.
+    
+        - Con JASON WEB Token, generamos tokens únicos para los usuarios..
+            Con ese token, le damos permisos a los usuarios.. Esto para las Rest API
+    
+        - Para los templates usamos Django como tal.. 
+            Para crear la api, djangorestframework
+    
+        - Vistas basadas en FUnciones Versus Vistas basdas en Clasas:
+            En funciones cuando queremos tener más control de lo que va a pasar, si no se cumple x o y, llamamos otra funciones, ejecutar algoritmos, etc
+                - Más flexibidad, más control.
+            En clases lo que sabemos que irá en cada método, retornando y demás x o y.
+                - Menos flexibilidad, ahorramos tiempo, menos control, más magia.
+    
+        - Más Postegres o Mysql (Más sencillo en la sintaxis)
+    
+        --------------------------------------------------------------------------------------------------------------------------------
+        
+        # Al seguir la estructura de REST, Django nos va ayudando.. Para los botones de Delete y demás.
+        --------------------------------------------------------------------------------------------------------------------------------
+        Redis.. Base de datos, para cosas en tiempo real.. Para enviar notificaciones, programar tareas, enviar recordatorios.
+        Funciona como una cola..
+        
+        
+        Desde el frot con async await y axios.. Vamos solicitando toda esta data.            
+        --------------------------------------------------------------------------------------------------------------------------------
+        
+        De esta manera toca recordar que la Api sirve la información, la retorna, no la presenta como lo hace el HTML
+        Como se pinte dependerá de que dispositivo la consume.
+        
+        *Si quisieramos agregar VUE.js, deberíamos agregar una carpeta al mismo nivel del manage.py.. 
+        La carpeta se llamaría Frontend, los componentes irían dentro..
+        
+        También con django, una carpeta llamada templates o bien dentro de cada aplicación.
+        Recomendación, colocar los templates en cada aplicación.
+    </pre>
+    <div class="context">
+        <a href="#arriba">Arriba</a>
+    </div>
+    
+    <br> 
+    <br> 
+    <div class="context">
+        <a href="../29/index.html">Volver</a>
+        <a href="../../index.html">Inicio</a>
+        <a href="../31/index.html">Siguiente</a>
+    </div>
+    
+</body>
+</html>

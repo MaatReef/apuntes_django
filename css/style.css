@@ -4,7 +4,7 @@ body {
     background: linear-gradient(to right, #092e20 , #136143); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
 }
 
-h1, p{
+h1,h2,h3, p{
     font-family: 'Raleway', sans-serif;
     display: inline-block;
     text-align: center;

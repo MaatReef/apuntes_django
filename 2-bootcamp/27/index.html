@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+      <meta http-equiv="Cache-Control" content="public, max-age=31536000">
+  <meta http-equiv="Expires" content="Mon, 14 Mar 2024 00:00:00 GMT">
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Introducción</title>
+    <link rel="shortcut icon" type=image/jpg href="../../img/logo/favicon.ico"/>
+    <link href="https://fonts.googleapis.com/css2?family=Carrois+Gothic+SC&display=swap" rel="stylesheet"> 
+    <link rel="stylesheet" href="../../css/stylesRed.css">
+</head>
+<body>
+    <div class="context">
+        <a href="../26/index.html">Volver</a>
+        <a href="../../index.html">Inicio</a>
+        <a href="../28/index.html">Siguiente</a>
+    </div>
+    <div class="contenido_p" id="arriba">
+        <p>Notas - Bootcamp Backend con Python</p>
+    </div>
+
+    <h1 class="contenido_p">5 - Django - Relaciones entre Modelos</h1>
+    <ul class="contenido_p">
+        <li>
+            <a href="#1">1. ¿Que es un ORM?</a>
+        </li>
+        <li>
+            <a href="#2">2. Modelos</a>
+        </li>
+        <li>
+            <a href="#3">3. Argumentos / Tipos de datos comunes en los modelos</a>
+        </li>
+        <li>
+            <a href="#4">4. Relaciones entre Modelos</a>
+        </li>
+        <li>
+            <a href="#5">5. Creando Registros</a>
+        </li>
+        <li>
+            <a href="#6">6. Práctica</a>
+        </li>
+    </ul>
+
+    <p class="contenido_p" id="1">1. ¿Que es un ORM?</p>
+    <pre>
+        Object Relational Mapper - Como una capa que intereactúa entre nosotros y el código.
+        Las Orms se encargan de "mappear" (traducir) nuestra instrucción en el lenguaje de programación que estemos utilizando a una sentencia SQL que el motor de base de datos pueda entender.
+        
+        El Framework web de Django incluye un ORM predeterminado que se puede usar para interactuar con datos, y podemos usar diferentes gestores de base de datos como SQLite, PostgreSQL y MySQL, y si es necesario cambiar  de un gestor a otro sin muchos problemas.
+        
+        <code>
+        Movie.objects.filter(
+            released_year__gte=2000,
+            released_year__lte=2015,
+            title__contains='The',
+            director__years_experience__Exact==2
+        ).order_by('rating')
+        </code>
+        __gte -> Los __ indican filecup, standard del orm, gte, más grande que
+        __lte -> Mas pequeño que
+        
+        
+        En sentencia sql, sería..
+        <code>
+        SELECT *
+        FROM "movies_movie" INNER JOIN "movies_director"
+        ON ("director_id" = "movies_director"."id")
+        WHERE ( "movies_director"."year_experience" = 2
+                AND "movies_movie"."released_year" >= 2000
+                AND "movies_movie"."released_year" <= 2015
+                AND "movies_movie"."title" LIKE %The%)
+        ORDER BY "movies_movie""ratin" ASC                
+        </code>
+    </pre>
+    <div class="context">
+        <a href="#arriba">Arriba</a>
+    </div>
+
+    <p class="contenido_p" id="2">2. Modelos</p>
+    <pre>
+        Un modelo es una clase que corresponde al nombre de una tabla en la base de datos, y cada atributo de dicha clase es un campo de dicha tabla.
+        Los modelos de Django son clases que asignan los objetos del mundo real a los registros de la base de datos.
+        Independientemente de la base de datos que elija, nuestro código seguirá siendo válido.
+        Por estandar se crean en el archivo models.py    
+    </pre>
+    <div class="context">
+        <a href="#arriba">Arriba</a>
+    </div>
+    
+    <p class="contenido_p" id="3">3. Argumentos / Tipos de datos comunes en los modelos</p>
+    <pre>
+        null=False/True   (Debemos tener data)                      CharField
+        unique=False/True (Unicos, no repetidos)                    TextField
+        blank=False/True  (Espacios o no en blanco)                 FloatField
+        choices=iterable(tupla)                                     IntegerField    
+        help_text=string  (Para ayuda en el admin de Django)        slug, integer, positive integer, small integer,
+        max_length=100                                              boolean, decimal, date field, filefield, imagefield..
+        
+        <code>
+        class Actor(models.Model):
+            full_name = models.CharField(max_length=100, null=False, blank=False, verbose_name="Nombre Completo")
+            country_origin = models.CharField(max_length=100, null=True, blank=True, verbose_name="País Origen")
+            created = models.DateTimeField(auto_now_add=True, verbose_name="Fecha de creación")
+            updated = models.DateTimeField(auto_now_add=True, verbose_name="Fecha de edición")
+        </code>
+        
+        Migraciones:
+            Cuando el modelo está definido, Django usa las migraciones para crear las tablas y campos necesarios en la base de datos, y si posterioremente hacemos modificaciones al modelo, las migraciones se encargan de replicar estos cambios.
+        
+        
+        
+        El comando makemigrations crea los archivos con el código necesario para ejecutar luego las sentencias SQL, y se guardan en la carpeta app/migrations/consecutivo_descripcion.py
+        Hasta que no llamemos al comando migrate, dichas sentencias SQL no se ejecutarán en nuestra base de datos.
+        <code>
+            python.manage.py migrate         -> Si no especificamos la aplicación, realiza la migración de todas nuestras apps.                
+        </code>
+    </pre>
+    
+    <div class="context">
+        <a href="#arriba">Arriba</a>
+    </div>
+    <p class="contenido_p" id="4">4. Relaciones entre Modelos</p>
+    <pre>
+        Django tiene 3 tipos de campo para establecer las relaciones entre los modelos (Tablas).
+
+        - El campo ForeignKey se utiliza para establecer una relación de 1 registro a varios registros.
+            Ej: Un cliente tiene una factura.
+            Ej: Una película tiene un director.
+        
+        - El campo OneToOneField se utiliza para relacionar registros uno a uno.
+            Ej: Un usuario tiene un Username (Y es único)
+        
+        - El campo ManyToManyField para relacionar varios registros entre sí, creando una nueva tabla que contiene los IDs de los Modelos.
+            Ej: Una película tiene muchos actores.        
+
+        On_delete actions (Antes de Borrar..)
+        <code>
+            models.CASCADE              -> Deletes all records from both the primary model and the secondary model
+            models.PROTECT              -> Throws an exception when trying to delete data that are related to the secondary model
+            models.SET_NULL             -> Sets null in the secondary model
+            models.SET                  -> Sets the preset value in the secondary model
+            models.DO_NOTHING           -> Does nothing with the secondary model
+        </code>            
+    </pre>
+    <div class="context">
+        <a href="#arriba">Arriba</a>
+    </div>
+
+    <p class="contenido_p" id="5">5. Creando Registros</p>
+    <pre>
+        - save() vs create()
+
+        Caso de Uso                             save()                create()
+        Crear un registro (INSERT)              X                     X
+        Actualizar un r (UPDATE)                X
+            - Update si no conocemos toooda la data o no la precisamos, solo necesitamos modificar un campo
+        Require una instancia del modelo        x  
+            - 
+        Modificar un campo antes de grabarlo    x
+        No necesita una instancia creada
+
+        Plus: get_or_create, get_object_or_404
+    </pre>
+    <div class="context">
+        <a href="#arriba">Arriba</a>
+    </div>
+
+    <p class="contenido_p" id="6">6. Práctica</p>
+    <pre>
+    Desde consola.. Usando el plus, la shell al iniciar carga todos los modelos, es muy útil para proyectos más grandes.
+    <code>
+        python manage.py shell_plus
+    
+        my_director = Director(full_name="Guillermo del Toro")
+        my_director
+    
+        my_director.years_experience = 10
+        my_director.save()                   -> Creamos el objeto
+    </code>
+    Ahora con create
+    <code>
+        Director.objects.create(full_name="Camila Gomez", year_experience=2)
+        
+        cami = Director.objects.get(id=540)
+        cami                                     -> Nos trae el director que recién creamos
+    </code>
+    
+    *Lo visto anterior son objetos, los queryset.. vienen ahora.
+    Queryset y Field Lookups
+    Un QuerySet es, en esencia, una lista de objetos de un modelo determinado.
+    Un QuerySet te permite leer los datos de una base de datos, filtrarlos y ordenarlos.
+    
+    <code>
+        Métodos que retoman un QuerySet         Plus: Otros métodos
+        all                                     values_list
+        filter                                  last, first
+        exclude                                 exists
+        order_by                                count
+        annotate                                aggregate, annotate
+        distinct                                update
+        values                                  delete    
+                                                bulk_create
+    </code>
+    
+    Ejemplos:
+    <code>
+        qs = Director.objects.filter(year_experience=1)     #Queryset
+        qs.count()                                          #Los contamos
+        qs.order_by('created')                              #Lo ordenamos según el tiempo de creación
+        qs.last()                                           #El último
+        qs.first()                                          #El primero
+
+
+        qs_movies = Movie.objects.filter(released_year__gte=2000, released_year__lte=2005)      #Entre ese rango de fecha
+        
+        qs_movies.values_list('title')                      #Nos traemos los campos con el titulo
+        
+        qs_movies.values_list('title', 'director')                      #Nos traemos los campos con el titulo
+        qs_movies.values_list('title', 'director__full_name')           #Con el doble __ le pasamos el atributo del modelo, esto es Field Lookups
+
+        qs_movies.filter(director__full_name__contains='Peter')         #Nos traemos a todos los peter
+
+        qs_movies.filter(director__full_name__contains='Peter').count() #Los contamos
+        
+        list_movies = qs_movies.filter(director__full_name__contains='Peter').values_list('title', 'director__full_name') #Los mostramos como deseemos
+
+        for m in list_movies:
+            print(m)                    -> Recorremos la lista
+    </code>
+    
+    Para excluir del queryset
+    <code>
+        Movie.objects.exclude(title__contains='The')        #Excluimos el the
+        
+        Movie.objects.all()                                 #Para traer todo
+    
+        Movie.objects.distinct()                            #Para filtrar y evitar los repetidos.
+    
+        Movie.objects.exclude(title__contains='The').values('title')      #Devolvemos un queryset como diccionario, manipularlo como como una lista
+        Movie.objects.exclude(title__contains='The').values('title')[5]   #Manipularlo como como una lista, trayendo el registro 5
+    </code>
+    
+    w3schools.com/django
+    ----------------------------------------------------------------
+    Práctica.
+    Crear un Modelo, y una instancia de la clase, 
+    recuperar todos los registros - all ().
+    filtrar los registros - filter (),
+    obteniendo un solo registro - get()
+    
+    En el requirements.txt
+    <code>
+        - django-extensions==3.2.1  es de la shell_plus
+        - ipython==8.8.0            es para pintar la shell
+    </code>
+    
+    En vez de usar los id, es recomendable usar el uuid.. Para aumentar la seguridad.
+    ----------------------------------------------------------------
+    
+    Además con el ORM podemos ejecutar nuestras propias sentencias Sql.
+    <code>
+    Person.objects.raw(
+        '''
+        SELECT first AS first_name,
+            last AS last_name,
+            pk AS id, 
+        FROM some_other_table
+        ''')
+    </code>
+    
+    https://ccbv.co.uk/        
+    </pre>
+    <div class="context">
+        <a href="#arriba">Arriba</a>
+    </div>  
+
+    
+    
+    <br> 
+    <br> 
+    <div class="context">
+        <a href="../26/index.html">Volver</a>
+        <a href="../../index.html">Inicio</a>
+        <a href="../28/index.html">Siguiente</a>
+    </div>
+    
+</body>
+</html>

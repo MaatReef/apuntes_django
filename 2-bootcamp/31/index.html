@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+      <meta http-equiv="Cache-Control" content="public, max-age=31536000">
+  <meta http-equiv="Expires" content="Mon, 14 Mar 2024 00:00:00 GMT">
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Introducción</title>
+    <link rel="shortcut icon" type=image/jpg href="../../img/logo/favicon.ico"/>
+    <link href="https://fonts.googleapis.com/css2?family=Carrois+Gothic+SC&display=swap" rel="stylesheet"> 
+    <link rel="stylesheet" href="../../css/stylesRed.css">
+</head>
+<body>
+    <div class="context">
+        <a href="../30/index.html">Volver</a>
+        <a href="../../index.html">Inicio</a>
+        <a href="../32/index.html">Siguiente</a>
+    </div>
+    <div class="contenido_p" id="arriba">
+        <p>Notas - Bootcamp Backend con Python</p>
+    </div>
+
+    <h1 class="contenido_p">9 - Introducción y uso de SSH</h1>
+    <ul class="contenido_p">
+        <li>
+            <a href="#1">1. Introducción SSH</a>
+        </li>
+        <li>
+            <a href="#2">2. Digital Ocean</a>
+        </li>
+        <li>
+            <a href="#3">3. Configura tu primer servidor remoto</a>
+        </li>
+        <li>
+            <a href="#4">4. Práctica</a>
+        </li>
+        <li>
+            <a href="#5">5. Llaves públicas y privadas</a>
+        </li>
+        <li>
+            <a href="#6">6. Características</a>
+        </li>
+        <li>
+            <a href="#7">7. Generar par de llaves</a>
+        </li>
+        <li>
+            <a href="#8">8. Transferencia de Archivos</a>
+        </li>
+        <li>
+            <a href="#9">9. Configuraciones Finales</a>
+        </li>
+        <li>
+            <a href="#10">10. Apuntes</a>
+        </li>
+    </ul>
+
+    <p class="contenido_p" id="1">1. Introducción SSH</p>
+    <pre>
+        Usaremos en este caso Digital Ocean.. Para las máquinas remotas.
+        En python son 5 pasos.
+        
+        ¿Qué es un SSH? - Más recomndable para usar.
+        
+        Secure Shell, es un protocolo diseñado para enviar y recibir información de forma segura a través de la red.
+        Está Testeado.
+        
+        Características:
+        Autenticación:
+            - Permite conocer a los participantes de la red.
+            - "Apretón de manos" entre el servidor y el cliente, para que podamos acceder.
+        
+        Integridad:
+            - Se garantiza que la información enviada no será alterada.
+        
+        Encriptación:
+            - Toda la información enviada se encuentra íntegramente protegida.
+        
+                       Protocolo SSH
+                       La info estará encriptada
+                        en este "tunel"
+             Máquina                               Máquina 
+               A                                      B                
+    </pre>
+    <div class="context">
+        <a href="#arriba">Arriba</a>
+    </div>
+
+    <p class="contenido_p" id="2">2. Digital Ocean</p>
+    <pre>
+        Usaremos Digital Ocean -> Pagamos solo que usamos.
+
+        - Los Servidores son los Droplets, es solo un sistema operativo donde laburamos.
+            - Los droplets pueden ser escalables.
+    
+        Droplets:
+            - Zona Geográfica: Los servidores mientras más cerca estén a los usuarios, mejor, menos latencia.
+            - Operating System OS:  Ubuntu la más reciente
+            - Precio: Regular, la más barata de 4 dólares
+            - Autenticación: Por contraseña ( p4sswordCF )
+    
+            - Creamos el Droplets
+                -> Desde que se crea, empezamos a pagar por hora.
+                -  Nos da la ip, y podemos ingresar desde la web.
+    </pre>
+    <div class="context">
+        <a href="#arriba">Arriba</a>
+    </div>
+    
+    <p class="contenido_p" id="3">3. Configura tu primer servidor remoto</p>
+    <pre>
+        Conexión con el servidor Remoto: Para ingresar desde Windows debemos usar "Putty"
+        
+        "ssh" es la aplicación ssh que implementa el protocolo ssh, tienen el mismo nombre en este caso.
+        <code>
+                ssh user@server
+                ssh root@123.212.122.12     -> la ip que nos da digital ocean.
+                    
+                - ingresamos la contraseña
+                - exit   -> para salir    
+        </code>
+        Configura tu primer servidor remoto:
+            - Buena práctica, cambiar el usuario root, un nuevo usuario
+        <code>
+            - adduser < username>
+            - usermod -aG sudo < username>
+            - us - < username>
+            
+            
+            - adduser maat
+                - Le agregamos contraseña,
+            - usermod -aG sudo maat
+                - Lo agregamos como superusuario, administrador
+            - us - < username>
+        </code>
+
+        Otros comandos:
+        <code>
+            whoami                     -> Para saber el usuario
+            ip address                 -> Para saber la ip
+        </code>
+    </pre>
+    <div class="context">
+        <a href="#arriba">Arriba</a>
+    </div>
+    <p class="contenido_p" id="4">4. Práctica</p>
+    <pre>
+        Práctica:
+        - Conectarse vía SSH con el servidor remoto
+        - Dirigirse a la carpeta /documents/bootcamp
+        - Registra tu nombre en el archivo users.txt del directorio
+    
+    
+        Desde consola:
+        <code>
+            - mkdir documents
+            - cd documents
+            - mkdir bootcamp
+            - cd bootcamp
+            - nano users.txt         -> Ahora dentro ingresamos la data
+                Maat Reef            -> control + x guardamos
+    
+            - cat users.txt          -> Vemos el contenido
+        </code>
+    </pre>
+    <div class="context">
+        <a href="#arriba">Arriba</a>
+    </div>
+
+    <p class="contenido_p" id="5">5. Llaves públicas y privadas</p>
+    <pre>
+        Llaves públicas y privadas:
+            Para evitar usar las contraseñas, debemos usar la criptografía asimétrica.
+            ¿Qué es la criptografía asimétrica?
+        
+            También conocida como criptografía de llave pública.
+            Es un tipo de criptografía que funciona mediante un par de llaves.
+            Una llave pública y una llave privada.
+        
+            Utiliza números primos, muuchos números primos en la encriptación.    
+    </pre>
+    <div class="context">
+        <a href="#arriba">Arriba</a>
+    </div>
+
+    <p class="contenido_p" id="6">6. Características</p>
+    <pre>
+        Características:
+        - Las propiedades comparten su llave pública con el resto de participantes.
+            - Se comparten las públicas, no las privadas
+        - Quien envía la información firma, con la llave pública la información.
+        - Quien recibe la información valida la utenticidad del emisor con la llave privda.
+    
+    
+        La llave pública es como un maletín, el cofre..
+            El servidor usa esa llave pública, ese maletín, o el cofre, le pone un candado y lo envía.
+            Lo que recibimos del servidor, lo abrimos con la llave privada.
+    
+        Si queremos enviarle algo al servidor, lo hacemos a través de su llave pública.
+            Cada llave pública se abre con su propia llave privada, por eso lo del "cofre"
+    
+        En cada lado, hay 2 pares de llave, la pública y la privada.
+            - La pública es como se envía la informacion o el mensaje cifrado, encriptado, se "firma"
+                - La publica es el candado, la privada la llave que abre ese candado.
+            - Esa firma se descifra con la llave privada
+                - LA LLAVE PRIVADA LA TENEMOS NOSOTROS, NUNCA SE COMPARTE.
+    
+        * Se genera una llave por cada computadora que se utilice.            
+    </pre>
+    <div class="context">
+        <a href="#arriba">Arriba</a>
+    </div>  
+
+    <p class="contenido_p" id="7">7. Generar par de llaves</p>
+    <pre>
+        Generar par de llaves:
+        Desde nuestra computadora, no el servidor remoto..
+        <code>
+            - cd ~/.ssh            -> Debemos acceder a esa carpeta.
+            - ssh-keygen           -> Si no tenemos esa carpeta, la generamo
+                - .ssh             - Especificamos donde guardamos las llaves.
+                -                  - Frase, no es relevante
+        </code>
+        Ahora tendremos en esa carpeta, dos archivos:
+        <code>
+            id_rsa             -> La privada, nunca se comparte
+            id_rsa.pub         -> La pública
+        </code>
+            * Debemos tener un resguardo de nuestras llaves.
+    
+        Ahora enviamos esa llave al servidor remoto.. Para autenticarnos por medio de ellas, no las contraseñas, es MÁS SEGURO.
+        <code>
+            ssh maat@198.2312.121.31 
+        </code>
+
+        Configuración para autenticación por llaves.
+    
+            *Podemos modificar el puerto 22, a otro para mayor seguridad
+            *Disminuir el tiempo de conexión
+        <code>
+            sudo nano /etc/ssh/sshd_config               -> ssh d_config       el d, es el prefijo que denota el servidores
+                -> Entramos al archivo para modificarlo
+    
+                - PasswordAuthenticacion on              -> Lo ponemos como off
+                
+                - AuthenticationMethods publickey        -> Agregamos la llave pública
+            </code>
+            Guardamos los cambios y reiniciamos el servidor.
+            <code>
+                - sudo service ssh restart               -> Reestablecemos
+                - sudo service ssh status                -> Vemos el estado, activo o no
+                                                            * Ahora autenticamos por llaves pública    
+            </code>
+    
+            Mover llaves al servidor: De esta manera el servidor reconoce nuestra llave y nos la guarda
+            <code>
+                - ssh-copy-id maat@1231.12131.312       -> copiamos nuestra llave pública al servidor
+                                                        - Ponemos la contraseña
+    
+                cd /home/maat/.ssh/
+                nano authorized_keys
+            </code>
+            - Ahora tenemos más seguridad con la criptografía asimétrica 
+    
+        
+            *Con las llaves copiadas en el servidor, tenemos una lista de quien accede y quien no
+        
+        Ahora manteniendo la autenticación por llaves, simulamos el caso de agregar más admins a nuestro servidor.
+        
+        - El administrador va a la carpeta..
+        <code>
+            cd /home/maat/.ssh/
+        
+            cat authorized_keys                 -> Editamos ese archivo
+                                                El que tiene todas las llaves registradas.
+                ssh-rsa  "llave que nos envian los admin"
+                ssh-rsa  "llave que nos envian los admin" *PODEMOS AGREGARLOS O BORRARLOS*
+        </code>
+            *Lo hacemos de manera manual, pero el servidor continúa funcionando*
+            - Evitando la autenticación por contraseña
+        <code>
+            sudo service ssh restart            -> Reiniciamos el servidor
+            sudo service ssh status             -> Vemos el estado del servidor, si esta enabled, sigue corriendo
+        </code>
+            - Ahora podemos ingresar al servidor y le permitimos a los admin.
+                                        
+        
+        - Los admin ingresan a su carpeta.. 
+        <code>
+            .ssh 
+        
+            cat id_rsa.pub                      -> Copian su llave                
+        </code>
+    </pre>
+    <div class="context">
+        <a href="#arriba">Arriba</a>
+    </div>
+    
+    <p class="contenido_p" id="8">8. Transferencia de Archivos</p>
+    <pre>
+        ¿Que es un SCP?     -> Para descargar o subir
+        Secure Copy Protocol, es un protocolo de transferencia de archivos a través de la red.
+        
+        Descarga de archivos vía SCP
+        <code>
+                        -> Apuntamos a nuestro servidor
+                                                -> La ruta donde está nuestra archivo a descargar..
+                                                    -> user es el archivo que vamos a descargar
+                                                                -> admins donde lo vamos a guardar
+            scp maat@232.233.23.232.23233:/home/maat/users.txt admins.txt 
+        
+                        
+                        *Para subir.. A la inversa 
+        </code>
+        <code>
+                - origen           -destino
+            scp admins.txt maat@232.233.23.232.23233:/home/maat                
+        </code>
+    </pre>
+    <div class="context">
+        <a href="#arriba">Arriba</a>
+    </div>
+    
+    <p class="contenido_p" id="9">9. Configuraciones Finales</p>
+    <pre>
+        Configuraciones Finales:
+
+        - Ahora configuramos un alias para nuestro user y el ip
+        <code>
+        - cd ~/.ssh                 -> En nuestra carpeta local
+        - nano config               -> Creamos el archivo config
+    
+            Host nuestro_alias
+                - miServidor                  ->  Alias
+            Hostname direccion_ip
+                - 198.211.106.87
+            User usuario
+                - maat
+            PubKeyAuthentication yes
+            IdentityFile ~/.ssh/id_rsa
+        </code>
+            
+        *Guardamos y ahora hacemos..
+        <code>
+            - ssh miServidor                -> Con nuestro alias conectamos instantáneamente
+                                            -  Es decir a través de nuestro config
+        </code>
+    
+        * Si queremos agregar otro servidor solo agregamos un solo salto de línea..
+        <code>
+            Host MiprimerServidor
+            Hostname 121.1213.1231
+            User maat
+            PubKeyAuthentication yes
+            IdentityFile ~/.ssh/id_rsa
+                                                    -> Salto de línea en el config.
+            Host OtroServidor
+            Hostname 121.1213.1131              - Apuntamos al mismo servidor pero sin la key, con contraseña
+            User root
+            PubKeyAuthentication no             - Al usar el ssh OtroServidor, debemos pasar el password
+        </code>
+    
+        *De esta manera es más sencillo, para guardar las ip y los users.
+    ------------------------------------------------------------------------------------------------
+    Añadir la llave pública a Github.. 
+        - Con la llave pública.            
+    </pre>
+    <div class="context">
+        <a href="#arriba">Arriba</a>
+    </div>
+
+    <p class="contenido_p" id="10">10. Apuntes</p>
+    <pre>
+        *Recordar
+        - Siempre al salir escribir       ->  exit
+        - Si estamos inactivos se cierra la conexión
+    
+        - Para tener la terminar de linux bajar el wsl2
+            - Desde la tienda windows bajamos el ubuntu
+    
+        - Este es un vps, un servidor privado
+    
+        - Los commits en github se pueden firmar con la llave pública.
+    
+        - Para correr un proyecto en Django es necesario tener Enginex
+            - Digital ocean, más sencillo de configurar.
+    
+        Los pasos, esto nos garantiza más seguridad:
+            1 Creamos el servidor, el droplets en digital ocean
+            2 Creamos un nuevo usuario
+            3 Generamos una llave si no la tenemos
+            4 Enviamos la llave SSH, la copiamos en el servidor
+                - Al intentar copiarla en el servidor, el servidor pide la contraseña
+            5 Desactivamos la autenticación por password
+    
+            * Mientras menos formas de autenticación mas seguridad, le quitamos el acceso por root
+            - Nos olvidamos del root, mejor un usuario con permisos de administrador.
+    
+    
+        - mysqldump              -> Podemos hacer un respaldo de nuestra base de datos de
+                                * Podemos programar el tiempo de los respaldos.  
+    
+    
+        - Debemos repetir para asentar lo mecánico 
+    </pre>
+    <div class="context">
+        <a href="#arriba">Arriba</a>
+    </div>
+
+    
+    <br> 
+    <br> 
+    <div class="context">
+        <a href="../30/index.html">Volver</a>
+        <a href="../../index.html">Inicio</a>
+        <a href="../32/index.html">Siguiente</a>
+    </div>
+    
+</body>
+</html>
